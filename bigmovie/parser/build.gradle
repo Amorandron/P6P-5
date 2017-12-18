@@ -1,0 +1,11 @@
+group 'com.janwilts.bigmovie'
+
+apply plugin: 'application'
+apply plugin: 'java'
+
+mainClassName = 'com.janwilts.bigmovie.parser.Parser'
+sourceCompatibility = 1.9
+
+repositories {
+    mavenCentral()
+}
