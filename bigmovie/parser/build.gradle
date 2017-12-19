@@ -9,7 +9,3 @@ sourceCompatibility = 1.9
 repositories {
     mavenCentral()
 }
-
-run {
-    args findProperty('location')
-}
