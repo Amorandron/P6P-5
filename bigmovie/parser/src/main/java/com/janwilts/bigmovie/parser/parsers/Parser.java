@@ -2,35 +2,35 @@ package com.janwilts.bigmovie.parser.parsers;
 
 import com.janwilts.bigmovie.parser.enums.RequiredFile;
 
-import java.io.File;
+import java.io.*;
+import java.util.zip.GZIPInputStream;
 
 public abstract class Parser {
     private static Parser currentParser;
 
     protected File file;
+    protected BufferedReader reader;
 
     public static void parseFile(File file) {
         // TODO: Add corresponding parsers
         if(checkFileName(file, 0))
             currentParser = new MovieParser(file);
-        else if(checkFileName(file, 1))
-            throw new UnsupportedOperationException();
-        else if(checkFileName(file, 2))
-            throw new UnsupportedOperationException();
+        else if(checkFileName(file, 1) || checkFileName(file, 2))
+            currentParser = new ActorParser(file);
         else if(checkFileName(file, 3))
-            throw new UnsupportedOperationException();
+            currentParser = new BiographyParser(file);
         else if(checkFileName(file, 4))
-            throw new UnsupportedOperationException();
+            currentParser = new BusinessParser(file);
         else if(checkFileName(file, 5))
-            throw new UnsupportedOperationException();
+            currentParser = new RatingParser(file);
         else if(checkFileName(file, 6))
-            throw new UnsupportedOperationException();
+            currentParser = new SoundtrackParser(file);
         else if(checkFileName(file, 7))
-            throw new UnsupportedOperationException();
+            currentParser = new CountryParser(file);
         else if(checkFileName(file, 8))
-            throw new UnsupportedOperationException();
+            currentParser = new GenreParser(file);
         else if(checkFileName(file, 9))
-            throw new UnsupportedOperationException();
+            currentParser = new MpaaParser(file);
 
         currentParser.parse();
     }
@@ -39,8 +39,20 @@ public abstract class Parser {
         return file.getName().equals(RequiredFile.getList().get(index));
     }
 
-    public Parser(File file) {
+    public Parser(File file)  {
         this.file = file;
+
+        try {
+            this.reader = new BufferedReader(
+                    new InputStreamReader(
+                            new GZIPInputStream(
+                                    new FileInputStream(file)
+                            )
+                    )
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public abstract void parse();

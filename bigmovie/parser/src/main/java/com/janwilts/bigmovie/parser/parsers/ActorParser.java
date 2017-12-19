@@ -9,7 +9,7 @@ public class ActorParser extends Parser{
 
     @Override
     public void parse() {
-        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try  {
             File csvFile = new File("actors.csv");
             PrintWriter writer = new PrintWriter(csvFile, "UTF-8");
 
@@ -18,7 +18,7 @@ public class ActorParser extends Parser{
             int linesBeforeList = 4;
             boolean foundList = false;
 
-            for(String line; (line = br.readLine()) != null; ) {
+            for(String line; (line = reader.readLine()) != null; ) {
                 if(!foundList && line.contains("THE ACTORS LIST")) {
                     foundList = true;
                 }
