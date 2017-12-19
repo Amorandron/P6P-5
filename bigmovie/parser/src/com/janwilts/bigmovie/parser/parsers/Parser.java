@@ -15,7 +15,11 @@ public abstract class Parser {
             "mpaa-ratings-reasons"
     };
 
-    public Parser(File file) {
+    protected File file;
 
+    public Parser(File file) {
+        this.file = file;
     }
+
+    public abstract void parse();
 }

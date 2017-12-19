@@ -6,4 +6,9 @@ public class MovieParser extends Parser {
     public MovieParser(File file) {
         super(file);
     }
+
+    @Override
+    public void parse() {
+
+    }
 }

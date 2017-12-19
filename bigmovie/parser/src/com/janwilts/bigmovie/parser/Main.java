@@ -1,5 +1,6 @@
 package com.janwilts.bigmovie.parser;
 
+import com.janwilts.bigmovie.parser.parsers.ActorParser;
 import com.janwilts.bigmovie.parser.parsers.Parser;
 
 import java.io.File;
@@ -12,14 +13,17 @@ public class Main {
         if(args.length != 1)
             return;
 
-        File dataDirectory = new File(args[0]);
+        //File dataDirectory = new File(args[0]);
 
-        if(!dataDirectory.isDirectory())
-            return;
+        //if(!dataDirectory.isDirectory())
+          //  return;
 
-        if(checkSets(dataDirectory.listFiles())) {
+        ActorParser parser = new ActorParser(new File(args[0]));
+        parser.parse();
+
+        //if(checkSets(dataDirectory.listFiles())) {
             // TODO: Implement parser logic
-        }
+        //}
     }
 
     private static Boolean checkSets(File[] files) {
