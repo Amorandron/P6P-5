@@ -9,9 +9,9 @@ public class ActorParser extends Parser{
 
     @Override
     public void parse() {
-        try  {
-            File csvFile = new File("actors.csv");
-            PrintWriter writer = new PrintWriter(csvFile, "UTF-8");
+        File csvFile = new File("actors.csv");
+
+        try(PrintWriter writer = new PrintWriter(csvFile, "UTF-8"))  {
 
             String currentActorName = "";
 
@@ -68,9 +68,9 @@ public class ActorParser extends Parser{
                         if(searchLine.contains("(") && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                 (rightCommaInd - leftCommaInd == 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                         Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
-                                rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
+                                (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                         searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' ||
-                                        searchLine.charAt(rightCommaInd - 1) == 'X')
+                                        searchLine.charAt(rightCommaInd - 1) == 'X'))
                         {
 
                             currentFilm = line.substring(line.indexOf("\t"), line.indexOf("(", line.indexOf(searchLine))).trim();
@@ -87,8 +87,6 @@ public class ActorParser extends Parser{
                             + "," + "\"" + currentRole + "\"");
                 }
             }
-
-            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
