@@ -3,9 +3,13 @@ group 'com.janwilts.bigmovie'
 apply plugin: 'application'
 apply plugin: 'java'
 
-mainClassName = 'com.janwilts.bigmovie.parser.Parser'
+mainClassName = 'com.janwilts.bigmovie.parser.Main'
 sourceCompatibility = 1.9
 
 repositories {
     mavenCentral()
+}
+
+run {
+    args findProperty('location')
 }
