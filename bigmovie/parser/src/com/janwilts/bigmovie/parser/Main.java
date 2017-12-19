@@ -6,6 +6,7 @@ import com.janwilts.bigmovie.parser.parsers.Parser;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -26,11 +27,17 @@ public class Main {
         //}
     }
 
+    /*if(checkSets(files)) {
+        files.stream()
+                .filter(f -> RequiredFile.getList().contains(f.getName()))
+                .forEach(Parser::parseFile);
+    }
+
     private static Boolean checkSets(File[] files) {
         List<String> fileNames = Arrays.stream(files)
                 .map(File::toString)
                 .collect(Collectors.toList());
 
         return fileNames.containsAll(Arrays.asList(Parser.REQUIRED_FILES));
-    }
+    }*/
 }
