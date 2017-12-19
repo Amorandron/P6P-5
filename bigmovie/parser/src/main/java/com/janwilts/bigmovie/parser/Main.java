@@ -17,19 +17,19 @@ public class Main {
 
         File dataDirectory = new File(args[0]);
 
-        if (!dataDirectory.isDirectory())
-            return;
+        //if (!dataDirectory.isDirectory())
+          //  return;
 
         ActorParser parser = new ActorParser(new File(args[0]));
         parser.parse();
 
-        List<File> files = Arrays.asList(Objects.requireNonNull(dataDirectory.listFiles()));
+        //List<File> files = Arrays.asList(Objects.requireNonNull(dataDirectory.listFiles()));
 
-        if (checkSets(files)) {
+        /*if (checkSets(files)) {
             files.stream()
                     .filter(f -> RequiredFile.getList().contains(f.getName()))
                     .forEach(Parser::parseFile);
-        }
+        }*/
     }
 
     private static Boolean checkSets (List<File> files){
