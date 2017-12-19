@@ -10,6 +10,7 @@ repositories {
     mavenCentral()
 }
 
-run {
-    args findProperty('location')
+dependencies {
+    compile 'com.github.shyiko.dotenv:dotenv:0.1.1'
+    compile 'com.google.code.gson:gson:2.8.2'
 }
