@@ -20,9 +20,6 @@ public class Main {
         if (!dataDirectory.isDirectory())
             return;
 
-        ActorParser parser = new ActorParser(new File(args[0]));
-        parser.parse();
-
         List<File> files = Arrays.asList(Objects.requireNonNull(dataDirectory.listFiles()));
 
         if (checkSets(files)) {
@@ -34,7 +31,7 @@ public class Main {
 
     private static Boolean checkSets (List<File> files){
         List<String> fileNames = files.stream()
-                .map(File::toString)
+                .map(File::getName)
                 .collect(Collectors.toList());
 
         return fileNames.containsAll(RequiredFile.getList());
