@@ -3,7 +3,6 @@ package com.janwilts.bigmovie.parser;
 import com.github.shyiko.dotenv.DotEnv;
 import com.janwilts.bigmovie.parser.enums.RequiredFile;
 import com.janwilts.bigmovie.parser.parsers.Parser;
-import com.janwilts.bigmovie.parser.util.CurrencyConverter;
 
 import java.io.File;
 import java.util.Arrays;
