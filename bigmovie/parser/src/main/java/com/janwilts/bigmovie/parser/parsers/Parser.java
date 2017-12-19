@@ -1,8 +1,8 @@
 package com.janwilts.bigmovie.parser.parsers;
 
+import com.janwilts.bigmovie.parser.enums.RequiredFile;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class Parser {
     private static Parser currentParser;
@@ -36,12 +36,11 @@ public abstract class Parser {
     }
 
     private static Boolean checkFileName(File file, int index) {
-        //return file.getName().equals(RequiredFile.getList().get(index));
+        return file.getName().equals(RequiredFile.getList().get(index));
     }
 
     public Parser(File file) {
         this.file = file;
-        //this.requiredFiles = new ArrayList<>();
     }
 
     public abstract void parse();
