@@ -33,5 +33,8 @@ local.properties
 **/.gradle/*
 **/build/*
 
+# CSV Files
+*.csv
+
 # dot Env
 **/.env

@@ -10,8 +10,7 @@ public class ActorParser extends Parser{
 
     @Override
     public void parse() {
-        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
-
+        try  {
             String currentActorName = "";
 
             char gender = this.csv.getName().equals("actors.csv") ? 'M' : 'F';
@@ -19,7 +18,7 @@ public class ActorParser extends Parser{
             int linesBeforeList = 4;
             boolean foundList = false;
 
-            for(String line; (line = reader.readLine()) != null; ) {
+            for(String line; (line = this.getLine()) != null; ) {
                 if(!foundList && line.contains("THE " + file.getName().substring(0, file.getName().indexOf('.')).toUpperCase() + " LIST")) {
                     foundList = true;
                 }
