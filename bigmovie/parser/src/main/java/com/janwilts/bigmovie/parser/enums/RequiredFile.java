@@ -19,7 +19,7 @@ public enum RequiredFile {
     private String name;
 
     RequiredFile(String name) {
-        this.name = name + ".list.gz";
+        this.name = name;
     }
 
     @Override

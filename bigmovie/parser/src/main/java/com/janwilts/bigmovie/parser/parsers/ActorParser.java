@@ -9,9 +9,7 @@ public class ActorParser extends Parser{
 
     @Override
     public void parse() {
-        File csvFile = new File("actors.csv");
-
-        try(PrintWriter writer = new PrintWriter(csvFile, "UTF-8"))  {
+        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
 
             String currentActorName = "";
 
@@ -87,6 +85,7 @@ public class ActorParser extends Parser{
                             + "," + "\"" + currentRole + "\"");
                 }
             }
+            writer.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }

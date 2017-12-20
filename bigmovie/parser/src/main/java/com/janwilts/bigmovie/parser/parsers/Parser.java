@@ -10,9 +10,9 @@ public abstract class Parser {
 
     protected File file;
     protected BufferedReader reader;
+    protected File csv;
 
     public static void parseFile(File file) {
-        // TODO: Add corresponding parsers
         if(checkFileName(file, 0))
             currentParser = new MovieParser(file);
         else if(checkFileName(file, 1) || checkFileName(file, 2))
@@ -36,22 +36,37 @@ public abstract class Parser {
     }
 
     private static Boolean checkFileName(File file, int index) {
-        return file.getName().equals(RequiredFile.getList().get(index));
+        return file.getName().substring(0, file.getName().indexOf('.'))
+                .equals(RequiredFile.getList().get(index));
     }
 
     public Parser(File file)  {
         this.file = file;
+        this.csv = new File(file.getName() + ".csv");
 
-        try {
-            this.reader = new BufferedReader(
-                    new InputStreamReader(
-                            new GZIPInputStream(
-                                    new FileInputStream(file)
-                            )
-                    )
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
+        String extension = file.getName().substring(file.getName().lastIndexOf('.')  + 1);
+
+        if(extension.equals("gz")) {
+            try {
+                this.reader = new BufferedReader(
+                        new InputStreamReader(
+                                new GZIPInputStream(
+                                        new FileInputStream(file)
+                                )
+                        )
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else  {
+            try {
+                this.reader = new BufferedReader(
+                    new FileReader(file)
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
