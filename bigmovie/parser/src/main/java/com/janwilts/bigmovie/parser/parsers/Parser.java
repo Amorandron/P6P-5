@@ -1,9 +1,10 @@
 package com.janwilts.bigmovie.parser.parsers;
 
-import com.janwilts.bigmovie.parser.enums.RequiredFile;
+import com.janwilts.bigmovie.parser.enums.Parsable;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipInputStream;
 
 public abstract class Parser {
     private static Parser currentParser;
@@ -37,12 +38,12 @@ public abstract class Parser {
 
     private static Boolean checkFileName(File file, int index) {
         return file.getName().substring(0, file.getName().indexOf('.'))
-                .equals(RequiredFile.getList().get(index));
+                .equals(Parsable.getList().get(index));
     }
 
     public Parser(File file)  {
         this.file = file;
-        this.csv = new File(file.getName() + ".csv");
+        this.csv = new File(file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
 
         String extension = file.getName().substring(file.getName().lastIndexOf('.')  + 1);
 
@@ -52,7 +53,7 @@ public abstract class Parser {
                         new InputStreamReader(
                                 new GZIPInputStream(
                                         new FileInputStream(file)
-                                )
+                                ), "ISO-8859-1"
                         )
                 );
             } catch (IOException e) {

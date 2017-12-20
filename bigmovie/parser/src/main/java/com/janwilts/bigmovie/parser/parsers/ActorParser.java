@@ -1,6 +1,7 @@
 package com.janwilts.bigmovie.parser.parsers;
 
 import java.io.*;
+import java.util.regex.Matcher;
 
 public class ActorParser extends Parser{
     public ActorParser(File file) {
@@ -9,15 +10,16 @@ public class ActorParser extends Parser{
 
     @Override
     public void parse() {
-        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
-
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String currentActorName = "";
+
+            char gender = this.csv.getName().equals("actors.csv") ? 'M' : 'F';
 
             int linesBeforeList = 4;
             boolean foundList = false;
 
             for(String line; (line = reader.readLine()) != null; ) {
-                if(!foundList && line.contains("THE ACTORS LIST")) {
+                if(!foundList && line.contains("THE " + file.getName().substring(0, file.getName().indexOf('.')).toUpperCase() + " LIST")) {
                     foundList = true;
                 }
                 else if(foundList && linesBeforeList != 0) {
@@ -68,7 +70,9 @@ public class ActorParser extends Parser{
                                         Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
                                 (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                         searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' ||
-                                        searchLine.charAt(rightCommaInd - 1) == 'X'))
+                                        searchLine.charAt(rightCommaInd - 1) == 'X') || (
+                                rightCommaInd - leftCommaInd <= 5 && searchLine.charAt(rightCommaInd - 1) == '?' &&
+                                        searchLine.charAt(leftCommaInd + 1) == '?'))
                         {
 
                             currentFilm = line.substring(line.indexOf("\t"), line.indexOf("(", line.indexOf(searchLine))).trim();
@@ -81,11 +85,11 @@ public class ActorParser extends Parser{
                         }
                     }
 
-                    writer.println("\"" + currentActorName + "\"" + "," + "\"" + currentFilm + "\"" + "," + currentYear
-                            + "," + "\"" + currentRole + "\"");
+                    writer.println("\"" + currentActorName.replace("\"", "\"\"") + "\"" + "," + gender + "," +
+                            "\"" + currentFilm.replace("\"", "\"\"") + "\"" + "," + currentYear
+                            + "," + "\"" + currentRole.replace("\"", "\"\"") + "\"");
                 }
             }
-            writer.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
