@@ -28,7 +28,13 @@ local.properties
 # IntelliJ output files
 **/out/*
 
-#Gradle
+# Gradle
 .gradletasknamecache
 **/.gradle/*
 **/build/*
+
+# CSV Files
+*.csv
+
+# dot Env
+**/.env

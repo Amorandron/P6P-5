@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum RequiredFile {
+public enum Parsable {
     MOVIES("movies"),
     ACTORS("actors"),
     ACTRESSES("actresses"),
@@ -18,8 +18,8 @@ public enum RequiredFile {
 
     private String name;
 
-    RequiredFile(String name) {
-        this.name = name + ".list.gz";
+    Parsable(String name) {
+        this.name = name;
     }
 
     @Override
@@ -28,8 +28,8 @@ public enum RequiredFile {
     }
 
     public static List<String> getList() {
-        return Arrays.stream(RequiredFile.values())
-                .map(RequiredFile::toString)
+        return Arrays.stream(Parsable.values())
+                .map(Parsable::toString)
                 .collect(Collectors.toList());
     }
 }
