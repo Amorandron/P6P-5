@@ -76,8 +76,6 @@ public class GenreParser extends Parser {
                     }
                 }
             }
-
-            writer.close();
         }catch (Exception e){
             e.printStackTrace();
         }
