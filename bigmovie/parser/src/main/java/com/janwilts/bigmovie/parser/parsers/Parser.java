@@ -1,6 +1,6 @@
 package com.janwilts.bigmovie.parser.parsers;
 
-import com.janwilts.bigmovie.parser.enums.RequiredFile;
+import com.janwilts.bigmovie.parser.enums.Parsable;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
@@ -37,7 +37,7 @@ public abstract class Parser {
 
     private static Boolean checkFileName(File file, int index) {
         return file.getName().substring(0, file.getName().indexOf('.'))
-                .equals(RequiredFile.getList().get(index));
+                .equals(Parsable.getList().get(index));
     }
 
     public Parser(File file)  {
