@@ -3,6 +3,7 @@ package com.janwilts.bigmovie.parser.parsers;
 import com.janwilts.bigmovie.parser.enums.Parsable;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
@@ -14,26 +15,32 @@ public abstract class Parser {
     protected File csv;
 
     public static void parseFile(File file) {
-        if(checkFileName(file, 0))
-            currentParser = new MovieParser(file);
-        else if(checkFileName(file, 1) || checkFileName(file, 2))
-            currentParser = new ActorParser(file);
-        else if(checkFileName(file, 3))
-            currentParser = new BiographyParser(file);
-        else if(checkFileName(file, 4))
-            currentParser = new BusinessParser(file);
-        else if(checkFileName(file, 5))
+        if (checkFileName(file, 0))
+            //currentParser = new MovieParser(file);
+            return;
+        else if (checkFileName(file, 1) || checkFileName(file, 2))
+            //currentParser = new ActorParser(file);
+            return;
+        else if (checkFileName(file, 3))
+            //currentParser = new BiographyParser(file);
+            return;
+        else if (checkFileName(file, 4))
+            //currentParser = new BusinessParser(file);
+            return;
+        else if (checkFileName(file, 5))
             currentParser = new RatingParser(file);
-        else if(checkFileName(file, 6))
-            currentParser = new SoundtrackParser(file);
-        else if(checkFileName(file, 7))
-            currentParser = new CountryParser(file);
-        else if(checkFileName(file, 8))
-            currentParser = new GenreParser(file);
-        else if(checkFileName(file, 9))
-            currentParser = new MpaaParser(file);
-
-        currentParser.parse();
+        else if (checkFileName(file, 6))
+            //currentParser = new SoundtrackParser(file);
+            return;
+        else if (checkFileName(file, 7))
+            //currentParser = new CountryParser(file);
+            return;
+        else if (checkFileName(file, 8))
+            //currentParser = new GenreParser(file);
+            return;
+        else if (checkFileName(file, 9))
+            //currentParser = new MpaaParser(file);
+            return;
     }
 
     private static Boolean checkFileName(File file, int index) {
@@ -41,34 +48,43 @@ public abstract class Parser {
                 .equals(Parsable.getList().get(index));
     }
 
-    public Parser(File file)  {
+    public Parser(File file) {
         this.file = file;
-        this.csv = new File(file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
+        this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
+        csv.getParentFile().mkdirs();
 
-        String extension = file.getName().substring(file.getName().lastIndexOf('.')  + 1);
+        try {
+            this.reader = getReader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        if(extension.equals("gz")) {
-            try {
-                this.reader = new BufferedReader(
-                        new InputStreamReader(
-                                new GZIPInputStream(
-                                        new FileInputStream(file)
-                                ), "ISO-8859-1"
-                        )
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        this.announceStart(file.getName());
+        long start = System.currentTimeMillis();
+        this.parse();
+        long finish = System.currentTimeMillis();
+        this.announceDone(file.getName(), finish - start);
+    }
+
+    private BufferedReader getReader() throws IOException {
+        String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
+
+        switch (extension) {
+            case "gz":
+                return new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file)), StandardCharsets.ISO_8859_1));
+            case "zip":
+                return new BufferedReader(new InputStreamReader(new ZipInputStream(new FileInputStream(file)), StandardCharsets.ISO_8859_1));
+            default:
+                return new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.ISO_8859_1));
         }
-        else  {
-            try {
-                this.reader = new BufferedReader(
-                    new FileReader(file)
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    }
+
+    private void announceStart(String name) {
+        System.out.println(String.format("Parsing: %s", name));
+    }
+
+    private void announceDone(String name, long ms) {
+        System.out.println(String.format("Finished Parsing: %s in %dms", name, ms));
     }
 
     public abstract void parse();
