@@ -17,7 +17,7 @@ public class ActorParser extends Parser{
             boolean foundList = false;
 
             for(String line; (line = reader.readLine()) != null; ) {
-                if(!foundList && line.contains("THE ACTORS LIST")) {
+                if(!foundList && line.contains("THE " + file.getName().substring(0, file.getName().indexOf('.')).toUpperCase() + " LIST")) {
                     foundList = true;
                 }
                 else if(foundList && linesBeforeList != 0) {

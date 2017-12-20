@@ -42,7 +42,7 @@ public abstract class Parser {
 
     public Parser(File file)  {
         this.file = file;
-        this.csv = new File(file.getName() + ".csv");
+        this.csv = new File(file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
 
         String extension = file.getName().substring(file.getName().lastIndexOf('.')  + 1);
 
