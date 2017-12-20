@@ -11,7 +11,9 @@ public class ActorParser extends Parser{
     public void parse() {
         File csvFile = new File("actors.csv");
 
-        try(PrintWriter writer = new PrintWriter(csvFile, "UTF-8"))  {
+        try{
+            PrintWriter writer = new PrintWriter(csvFile, "UTF-8");
+
 
             String currentActorName = "";
 
@@ -70,7 +72,9 @@ public class ActorParser extends Parser{
                                         Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
                                 (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                         searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' ||
-                                        searchLine.charAt(rightCommaInd - 1) == 'X'))
+                                        searchLine.charAt(rightCommaInd - 1) == 'X') || (
+                                rightCommaInd - leftCommaInd <= 5 && searchLine.charAt(rightCommaInd - 1) == '?' &&
+                                        searchLine.charAt(leftCommaInd + 1) == '?'))
                         {
 
                             currentFilm = line.substring(line.indexOf("\t"), line.indexOf("(", line.indexOf(searchLine))).trim();
@@ -85,6 +89,8 @@ public class ActorParser extends Parser{
 
                     writer.println("\"" + currentActorName + "\"" + "," + "\"" + currentFilm + "\"" + "," + currentYear
                             + "," + "\"" + currentRole + "\"");
+
+                    writer.flush();
                 }
             }
         } catch (Exception e) {
