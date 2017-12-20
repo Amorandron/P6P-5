@@ -4,6 +4,7 @@ import com.janwilts.bigmovie.parser.enums.Parsable;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipInputStream;
 
 public abstract class Parser {
     private static Parser currentParser;
@@ -40,7 +41,7 @@ public abstract class Parser {
                 .equals(Parsable.getList().get(index));
     }
 
-    public Parser(File file)  {
+    public Parser(File file) {
         this.file = file;
 
         File csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
@@ -48,33 +49,32 @@ public abstract class Parser {
 
         try {
             this.writer = new PrintWriter(csv, "UTF-8");
+            this.reader = selectReader();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        String extension = file.getName().substring(file.getName().lastIndexOf('.')  + 1);
+        parse();
+        writer.flush();
+    }
 
-        if(extension.equals("gz")) {
-            try {
-                this.reader = new BufferedReader(
-                        new InputStreamReader(
-                                new GZIPInputStream(
-                                        new FileInputStream(file)
-                                )
-                        )
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    protected String getLine() {
+        try {
+            return reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        else  {
-            try {
-                this.reader = new BufferedReader(
-                    new FileReader(file)
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        return "";
+    }
+
+    private BufferedReader selectReader() throws Exception {
+        String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
+        if (extension.equals("gz")) {
+            return new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file))));
+        } else if(extension.equals("zip")) {
+            return new BufferedReader(new InputStreamReader(new ZipInputStream(new FileInputStream(file))));
+        } else {
+            return new BufferedReader(new FileReader(file));
         }
     }
 

@@ -9,6 +9,12 @@ public class RatingParser extends Parser{
 
     @Override
     public void parse() {
-
+        try  {
+            for(String line; (line = this.getLine()) != null; ) {
+                writer.println(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
