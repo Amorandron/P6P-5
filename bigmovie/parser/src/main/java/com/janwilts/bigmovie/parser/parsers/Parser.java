@@ -52,7 +52,7 @@ public abstract class Parser {
                         new InputStreamReader(
                                 new GZIPInputStream(
                                         new FileInputStream(file)
-                                )
+                                ), "ISO-8859-1"
                         )
                 );
             } catch (IOException e) {
