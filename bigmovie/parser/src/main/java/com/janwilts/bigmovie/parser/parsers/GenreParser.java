@@ -10,7 +10,7 @@ public class GenreParser extends Parser {
 
     @Override
     public void parse() {
-        try{
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")){
             String pattern = "(.*?)\\s\\((.{4})(|\\/(.*?))\\)(.*?\\).*?|.*?)([a-zA-Z]+\\-?[a-zA-Z]+)";
             Pattern p = Pattern.compile(pattern);
 
@@ -49,8 +49,6 @@ public class GenreParser extends Parser {
                     writer.println(currentTitle + "," + currentYear + "," + currentRomanNumber + "," + currentGenre);
                 }
             }
-
-            writer.close();
         }catch (Exception e){
             e.printStackTrace();
         }
