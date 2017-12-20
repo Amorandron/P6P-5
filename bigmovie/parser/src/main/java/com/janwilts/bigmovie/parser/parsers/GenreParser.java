@@ -10,7 +10,7 @@ public class GenreParser extends Parser {
 
     @Override
     public void parse() {
-        try{
+        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8")){
             String pattern = "(.*?)\\s\\((.{4})(|\\/(.*?))\\)(.*?\\).*?|.*?)([a-zA-Z]+?\\-?[a-zA-Z]+)";
             Pattern p = Pattern.compile(pattern);
 
@@ -61,7 +61,7 @@ public class GenreParser extends Parser {
 
                         currentTitle = m.group(1);
                         if (m.group(2).contains("?")) {
-                            currentYear = "0";
+                            currentYear = "";
                         } else {
                             currentYear = m.group(2);
                         }
