@@ -1,5 +1,13 @@
 package com.janwilts.bigmovie.parser.commands;
 
+import com.janwilts.bigmovie.parser.enums.RequiredFile;
+import com.janwilts.bigmovie.parser.parsers.Parser;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 public class FullCommand implements Command {
     private String directory;
 
@@ -9,6 +17,13 @@ public class FullCommand implements Command {
 
     @Override
     public void execute() {
-        // TODO: Implement command logic
+        File dataDirectory = new File(directory);
+
+        List<File> files = Arrays.asList(Objects.requireNonNull(dataDirectory.listFiles()));
+
+        files.stream()
+                .filter(f -> RequiredFile.getList()
+                        .contains(f.getName().substring(0, f.getName().indexOf('.'))))
+                .forEach(f -> Parser.parseFile(f));
     }
 }
