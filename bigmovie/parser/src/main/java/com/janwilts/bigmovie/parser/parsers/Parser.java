@@ -42,8 +42,10 @@ public abstract class Parser {
 
     public Parser(File file)  {
         this.file = file;
-        
-        File csv = new File(file.getName() + ".csv");
+
+        File csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
+        csv.getParentFile().mkdirs();
+
         try {
             this.writer = new PrintWriter(csv, "UTF-8");
         } catch (Exception e) {
