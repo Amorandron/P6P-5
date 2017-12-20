@@ -13,26 +13,26 @@ public abstract class Parser {
     protected PrintWriter writer = null;
 
     public static void parseFile(File file) {
-        if(checkFileName(file, 0))
-            currentParser = new MovieParser(file);
-        else if(checkFileName(file, 1) || checkFileName(file, 2))
-            currentParser = new ActorParser(file);
-        else if(checkFileName(file, 3))
-            currentParser = new BiographyParser(file);
-        else if(checkFileName(file, 4))
+//        if(checkFileName(file, 0))
+//            currentParser = new MovieParser(file);
+//        else if(checkFileName(file, 1) || checkFileName(file, 2))
+//            currentParser = new ActorParser(file);
+//        else if(checkFileName(file, 3))
+//            currentParser = new BiographyParser(file);
+        /*else*/ if(checkFileName(file, 4))
             currentParser = new BusinessParser(file);
-        else if(checkFileName(file, 5))
-            currentParser = new RatingParser(file);
-        else if(checkFileName(file, 6))
-            currentParser = new SoundtrackParser(file);
-        else if(checkFileName(file, 7))
-            currentParser = new CountryParser(file);
-        else if(checkFileName(file, 8))
-            currentParser = new GenreParser(file);
-        else if(checkFileName(file, 9))
-            currentParser = new MpaaParser(file);
+//        else if(checkFileName(file, 5))
+//            currentParser = new RatingParser(file);
+//        else if(checkFileName(file, 6))
+//            currentParser = new SoundtrackParser(file);
+//        else if(checkFileName(file, 7))
+//            currentParser = new CountryParser(file);
+//        else if(checkFileName(file, 8))
+//            currentParser = new GenreParser(file);
+//        else if(checkFileName(file, 9))
+//            currentParser = new MpaaParser(file);
 
-        currentParser.parse();
+        if(currentParser != null) currentParser.parse();
     }
 
     private static Boolean checkFileName(File file, int index) {
