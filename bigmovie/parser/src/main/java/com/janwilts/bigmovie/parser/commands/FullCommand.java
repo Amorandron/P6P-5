@@ -24,6 +24,6 @@ public class FullCommand implements Command {
         files.stream()
                 .filter(f -> Parsable.getList()
                         .contains(f.getName().substring(0, f.getName().indexOf('.'))))
-                .forEach(f -> Parser.parseFile(f));
+                .forEach(Parser::parseFile);
     }
 }

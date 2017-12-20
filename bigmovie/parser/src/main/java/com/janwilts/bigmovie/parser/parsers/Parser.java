@@ -4,13 +4,14 @@ import com.janwilts.bigmovie.parser.enums.Parsable;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipInputStream;
 
 public abstract class Parser {
     private static Parser currentParser;
 
     protected File file;
     protected BufferedReader reader;
-    protected PrintWriter writer = null;
+    protected File csv;
 
     public static void parseFile(File file) {
         if(checkFileName(file, 0))
@@ -42,15 +43,7 @@ public abstract class Parser {
 
     public Parser(File file)  {
         this.file = file;
-
-        File csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
-        csv.getParentFile().mkdirs();
-
-        try {
-            this.writer = new PrintWriter(csv, "UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.csv = new File(file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
 
         String extension = file.getName().substring(file.getName().lastIndexOf('.')  + 1);
 
@@ -60,7 +53,7 @@ public abstract class Parser {
                         new InputStreamReader(
                                 new GZIPInputStream(
                                         new FileInputStream(file)
-                                )
+                                ), "ISO-8859-1"
                         )
                 );
             } catch (IOException e) {
