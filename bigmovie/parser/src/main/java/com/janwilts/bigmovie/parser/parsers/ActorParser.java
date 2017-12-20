@@ -1,6 +1,7 @@
 package com.janwilts.bigmovie.parser.parsers;
 
 import java.io.*;
+import java.util.regex.Matcher;
 
 public class ActorParser extends Parser{
     public ActorParser(File file) {
@@ -9,8 +10,10 @@ public class ActorParser extends Parser{
 
     @Override
     public void parse() {
-        try  {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String currentActorName = "";
+
+            char gender = this.csv.getName().equals("actors.csv") ? 'M' : 'F';
 
             int linesBeforeList = 4;
             boolean foundList = false;
@@ -82,8 +85,9 @@ public class ActorParser extends Parser{
                         }
                     }
 
-                    writer.println("\"" + currentActorName + "\"" + "," + "\"" + currentFilm + "\"" + "," + currentYear
-                            + "," + "\"" + currentRole + "\"");
+                    writer.println("\"" + currentActorName.replace("\"", "\"\"") + "\"" + "," + gender + "," +
+                            "\"" + currentFilm.replace("\"", "\"\"") + "\"" + "," + currentYear
+                            + "," + "\"" + currentRole.replace("\"", "\"\"") + "\"");
                 }
             }
         } catch (Exception e) {

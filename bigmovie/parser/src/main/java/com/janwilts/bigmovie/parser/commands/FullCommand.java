@@ -24,8 +24,6 @@ public class FullCommand implements Command
         
         List<File> files = Arrays.asList(Objects.requireNonNull(dataDirectory.listFiles()));
         
-        files.stream()
-             .filter(f -> Parsable.getList().contains(f.getName().substring(0, f.getName().indexOf('.'))))
-             .forEach(f -> Parser.parseFile(f));
+        files.stream().filter(f -> Parsable.getList().contains(f.getName().substring(0, f.getName().indexOf('.')))).forEach(Parser::parseFile);
     }
 }
