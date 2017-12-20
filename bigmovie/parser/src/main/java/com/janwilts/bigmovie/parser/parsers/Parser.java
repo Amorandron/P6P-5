@@ -10,7 +10,7 @@ public abstract class Parser {
 
     protected File file;
     protected BufferedReader reader;
-    protected File csv;
+    protected PrintWriter writer = null;
 
     public static void parseFile(File file) {
         if(checkFileName(file, 0))
@@ -42,7 +42,12 @@ public abstract class Parser {
 
     public Parser(File file)  {
         this.file = file;
-        this.csv = new File(file.getName() + ".csv");
+        File csv = new File(file.getName() + ".csv");
+        try {
+            this.writer = new PrintWriter(csv, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         String extension = file.getName().substring(file.getName().lastIndexOf('.')  + 1);
 

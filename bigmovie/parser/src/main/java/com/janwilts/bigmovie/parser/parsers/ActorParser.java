@@ -9,8 +9,7 @@ public class ActorParser extends Parser{
 
     @Override
     public void parse() {
-        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
-
+        try  {
             String currentActorName = "";
 
             int linesBeforeList = 4;

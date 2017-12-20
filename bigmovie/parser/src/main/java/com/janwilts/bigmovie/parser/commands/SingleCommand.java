@@ -1,5 +1,9 @@
 package com.janwilts.bigmovie.parser.commands;
 
+import com.janwilts.bigmovie.parser.parsers.Parser;
+
+import java.io.File;
+
 public class SingleCommand implements Command {
     private String file;
 
@@ -9,6 +13,6 @@ public class SingleCommand implements Command {
 
     @Override
     public void execute() {
-        // TODO: Implement command logic
+        Parser.parseFile(new File(file));
     }
 }
