@@ -56,7 +56,7 @@ public class SoundtrackParser extends Parser{
             String currentRomanNumber = "";
             String currentSong = "";
 
-            while(((line = reader.readLine()) != null)) {
+            while(((line = this.readLine()) != null)) {
                 if (!foundList && line.equals("SOUNDTRACKS")) {
                     foundList = true;
                 }
