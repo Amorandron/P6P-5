@@ -79,8 +79,6 @@ public abstract class Parser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        this.parse();
     }
 
     private BufferedReader getReader() throws IOException {

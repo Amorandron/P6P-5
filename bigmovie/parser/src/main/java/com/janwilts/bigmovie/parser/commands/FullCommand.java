@@ -3,9 +3,7 @@ package com.janwilts.bigmovie.parser.commands;
 import com.janwilts.bigmovie.parser.enums.Parsable;
 import com.janwilts.bigmovie.parser.parsers.Parser;
 
-import io.reactivex.Observable;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
+import io.reactivex.Flowable;
 
 import java.io.File;
 import java.util.Arrays;
@@ -34,7 +32,7 @@ public class FullCommand implements Command
                         .contains(f.getName().substring(0, f.getName().indexOf('.'))))
                         .collect(Collectors.toList());
 
-        Observable.fromIterable(filesFiltered)
+        Flowable.fromIterable(filesFiltered)
                 .map(Parser::parseFile)
                 .doOnSubscribe(disposable -> System.out.println("Parsing.."))
                 .doOnNext(result -> System.out.println(result[0] + " (File " + result[1] + "/" + result[2] + ") " + result[3] +
