@@ -1,5 +1,8 @@
 package com.janwilts.bigmovie.parser.util;
 
+/**
+ * @author Jan
+ */
 public class CommandUtils {
     public static void error(String error) {
         String mainUsage = "parser <path> <-a | -f> [file]";

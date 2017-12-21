@@ -5,6 +5,9 @@ import com.janwilts.bigmovie.parser.util.RomanNumeral;
 import java.io.*;
 import java.util.regex.*;
 
+/**
+ * @author Everdien
+ */
 public class SoundtrackParser extends Parser{
     public SoundtrackParser(File file) {
         super(file);

@@ -4,6 +4,9 @@ import com.janwilts.bigmovie.parser.parsers.Parser;
 
 import java.io.File;
 
+/**
+ * @author Jan
+ */
 public class SingleCommand implements Command {
     private String file;
 

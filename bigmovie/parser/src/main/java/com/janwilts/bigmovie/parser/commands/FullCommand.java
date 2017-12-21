@@ -4,8 +4,6 @@ import com.janwilts.bigmovie.parser.enums.Parsable;
 import com.janwilts.bigmovie.parser.parsers.Parser;
 
 import io.reactivex.Observable;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.io.File;
 import java.util.Arrays;
@@ -13,6 +11,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * @author Yannick & Jan
+ */
 public class FullCommand implements Command
 {
     private String directory;

@@ -5,6 +5,9 @@ import com.janwilts.bigmovie.parser.util.CurrencyConverter;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author Lars
+ */
 public class BusinessParser extends Parser {
     public BusinessParser(File file) {
         super(file);

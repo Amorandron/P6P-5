@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+/**
+ * @author Yannick
+ */
 public class BiographyParser extends Parser{
     public BiographyParser(File file) {
         super(file);

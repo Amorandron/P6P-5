@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Jan
+ */
 public class RatingParser extends Parser{
     public RatingParser(File file) {
         super(file);
