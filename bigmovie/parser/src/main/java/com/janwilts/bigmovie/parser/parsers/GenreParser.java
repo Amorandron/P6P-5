@@ -42,7 +42,7 @@ public class GenreParser extends Parser {
             String currentGenre = "";
             String currentRomanNumber = "";
 
-            while(((line = reader.readLine()) != null)) {
+            while(((line = this.readLine()) != null)) {
                 if (!foundList && line.equals("8: THE GENRES LIST")) {
                     foundList = true;
                 }

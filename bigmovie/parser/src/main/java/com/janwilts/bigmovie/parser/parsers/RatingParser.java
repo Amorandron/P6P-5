@@ -19,7 +19,7 @@ public class RatingParser extends Parser{
         boolean foundList = false;
 
         try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
-            for(String line; (line = reader.readLine()) != null; ) {
+            for(String line; (line = this.readLine()) != null; ) {
                 if(!foundList && line.contains("MOVIE RATINGS REPORT"))
                     foundList = true;
                 if(foundList && linesBeforeList > 0)

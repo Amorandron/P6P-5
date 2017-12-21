@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CurrencyConverter
 {
-    private static Map<String, Double> RATES_TO_USD = new HashMap<>();
+    private static final Map<String, Double> RATES_TO_USD = new HashMap<>();
     
     static //add hardcoded conversion rates (to USD), as these currencies are obsolete and the API doesn't convert these
     {

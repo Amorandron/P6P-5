@@ -1,5 +1,7 @@
 package com.janwilts.bigmovie.parser.parsers;
 
+import com.janwilts.bigmovie.parser.util.RomanNumeral;
+
 import java.io.*;
 
 public class ActorParser extends Parser {
@@ -17,7 +19,7 @@ public class ActorParser extends Parser {
             int linesBeforeList = 4;
             boolean foundList = false;
 
-            for (String line; (line = reader.readLine()) != null; ) {
+            for (String line; (line = this.readLine()) != null; ) {
                 if (!foundList && line.contains("THE " + file.getName().substring(0, file.getName().indexOf('.')).toUpperCase() + " LIST")) {
                     foundList = true;
                 } else if (foundList && linesBeforeList != 0) {
@@ -39,6 +41,7 @@ public class ActorParser extends Parser {
                     String currentFilm;
                     String currentRole = "";
                     String currentYear = "";
+                    int occurance = 0;
 
                     if (line.contains("[")) {
                         currentFilm = line.substring(line.indexOf("\t"), line.indexOf("[")).trim();
@@ -71,6 +74,10 @@ public class ActorParser extends Parser {
                             currentFilm = line.substring(line.indexOf("\t"), line.indexOf("(", line.indexOf(searchLine))).trim();
 
                             currentYear = searchLine.substring(searchLine.indexOf("(") + 1, searchLine.indexOf(")", searchLine.indexOf("(") + 1));
+                            if(currentYear.contains("/")) {
+                                occurance = RomanNumeral.convert(currentYear.substring(currentYear.indexOf("/") + 1, currentYear.length()));
+                                currentYear = currentYear.substring(0,currentYear.indexOf("/"));
+                            }
                             break;
                         } else {
                             searchLine = searchLine.substring(searchLine.indexOf("(") + 1);
@@ -79,7 +86,7 @@ public class ActorParser extends Parser {
 
                     writer.println("\"" + currentActorName.replace("\"", "\"\"") + "\"" + "," + gender + "," +
                             "\"" + currentFilm.replace("\"", "\"\"") + "\"" + "," + currentYear
-                            + "," + "\"" + currentRole.replace("\"", "\"\"") + "\"");
+                            + "," + occurance + "," + "\"" + currentRole.replace("\"", "\"\"") + "\"");
                 }
             }
         } catch (Exception e) {

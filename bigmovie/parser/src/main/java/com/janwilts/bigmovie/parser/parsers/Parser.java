@@ -1,6 +1,7 @@
 package com.janwilts.bigmovie.parser.parsers;
 
 import com.janwilts.bigmovie.parser.enums.Parsable;
+import com.janwilts.bigmovie.parser.util.CommandUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +14,7 @@ public abstract class Parser {
     protected File file;
     protected BufferedReader reader;
     protected File csv;
+    protected int lines = 0;
 
     public static void parseFile(File file) {
         if (checkFileName(file, 0))
@@ -22,7 +24,8 @@ public abstract class Parser {
         else if (checkFileName(file, 3))
             currentParser = new BiographyParser(file);
         else if (checkFileName(file, 4))
-            currentParser = new BusinessParser(file);
+            // currentParser = new BusinessParser(file);
+            return;
         else if (checkFileName(file, 5))
             currentParser = new RatingParser(file);
         else if (checkFileName(file, 6))
@@ -51,11 +54,11 @@ public abstract class Parser {
             e.printStackTrace();
         }
 
-        this.announceStart(file.getName());
+        CommandUtils.announceStart(file.getName());
         long start = System.currentTimeMillis();
         this.parse();
         long finish = System.currentTimeMillis();
-        this.announceDone(file.getName(), finish - start);
+        CommandUtils.announceDone(file.getName(), lines, finish - start);
     }
 
     private BufferedReader getReader() throws IOException {
@@ -71,12 +74,9 @@ public abstract class Parser {
         }
     }
 
-    private void announceStart(String name) {
-        System.out.println(String.format("Parsing: %s", name));
-    }
-
-    private void announceDone(String name, long ms) {
-        System.out.println(String.format("Finished Parsing: %s in %dms", name, ms));
+    protected String readLine() throws IOException {
+        lines++;
+        return this.reader.readLine();
     }
 
     public abstract void parse();

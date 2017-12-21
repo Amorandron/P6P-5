@@ -22,7 +22,7 @@ public class CountryParser extends Parser {
             boolean foundList = false;
 
             //Go over each line in the file
-            for (String line; (line = reader.readLine()) != null; ) {
+            for (String line; (line = this.readLine()) != null; ) {
 
                 //Beginning of the data list
                 if (!foundList && line.contains("COUNTRIES LIST")) {
