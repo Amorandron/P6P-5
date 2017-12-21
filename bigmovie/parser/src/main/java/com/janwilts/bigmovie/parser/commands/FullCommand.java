@@ -37,7 +37,8 @@ public class FullCommand implements Command
         Observable.fromIterable(filesFiltered)
                 .map(Parser::parseFile)
                 .doOnSubscribe(disposable -> System.out.println("Parsing.."))
-                .doOnNext(result -> System.out.println(result[0] + " (File " + result[1] + "/" + result[2] + ")"))
+                .doOnNext(result -> System.out.println(result[0] + " (File " + result[1] + "/" + result[2] + ") " + result[3] +
+                                                        " lines parsed."))
                 .doOnComplete(() -> System.out.println("Done."))
                 .doOnError(Throwable::printStackTrace)
                 .subscribe();

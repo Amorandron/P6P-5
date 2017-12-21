@@ -13,7 +13,7 @@ public abstract class Parser {
     protected File file;
     protected BufferedReader reader;
     protected File csv;
-    protected int lines = 0;
+    protected static int lines = 0;
 
     public static String[] parseFile(File file) {
         int currentFile = 0;
@@ -22,7 +22,7 @@ public abstract class Parser {
             currentParser = new MovieParser(file);
             currentFile = 1;
         }
-        else if(checkFileName(file, 1) || checkFileName(file, 2)) {
+        else if(checkFileName(file, 1)) {
             currentParser = new ActorParser(file);
             currentFile = 2;
         }
@@ -60,7 +60,8 @@ public abstract class Parser {
         }
 
         currentParser.parse();
-        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(currentFile), "10"};
+        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(currentFile), "10",
+        Integer.toString(lines)};
     }
 
     private static Boolean checkFileName(File file, int index) {
