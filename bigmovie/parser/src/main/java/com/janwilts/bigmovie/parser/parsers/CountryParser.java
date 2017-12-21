@@ -18,6 +18,7 @@ public class CountryParser extends Parser {
             String pattern = "(.*?)\\s\\((.{4})(|\\/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
             Pattern p = Pattern.compile(pattern);
 
+            // Initialize variables
             String line = "";
             String movieName = "";
             String year = "";
@@ -25,6 +26,8 @@ public class CountryParser extends Parser {
             String type = "";
             String country = "";
             Boolean foundList = false;
+
+            // Amount of lines till first data entry
             int linesBeforeList = 1;
 
             while (((line = this.readLine()) != null)) {
@@ -36,7 +39,7 @@ public class CountryParser extends Parser {
                     return;
                 } else if (linesBeforeList == 0 && line.length() > 0) {
 
-                    //go to next line if it's a series
+                    // Go the next line, if line contains a series
                     if (line.startsWith("\"")) {
                         continue;
                     }
@@ -44,25 +47,32 @@ public class CountryParser extends Parser {
                     Matcher m = p.matcher(line);
 
                     if (m.matches()) {
-                        //go to next line if movie suspended
+
+                        // Skip line when group contains SUSPENDED
                         if (m.group(5).toUpperCase().contains("SUSPENDED")) {
                             continue;
                         }
 
                         movieName = m.group(1);
+
+                        // Set year variable, if year is unknown return ""
                         if (m.group(2).contains("?")) {
                             year = "";
                         } else {
                             year = m.group(2);
                         }
+
+                        // Convert Roman number to integer
                         if (m.group(4) == null) {
                             iteration = "0";
                         } else {
                             iteration = Integer.toString(RomanNumeral.convert(m.group(4)));
                         }
+
                         type = m.group(5).replace("(", "").replace(")", "").trim();
                         country = m.group(6);
 
+                        // Write all variables to a line in countries.csv
                         writer.println("\"" + movieName + "\"" + "," + year + "," + "\"" + iteration + "\"" + "," + "\"" + type + "\"" + "," + "\"" + country + "\"");
                         writer.flush();
                     }
