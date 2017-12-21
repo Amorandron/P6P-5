@@ -8,22 +8,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class FullCommand implements Command {
+public class FullCommand implements Command
+{
     private String directory;
-
-    FullCommand(String directory) {
+    
+    FullCommand(String directory)
+    {
         this.directory = directory;
     }
-
+    
     @Override
-    public void execute() {
+    public void execute()
+    {
         File dataDirectory = new File(directory);
-
+        
         List<File> files = Arrays.asList(Objects.requireNonNull(dataDirectory.listFiles()));
-
-        files.stream()
-                .filter(f -> Parsable.getList()
-                        .contains(f.getName().substring(0, f.getName().indexOf('.'))))
-                .forEach(Parser::parseFile);
+        
+        files.stream().filter(f -> Parsable.getList().contains(f.getName().substring(0, f.getName().indexOf('.')))).forEach(Parser::parseFile);
     }
 }

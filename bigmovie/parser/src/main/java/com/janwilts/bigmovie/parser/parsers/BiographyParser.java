@@ -1,14 +1,8 @@
 package com.janwilts.bigmovie.parser.parsers;
 
-import javafx.util.Pair;
-
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
 
 public class BiographyParser extends Parser{
     public BiographyParser(File file) {
@@ -27,7 +21,7 @@ public class BiographyParser extends Parser{
             boolean foundList = false;
             boolean first = true;
 
-            for(String line; (line = reader.readLine()) != null; ) {
+            for(String line; (line = this.readLine()) != null; ) {
                 if(!foundList && line.contains("BIOGRAPHY LIST")) {
                     foundList = true;
                 }
