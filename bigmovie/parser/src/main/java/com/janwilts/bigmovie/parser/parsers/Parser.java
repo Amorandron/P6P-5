@@ -1,10 +1,9 @@
 package com.janwilts.bigmovie.parser.parsers;
 
 import com.janwilts.bigmovie.parser.enums.Parsable;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
@@ -14,6 +13,7 @@ public abstract class Parser {
     protected File file;
     protected BufferedReader reader;
     protected File csv;
+    protected int lines = 0;
 
     public static String[] parseFile(File file) {
         int currentFile = 0;
@@ -68,34 +68,36 @@ public abstract class Parser {
                 .equals(Parsable.getList().get(index));
     }
 
-    public Parser(File file)  {
+    public Parser(File file) {
         this.file = file;
-        this.csv = new File(file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
+        this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
+        csv.getParentFile().mkdirs();
 
-        String extension = file.getName().substring(file.getName().lastIndexOf('.')  + 1);
+        try {
+            this.reader = getReader();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        if(extension.equals("gz")) {
-            try {
-                this.reader = new BufferedReader(
-                        new InputStreamReader(
-                                new GZIPInputStream(
-                                        new FileInputStream(file)
-                                ), "ISO-8859-1"
-                        )
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        this.parse();
+    }
+
+    private BufferedReader getReader() throws IOException {
+        String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
+
+        switch (extension) {
+            case "gz":
+                return new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file)), StandardCharsets.ISO_8859_1));
+            case "zip":
+                return new BufferedReader(new InputStreamReader(new ZipInputStream(new FileInputStream(file)), StandardCharsets.ISO_8859_1));
+            default:
+                return new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.ISO_8859_1));
         }
-        else  {
-            try {
-                this.reader = new BufferedReader(
-                    new FileReader(file)
-                );
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    }
+
+    protected String readLine() throws IOException {
+        lines++;
+        return this.reader.readLine();
     }
 
     public abstract void parse();
