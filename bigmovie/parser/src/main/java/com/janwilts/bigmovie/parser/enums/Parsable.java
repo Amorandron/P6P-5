@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jan
+ */
 public enum Parsable {
     MOVIES("movies"),
     ACTORS("actors"),

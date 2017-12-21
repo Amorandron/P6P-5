@@ -5,6 +5,9 @@ import com.janwilts.bigmovie.parser.util.RomanNumeral;
 import java.io.File;
 import java.io.PrintWriter;
 
+/**
+ * @author Jan
+ */
 public class MovieParser extends Parser {
 
     public MovieParser(File file) {

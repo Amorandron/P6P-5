@@ -7,6 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
+/**
+ * @author Yannick & Jan
+ */
 public abstract class Parser {
     private static Parser currentParser;
 
