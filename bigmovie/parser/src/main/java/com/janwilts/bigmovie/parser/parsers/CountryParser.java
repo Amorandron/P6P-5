@@ -19,12 +19,11 @@ public class CountryParser extends Parser {
             Pattern p = Pattern.compile(pattern);
 
             // Initialize variables
-            String line = "";
-            String movieName = "";
-            String year = "";
-            String iteration = "";
-            String type = "";
-            String country = "";
+            String line;
+            String movieName;
+            String year;
+            String iteration;
+            String country;
             Boolean foundList = false;
 
             // Amount of lines till first data entry
@@ -69,11 +68,10 @@ public class CountryParser extends Parser {
                             iteration = Integer.toString(RomanNumeral.convert(m.group(4)));
                         }
 
-                        type = m.group(5).replace("(", "").replace(")", "").trim();
                         country = m.group(6);
 
                         // Write all variables to a line in countries.csv
-                        writer.println("\"" + movieName + "\"" + "," + year + "," + "\"" + iteration + "\"" + "," + "\"" + type + "\"" + "," + "\"" + country + "\"");
+                        writer.println("\"" + movieName + "\"" + "," + year + "," + "\"" + iteration + "\"" + "," + "\"" + country + "\"");
                         writer.flush();
                     }
                 }
