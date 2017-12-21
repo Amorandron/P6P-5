@@ -4,7 +4,6 @@ import com.janwilts.bigmovie.parser.enums.Parsable;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipInputStream;
 
 public abstract class Parser {
     private static Parser currentParser;

@@ -17,31 +17,45 @@ public class BusinessParser extends Parser
     {
         try
         {
-            String movie = "";
-            String budgetUSD = "";
+            String MV = ""; //movie
+            String BT = ""; //budget in USD
             
-            String line;
+            String line = "";
             while ((line = reader.readLine()) != null)
             {
-                if (line.startsWith("MV: "))
+                if (line.trim().isEmpty()) continue;
+                if (line.startsWith("MV: ") && !(line.charAt(4) == '"'))
                 {
-                    movie = line.substring(4, line.length());
-                    System.out.println("Movie: " + movie);
+                    MV = line.substring(4, line.length());
+                    System.out.println("Movie: " + MV);
                 }
-                
-                if (line.startsWith("BT: "))
+                else if (!MV.equals(""))
                 {
-                    String[] values = line.split(" ");
-                    String currency = values[1];
-                    double amount = Double.parseDouble(values[2].replaceAll(",", ""));
-                    
-                    if (currency.equals("USD")) budgetUSD = amount + "";
-                    else budgetUSD = CurrencyConverter.convert(amount, currency, "USD") + "";
-                    
-                    System.out.println("Budget: $" + budgetUSD);
+                    if (line.startsWith("BT: "))
+                    {
+                        String[] values = line.split(" ");
+                        String currency = values[1];
+                        double amount = Double.parseDouble(values[2].replaceAll(",", ""));
+                        
+                        if (currency.equals("USD")) BT = String.format("%.2f", amount);
+                        else BT = String.format("%.2f", CurrencyConverter.convert(amount, currency, "USD"));
+                        
+                        System.out.println("Budget: $" + BT);
+                    }
                 }
-                
+                if (line.equals("-------------------------------------------------------------------------------"))
+                {
+                    if (!MV.isEmpty())
+                    {
+                        //TODO use the values before resetting
+                        
+                        MV = "";
+                        BT = "";
+                    }
+                }
+                if (line.equals("                                    =====")) break;
             }
+            CurrencyConverter.convert(1, "EUR", "USD");
         }
         catch (IOException e)
         {
