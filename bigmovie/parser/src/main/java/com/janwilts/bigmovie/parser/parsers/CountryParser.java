@@ -45,8 +45,6 @@ public class CountryParser extends Parser {
 
                     if (m.matches()) {
                         //go to next line if movie suspended
-                        String gruppe = m.group(5);
-                        System.out.println(gruppe);
                         if (m.group(5).toUpperCase().contains("SUSPENDED")) {
                             continue;
                         }
