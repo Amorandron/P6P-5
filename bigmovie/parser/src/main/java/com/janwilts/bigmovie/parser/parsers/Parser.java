@@ -1,7 +1,6 @@
 package com.janwilts.bigmovie.parser.parsers;
 
 import com.janwilts.bigmovie.parser.enums.Parsable;
-import com.janwilts.bigmovie.parser.util.CommandUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -14,28 +13,55 @@ public abstract class Parser {
     protected File file;
     protected BufferedReader reader;
     protected File csv;
-    protected int lines = 0;
+    protected static int lines = 0;
 
-    public static void parseFile(File file) {
-        if (checkFileName(file, 0))
+    public static String[] parseFile(File file) {
+        int currentFile = 0;
+
+        if(checkFileName(file, 0)) {
             currentParser = new MovieParser(file);
-        else if (checkFileName(file, 1) || checkFileName(file, 2))
+            currentFile = 1;
+        }
+        else if(checkFileName(file, 1)) {
             currentParser = new ActorParser(file);
-        else if (checkFileName(file, 3))
+            currentFile = 2;
+        }
+        else if(checkFileName(file, 2)) {
+            currentParser = new ActorParser(file);
+            currentFile = 3;
+        }
+        else if(checkFileName(file, 3)) {
             currentParser = new BiographyParser(file);
-        else if (checkFileName(file, 4))
-            // currentParser = new BusinessParser(file);
-            return;
-        else if (checkFileName(file, 5))
+            currentFile = 4;
+        }
+        else if(checkFileName(file, 4)) {
+            currentParser = new BusinessParser(file);
+            currentFile = 5;
+        }
+        else if(checkFileName(file, 5)) {
             currentParser = new RatingParser(file);
-        else if (checkFileName(file, 6))
+            currentFile = 6;
+        }
+        else if(checkFileName(file, 6)) {
             currentParser = new SoundtrackParser(file);
-        else if (checkFileName(file, 7))
+            currentFile = 7;
+        }
+        else if(checkFileName(file, 7)) {
             currentParser = new CountryParser(file);
-        else if (checkFileName(file, 8))
+            currentFile = 8;
+        }
+        else if(checkFileName(file, 8)) {
             currentParser = new GenreParser(file);
-        else if (checkFileName(file, 9))
+            currentFile = 9;
+        }
+        else if(checkFileName(file, 9)) {
             currentParser = new MpaaParser(file);
+            currentFile = 10;
+        }
+
+        currentParser.parse();
+        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(currentFile), "10",
+        Integer.toString(lines)};
     }
 
     private static Boolean checkFileName(File file, int index) {
@@ -54,11 +80,7 @@ public abstract class Parser {
             e.printStackTrace();
         }
 
-        CommandUtils.announceStart(file.getName());
-        long start = System.currentTimeMillis();
         this.parse();
-        long finish = System.currentTimeMillis();
-        CommandUtils.announceDone(file.getName(), lines, finish - start);
     }
 
     private BufferedReader getReader() throws IOException {

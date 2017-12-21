@@ -1,7 +1,11 @@
 package com.janwilts.bigmovie.parser.parsers;
 
+import com.janwilts.bigmovie.parser.util.RomanNumeral;
+
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CountryParser extends Parser {
     public CountryParser(File file) {
@@ -10,91 +14,69 @@ public class CountryParser extends Parser {
 
     @Override
     public void parse() {
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
-        {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
+            String pattern = "(.*?)\\s\\((.{4})(|\\/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
+            Pattern p = Pattern.compile(pattern);
 
-            int parsedLines = 0;
+            // Initialize variables
+            String line;
+            String movieName;
+            String year;
+            String iteration;
+            String country;
+            Boolean foundList = false;
 
-            //Amount of lines between COUNTRIES LIST and first data entry
+            // Amount of lines till first data entry
             int linesBeforeList = 1;
 
-            //Indicator whether MOVIES LIST is found
-            boolean foundList = false;
-
-            //Go over each line in the file
-            for (String line; (line = this.readLine()) != null; ) {
-
-                //Beginning of the data list
-                if (!foundList && line.contains("COUNTRIES LIST")) {
+            while (((line = this.readLine()) != null)) {
+                if (!foundList && line.equals("COUNTRIES LIST")) {
                     foundList = true;
-                }
-
-                //Skipping empty lines between caption of list
-                else if (foundList && linesBeforeList != 0) {
+                } else if (foundList && linesBeforeList != 0) {
                     linesBeforeList--;
-                }
-
-                //Last line, exits parser
-                else if (foundList && line.equals("--------------------------------------------------------------------------------")) {
-                    System.out.println("Amount of lines parsed: " + parsedLines);
+                } else if (foundList && line.equals("-----------------------------------------------------------------------------")) {
                     return;
                 } else if (linesBeforeList == 0 && line.length() > 0) {
 
-                    //If line starts with tab, skip
-                    if (line.charAt(0) != '\t') {
-                        parsedLines++;
+                    // Go the next line, if line contains a series
+                    if (line.startsWith("\"")) {
+                        continue;
+                    }
 
-                        String currentMovieName = "";
-                        String currentYear = "";
-                        String type = "";
-                        String country = "";
+                    Matcher m = p.matcher(line);
 
-                        //skip series
-//                        System.out.println(line);
-                        if (line.startsWith("\"")) {
+                    if (m.matches()) {
+
+                        // Skip line when group contains SUSPENDED
+                        if (m.group(5).toUpperCase().contains("SUSPENDED")) {
                             continue;
                         }
 
-                        //Get movie
-                        currentMovieName = line.substring(0, line.indexOf("(")).trim();
+                        movieName = m.group(1);
 
-                        int length = currentMovieName.length();
-
-                        //Go to the next part of the current line
-                        line = line.substring(length);
-
-                        int index = line.indexOf("(");
-
-                        //Get year
-                        currentYear = line.substring(index + 1, index + 5).trim().replace("????", "");
-
-                        length = currentYear.length() + 3;
-                        line = line.substring(length);
-
-                        if (line.contains("(V)")) {
-                            index = line.indexOf("V)");
-                            type = line.substring(index, index + 1).trim();
-                            length = type.length() + 3;
-                            line = line.substring(length);
-                        }
-                        else if (line.contains("(TV)")) {
-                            index = line.indexOf("TV)");
-                            type = line.substring(index, index + 2).trim();
-                            length = type.length() + 3;
-                            line = line.substring(length);
+                        // Set year variable, if year is unknown return ""
+                        if (m.group(2).contains("?")) {
+                            year = "";
+                        } else {
+                            year = m.group(2);
                         }
 
-                        country = line.substring(line.indexOf(')') + 1).replace("\t", "").trim();
+                        // Convert Roman number to integer
+                        if (m.group(4) == null) {
+                            iteration = "0";
+                        } else {
+                            iteration = Integer.toString(RomanNumeral.convert(m.group(4)));
+                        }
 
-                        writer.println("\"" + currentMovieName + "\"" + "," + currentYear + "," + "\"" + type + "\"" + "," + "\"" + country + "\"");
+                        country = m.group(6);
+
+                        // Write all variables to a line in countries.csv
+                        writer.println("\"" + movieName + "\"" + "," + year + "," + "\"" + iteration + "\"" + "," + "\"" + country + "\"");
+                        writer.flush();
                     }
                 }
             }
-            writer.flush();
-        } catch (
-                Exception e)
-
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
