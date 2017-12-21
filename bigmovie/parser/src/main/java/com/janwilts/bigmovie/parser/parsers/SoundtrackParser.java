@@ -1,6 +1,9 @@
 package com.janwilts.bigmovie.parser.parsers;
 
-import java.io.File;
+import com.janwilts.bigmovie.parser.util.RomanNumeral;
+
+import java.io.*;
+import java.util.regex.*;
 
 public class SoundtrackParser extends Parser{
     public SoundtrackParser(File file) {
@@ -9,6 +12,94 @@ public class SoundtrackParser extends Parser{
 
     @Override
     public void parse() {
+        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8")){
+            String titleMoviePattern = "#\\s(.*?)\\s\\((.{4})(|\\/(.*?))\\)";
+            Pattern mp = Pattern.compile(titleMoviePattern);
 
+            /*
+            regex movietitleline: #\s(.*?)\s\((.{4})(|\/(.*?))\)
+            # --> matches the character # literally --> first character of line with movie title
+            \s --> matches any whitespace character --> space before title
+            (.*?) -->first group; matches any character --> movie title
+            \s --> matches any whitespace character --> space after title
+            \( --> matches the '(' character; first character before the year of the movie
+            (.{4}) --> second group; matches any character exactly 4 times; --> year
+            (|\/(.*?)) --> matches null or '/' character and (fourth group) matches any character --> romanNumber
+            \) --> matches the ')' character; first character after the year of the movie
+
+            \1 --> movie title
+            \2 --> year of movie
+            \4 --> romans number (only movies with same title as year, but different movies are)
+             */
+
+            String titleSongPattern = "\\-\\s\\\"(.*?)\\\"";
+            Pattern sp = Pattern.compile(titleSongPattern);
+
+            /*
+            regex sontitleline: \-\s\"(.*?)\"
+            \- --> matches the character - literally --> first character of the line with song title
+            \s --> matches any whitespace character --> space before song title
+            \" --> matches the character " literally --> character before song title
+            (.*?) --> matches any character --> song title
+            \" --> matches the character " literally --> character after song title
+
+            \1 --> song title
+             */
+
+            Boolean foundList = false;
+            String line;
+            String currentMovieTitle = "";
+            String currentMovieYear = "";
+            String currentRomanNumber = "";
+            String currentSong = "";
+
+            while(((line = reader.readLine()) != null)) {
+                if (!foundList && line.equals("SOUNDTRACKS")) {
+                    foundList = true;
+                }
+                if (foundList) {
+
+                    Matcher mm = mp.matcher(line);
+
+                    if(mm.matches()){
+                        //go to next line if it's a serie
+                        if (mm.group(1).startsWith("\"")) {
+                            continue;
+                        }
+
+                        currentMovieTitle = mm.group(1);
+                        if (mm.group(2).contains("?")) {
+                            currentMovieYear = "";
+                        } else {
+                            currentMovieYear = mm.group(2);
+                        }
+
+                        if (mm.group(4) == null) {
+                            currentRomanNumber = "0";
+                        } else {
+                            currentRomanNumber = Integer.toString(RomanNumeral.convert(mm.group(4)));
+                        }
+
+                        //got to next line
+                        line = reader.readLine().trim();
+                        //while line is not empty check for song matches
+                        do{
+                            Matcher sm = sp.matcher(line);
+
+                            if(sm.matches()){
+                                currentSong = sm.group(1);
+                                writer.println("\"" + currentMovieTitle + "\"," + currentMovieYear + "," + currentRomanNumber + ",\"" + currentSong + "\"");
+                            }
+
+                            line = reader.readLine().trim();
+                        }while(!line.isEmpty());
+                    }
+                }
+            }
+
+            writer.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
