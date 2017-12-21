@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Sven Mark
+ */
 public class CountryParser extends Parser {
     public CountryParser(File file) {
         super(file);

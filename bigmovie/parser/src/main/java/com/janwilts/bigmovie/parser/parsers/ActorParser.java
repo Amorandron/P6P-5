@@ -4,6 +4,9 @@ import com.janwilts.bigmovie.parser.util.RomanNumeral;
 
 import java.io.*;
 
+/**
+ * @author Yannick
+ */
 public class ActorParser extends Parser {
     public ActorParser(File file) {
         super(file);

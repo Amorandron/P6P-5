@@ -1,5 +1,8 @@
 package com.janwilts.bigmovie.parser.util;
 
+/**
+ * @author Everdien
+ */
 public class RomanNumeral {
     private static int convertRec(String s) {
         if (s.isEmpty()) return 0;

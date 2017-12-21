@@ -7,6 +7,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
+/**
+ * @author Yannick & Jan
+ */
 public abstract class Parser {
     private static Parser currentParser;
 
@@ -79,8 +82,6 @@ public abstract class Parser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        this.parse();
     }
 
     private BufferedReader getReader() throws IOException {
