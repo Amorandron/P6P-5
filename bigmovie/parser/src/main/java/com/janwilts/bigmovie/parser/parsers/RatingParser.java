@@ -49,7 +49,7 @@ public class RatingParser extends Parser{
                         yearString = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].length() - 1);
 
                     if(yearString.contains("/")) {
-                        occurance = RomanNumeral.convert(values[2].substring(values[2].lastIndexOf('/') + 1, values[2].lastIndexOf(')'))) - 1;
+                        occurance = RomanNumeral.convert(values[2].substring(values[2].lastIndexOf('/') + 1, values[2].lastIndexOf(')')));
                     }
                     else {
                         if(!yearString.equals("????"))

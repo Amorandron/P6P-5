@@ -20,22 +20,29 @@ public abstract class Parser {
         if (checkFileName(file, 0))
             currentParser = new MovieParser(file);
         else if (checkFileName(file, 1) || checkFileName(file, 2))
-            currentParser = new ActorParser(file);
+            //currentParser = new ActorParser(file);
+            return;
         else if (checkFileName(file, 3))
-            currentParser = new BiographyParser(file);
+            //currentParser = new BiographyParser(file);
+            return;
         else if (checkFileName(file, 4))
             // currentParser = new BusinessParser(file);
             return;
         else if (checkFileName(file, 5))
-            currentParser = new RatingParser(file);
+            //currentParser = new RatingParser(file);
+            return;
         else if (checkFileName(file, 6))
-            currentParser = new SoundtrackParser(file);
+            //currentParser = new SoundtrackParser(file);
+            return;
         else if (checkFileName(file, 7))
-            currentParser = new CountryParser(file);
+            //currentParser = new CountryParser(file);
+            return;
         else if (checkFileName(file, 8))
-            currentParser = new GenreParser(file);
+            //currentParser = new GenreParser(file);
+            return;
         else if (checkFileName(file, 9))
-            currentParser = new MpaaParser(file);
+            //currentParser = new MpaaParser(file);
+            return;
     }
 
     private static Boolean checkFileName(File file, int index) {
