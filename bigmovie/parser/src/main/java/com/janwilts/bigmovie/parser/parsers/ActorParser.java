@@ -78,6 +78,8 @@ public class ActorParser extends Parser {
                                 occurance = RomanNumeral.convert(currentYear.substring(currentYear.indexOf("/") + 1, currentYear.length()));
                                 currentYear = currentYear.substring(0,currentYear.indexOf("/"));
                             }
+                            if(currentYear.equals("????"))
+                                currentYear = "";
                             break;
                         } else {
                             searchLine = searchLine.substring(searchLine.indexOf("(") + 1);
