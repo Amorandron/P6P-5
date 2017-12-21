@@ -23,8 +23,8 @@ public abstract class Parser {
             currentParser = new ActorParser(file);
         else if (checkFileName(file, 3))
             currentParser = new BiographyParser(file);
-//        else if (checkFileName(file, 4))
-//             currentParser = new BusinessParser(file);
+        else if (checkFileName(file, 4))
+             currentParser = new BusinessParser(file);
         else if (checkFileName(file, 5))
             currentParser = new RatingParser(file);
         else if (checkFileName(file, 6))
