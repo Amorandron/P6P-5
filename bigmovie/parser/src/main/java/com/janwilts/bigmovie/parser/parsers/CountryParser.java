@@ -36,7 +36,6 @@ public class CountryParser extends Parser {
 
                 //Last line, exits parser
                 else if (foundList && line.equals("--------------------------------------------------------------------------------")) {
-                    System.out.println("Amount of lines parsed: " + parsedLines);
                     return;
                 } else if (linesBeforeList == 0 && line.length() > 0) {
 
@@ -90,7 +89,6 @@ public class CountryParser extends Parser {
                     }
                 }
             }
-            writer.flush();
         } catch (
                 Exception e)
 

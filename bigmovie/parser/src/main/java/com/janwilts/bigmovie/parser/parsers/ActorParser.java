@@ -1,5 +1,7 @@
 package com.janwilts.bigmovie.parser.parsers;
 
+import javafx.beans.Observable;
+
 import java.io.*;
 import java.util.regex.Matcher;
 

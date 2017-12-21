@@ -13,6 +13,8 @@ repositories {
 dependencies {
     compile 'com.github.shyiko.dotenv:dotenv:0.1.1'
     compile 'com.google.code.gson:gson:2.8.2'
+    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.7'
+
 }
 
 run {
