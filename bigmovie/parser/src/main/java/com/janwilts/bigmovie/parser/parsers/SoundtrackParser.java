@@ -8,14 +8,14 @@ import java.util.regex.*;
 /**
  * @author Everdien
  */
-public class SoundtrackParser extends Parser{
+public class SoundtrackParser extends Parser {
     public SoundtrackParser(File file) {
         super(file);
     }
 
     @Override
     public void parse() {
-        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8")){
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String titleMoviePattern = "#\\s(.*?)\\s\\((.{4})(|\\/(.*?))\\)";
             Pattern mp = Pattern.compile(titleMoviePattern);
 
@@ -56,7 +56,7 @@ public class SoundtrackParser extends Parser{
             String currentRomanNumber = "";
             String currentSong = "";
 
-            while(((line = this.readLine()) != null)) {
+            while (((line = this.readLine()) != null)) {
                 if (!foundList && line.equals("SOUNDTRACKS")) {
                     foundList = true;
                 }
@@ -64,7 +64,7 @@ public class SoundtrackParser extends Parser{
 
                     Matcher mm = mp.matcher(line);
 
-                    if(mm.matches()){
+                    if (mm.matches()) {
                         //go to next line if it's a serie
                         if (mm.group(1).startsWith("\"")) {
                             continue;
@@ -86,22 +86,22 @@ public class SoundtrackParser extends Parser{
                         //got to next line
                         line = reader.readLine().trim();
                         //while line is not empty check for song matches
-                        do{
+                        do {
                             Matcher sm = sp.matcher(line);
 
-                            if(sm.matches()){
+                            if (sm.matches()) {
                                 currentSong = sm.group(1);
                                 writer.println("\"" + currentMovieTitle + "\"," + currentMovieYear + "," + currentRomanNumber + ",\"" + currentSong + "\"");
                             }
 
                             line = reader.readLine().trim();
-                        }while(!line.isEmpty());
+                        } while (!line.isEmpty());
                     }
                 }
             }
 
             writer.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
