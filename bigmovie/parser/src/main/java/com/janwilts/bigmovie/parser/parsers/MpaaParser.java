@@ -16,7 +16,7 @@ public class MpaaParser extends Parser{
     @Override
     public void parse() {
         boolean foundList = false;
-        boolean prevrating = false;
+        boolean prevRating = false;
 
         try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
 
@@ -29,10 +29,10 @@ public class MpaaParser extends Parser{
 
                     String title;
                     String year;
-                    int occurance = 0;
+                    int occurrence = 0;
 
                     if(line.charAt(0) == 'M') {
-                        if(prevrating)
+                        if(prevRating)
                             writer.print("\"\n");
                         line = line.substring(4);
 
@@ -46,16 +46,16 @@ public class MpaaParser extends Parser{
                         }
 
                         if(year.contains("/")) {
-                            occurance = RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length()));
+                            occurrence = RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length()));
                             year = year.substring(0,year.indexOf("/"));
                         }
 
                         writer.print("\"" + title.replace("\"", "\"\"") + "\"" + "," + year + ","
-                        + occurance + ",");
+                        + occurrence + ",");
 
                     }
                     else if(line.charAt(0) == 'R') {
-                        prevrating = true;
+                        prevRating = true;
                         String rating;
                         String reason;
 

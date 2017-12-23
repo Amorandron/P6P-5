@@ -1,8 +1,6 @@
 package com.janwilts.bigmovie.parser.commands;
 
 import com.janwilts.bigmovie.parser.enums.Parsable;
-import com.janwilts.bigmovie.parser.parsers.Parser;
-
 import com.janwilts.bigmovie.parser.tasks.FileParseTask;
 
 import java.io.File;
@@ -33,6 +31,9 @@ public class FullCommand implements Command
 
         final List<File> filesFiltered = files.stream()
                 .filter(f -> Parsable.getList()
+                        .stream()
+                        .map(Parsable::toString)
+                        .collect(Collectors.toList())
                         .contains(f.getName().substring(0, f.getName().indexOf('.'))))
                         .collect(Collectors.toList());
 

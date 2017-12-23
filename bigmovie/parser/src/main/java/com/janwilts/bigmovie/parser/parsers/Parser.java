@@ -3,7 +3,9 @@ package com.janwilts.bigmovie.parser.parsers;
 import com.janwilts.bigmovie.parser.enums.Parsable;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
@@ -14,67 +16,35 @@ public abstract class Parser {
     private static Parser currentParser;
 
     protected File file;
-    protected BufferedReader reader;
-    protected File csv;
-    protected static int lines = 0;
+    BufferedReader reader;
+    File csv;
+    private static int lines = 0;
 
     public static String[] parseFile(File file) {
-        int currentFile = 0;
+        int index = Parsable.getList()
+                .stream()
+                .map(Parsable::toString)
+                .collect(Collectors.toList())
+                .indexOf(file.getName().substring(0, file.getName().indexOf('.')));
 
-        if(checkFileName(file, 0)) {
-            currentParser = new MovieParser(file);
-            currentFile = 1;
-        }
-        else if(checkFileName(file, 1)) {
-            currentParser = new ActorParser(file);
-            currentFile = 2;
-        }
-        else if(checkFileName(file, 2)) {
-            currentParser = new ActorParser(file);
-            currentFile = 3;
-        }
-        else if(checkFileName(file, 3)) {
-            currentParser = new BiographyParser(file);
-            currentFile = 4;
-        }
-        else if(checkFileName(file, 4)) {
-            currentParser = new BusinessParser(file);
-            currentFile = 5;
-        }
-        else if(checkFileName(file, 5)) {
-            currentParser = new RatingParser(file);
-            currentFile = 6;
-        }
-        else if(checkFileName(file, 6)) {
-            currentParser = new SoundtrackParser(file);
-            currentFile = 7;
-        }
-        else if(checkFileName(file, 7)) {
-            currentParser = new CountryParser(file);
-            currentFile = 8;
-        }
-        else if(checkFileName(file, 8)) {
-            currentParser = new GenreParser(file);
-            currentFile = 9;
-        }
-        else if(checkFileName(file, 9)) {
-            currentParser = new MpaaParser(file);
-            currentFile = 10;
+        Parsable parser = Parsable.getList().get(index);
+
+
+        try {
+            Constructor constructor = parser.getC().getConstructor(File.class);
+            currentParser = (Parser) constructor.newInstance(file);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         currentParser.parse();
-        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(currentFile), "10",
+        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(Parsable.getList().indexOf(parser)), "10",
         Integer.toString(lines)};
-    }
-
-    private static Boolean checkFileName(File file, int index) {
-        return file.getName().substring(0, file.getName().indexOf('.'))
-                .equals(Parsable.getList().get(index));
     }
 
     public Parser(File file) {
         this.file = file;
-        this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
+        this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.') + 1) + ".csv");
         csv.getParentFile().mkdirs();
 
         try {

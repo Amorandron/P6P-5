@@ -4,6 +4,9 @@ import com.janwilts.bigmovie.parser.parsers.Parser;
 
 import java.io.File;
 
+/**
+ * @author Yannick
+ */
 public class FileParseTask implements Runnable {
 
     private File f;
