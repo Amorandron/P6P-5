@@ -150,6 +150,8 @@ public class CurrencyConverter
         RATES_TO_USD.put("AWG", 0.55866078);
         RATES_TO_USD.put("RWF", 0.00116852);
         RATES_TO_USD.put("ETB", 0.03661825);
+        RATES_TO_USD.put("VAL", 0.000612471);
+        RATES_TO_USD.put("MGF", 0.0000617696);
     }
     
     public static double convert(double in, String from, String to)
