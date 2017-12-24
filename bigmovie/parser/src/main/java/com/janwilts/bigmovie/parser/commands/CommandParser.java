@@ -4,6 +4,9 @@ import com.janwilts.bigmovie.parser.util.CommandUtils;
 
 import java.io.File;
 
+/**
+ * @author Jan
+ */
 public class CommandParser {
     public static void parse(String[] args) {
         Command command = null;

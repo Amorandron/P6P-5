@@ -7,6 +7,9 @@ import java.io.PrintWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Sven Mark
+ */
 public class CountryParser extends Parser {
     public CountryParser(File file) {
         super(file);
@@ -71,7 +74,7 @@ public class CountryParser extends Parser {
                         country = m.group(6);
 
                         // Write all variables to a line in countries.csv
-                        writer.println("\"" + movieName + "\"" + "," + year + "," + "\"" + iteration + "\"" + "," + "\"" + country + "\"");
+                        writer.println("\"" + movieName + "\"" + "," + year + "," + iteration + "," + "\"" + country + "\"");
                         writer.flush();
                     }
                 }

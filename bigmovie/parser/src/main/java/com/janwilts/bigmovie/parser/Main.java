@@ -5,6 +5,9 @@ import com.janwilts.bigmovie.parser.commands.CommandParser;
 
 import java.util.Map;
 
+/**
+ * @author Jan
+ */
 public class Main {
     public static final Map<String, String> dotEnv = DotEnv.load();
 

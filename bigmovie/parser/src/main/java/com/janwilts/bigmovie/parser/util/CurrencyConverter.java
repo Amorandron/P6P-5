@@ -7,6 +7,9 @@ import com.janwilts.bigmovie.parser.Main;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Lars & Jan
+ */
 public class CurrencyConverter
 {
     private static final Map<String, Double> RATES_TO_USD = new HashMap<>();

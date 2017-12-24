@@ -5,6 +5,9 @@ import com.janwilts.bigmovie.parser.util.RomanNumeral;
 import java.io.File;
 import java.io.PrintWriter;
 
+/**
+ * @author Jan
+ */
 public class MovieParser extends Parser {
 
     public MovieParser(File file) {
@@ -33,7 +36,7 @@ public class MovieParser extends Parser {
 
                     String title;
                     String year;
-                    int occurance = 0;
+                    int occurrence = 0;
 
                     year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                     title = line.substring(0, line.lastIndexOf('(')  - 1);
@@ -45,7 +48,7 @@ public class MovieParser extends Parser {
                     }
 
                     if(year.contains("/")) {
-                        occurance = RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length()));
+                        occurrence = RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length()));
                         year = year.substring(0,year.indexOf("/"));
                     }
 
@@ -53,7 +56,7 @@ public class MovieParser extends Parser {
                         year = "";
 
                     writer.println("\"" + title.replace("\"", "\"\"") + "\"" + "," +
-                            year + "," + occurance);
+                            year + "," + occurrence);
                 }
             }
             writer.flush();

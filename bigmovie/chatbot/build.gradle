@@ -1,0 +1,12 @@
+group 'com.janwilts.bigmovie'
+
+apply plugin: 'application'
+apply plugin: 'java'
+
+mainClassName = 'com.janwilts.bigmovie.chatbot.Main'
+sourceCompatibility = 1.9
+
+repositories {
+    mavenCentral()
+}
+

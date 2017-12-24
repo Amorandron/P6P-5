@@ -8,6 +8,10 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * @author Lars
+ */
 public class BusinessParser extends Parser
 {
     private static final Map<String, String> MONTH_TO_NUMBER = new HashMap<>();
@@ -28,8 +32,7 @@ public class BusinessParser extends Parser
         MONTH_TO_NUMBER.put("December", "12");
     }
     
-    public BusinessParser(File file)
-    {
+    public BusinessParser(File file) {
         super(file);
     }
     

@@ -3,10 +3,13 @@ group 'com.janwilts.bigmovie'
 apply plugin: 'application'
 apply plugin: 'java'
 
-mainClassName = 'com.janwilts.bigmovie.app.Main'
+mainClassName = 'com.janwilts.bigmovie.gui.Main'
 sourceCompatibility = 1.9
 
 repositories {
     mavenCentral()
 }
 
+dependencies {
+    compile group: 'com.jfoenix', name: 'jfoenix', version: '9.0.0'
+}

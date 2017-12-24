@@ -5,6 +5,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * @author Jan
+ */
 public class APIRequester {
     public static String request(String link) {
         StringBuilder result = new StringBuilder();

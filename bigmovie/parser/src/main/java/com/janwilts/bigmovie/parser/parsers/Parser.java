@@ -1,51 +1,50 @@
 package com.janwilts.bigmovie.parser.parsers;
 
 import com.janwilts.bigmovie.parser.enums.Parsable;
-import com.janwilts.bigmovie.parser.util.CommandUtils;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipInputStream;
 
+/**
+ * @author Yannick & Jan
+ */
 public abstract class Parser {
     private static Parser currentParser;
 
     protected File file;
-    protected BufferedReader reader;
-    protected File csv;
-    protected int lines = 0;
+    BufferedReader reader;
+    File csv;
+    private static int lines = 0;
 
-    public static void parseFile(File file) {
-        if (checkFileName(file, 0))
-//            currentParser = new MovieParser(file);
-            return;
-//        else if (checkFileName(file, 1) || checkFileName(file, 2))
-//            currentParser = new ActorParser(file);
-//        else if (checkFileName(file, 3))
-//            currentParser = new BiographyParser(file);
-        else if (checkFileName(file, 4))
-             currentParser = new BusinessParser(file);
-//        else if (checkFileName(file, 5))
-//            currentParser = new RatingParser(file);
-//        else if (checkFileName(file, 6))
-//            currentParser = new SoundtrackParser(file);
-//        else if (checkFileName(file, 7))
-//            currentParser = new CountryParser(file);
-//        else if (checkFileName(file, 8))
-//            currentParser = new GenreParser(file);
-//        else if (checkFileName(file, 9))
-//            currentParser = new MpaaParser(file);
-    }
+    public static String[] parseFile(File file) {
+        int index = Parsable.getList()
+                .stream()
+                .map(Parsable::toString)
+                .collect(Collectors.toList())
+                .indexOf(file.getName().substring(0, file.getName().indexOf('.')));
 
-    private static Boolean checkFileName(File file, int index) {
-        return file.getName().substring(0, file.getName().indexOf('.'))
-                .equals(Parsable.getList().get(index));
+        Parsable parser = Parsable.getList().get(index);
+
+
+        try {
+            Constructor constructor = parser.getC().getConstructor(File.class);
+            currentParser = (Parser) constructor.newInstance(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        currentParser.parse();
+        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(Parsable.getList().indexOf(parser)), "10",
+        Integer.toString(lines)};
     }
 
     public Parser(File file) {
         this.file = file;
-        this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
+        this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.') + 1) + ".csv");
         csv.getParentFile().mkdirs();
 
         try {
@@ -53,12 +52,6 @@ public abstract class Parser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        CommandUtils.announceStart(file.getName());
-        long start = System.currentTimeMillis();
-        this.parse();
-        long finish = System.currentTimeMillis();
-        CommandUtils.announceDone(file.getName(), lines, finish - start);
     }
 
     private BufferedReader getReader() throws IOException {
