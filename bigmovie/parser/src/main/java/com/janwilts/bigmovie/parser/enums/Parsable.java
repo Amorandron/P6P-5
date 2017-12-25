@@ -12,7 +12,7 @@ public enum Parsable {
     ACTORS("actors", "ActorParser"),
     ACTRESSES("actresses", "ActorParser"),
     BIOGRAPHIES("biographies", "BiographyParser"),
-    BUSINESS("business", "BusinessParser"),
+    //BUSINESS("business", "BusinessParser"),
     RATINGS("ratings", "RatingParser"),
     SOUNDTRACKS("soundtracks", "SoundtrackParser"),
     COUNTRIES("countries", "CountryParser"),

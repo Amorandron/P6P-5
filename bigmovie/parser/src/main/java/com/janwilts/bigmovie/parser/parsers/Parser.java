@@ -38,13 +38,13 @@ public abstract class Parser {
         }
 
         currentParser.parse();
-        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(Parsable.getList().indexOf(parser)), "10",
+        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(Parsable.getList().indexOf(parser) + 1), "10",
         Integer.toString(lines)};
     }
 
     public Parser(File file) {
         this.file = file;
-        this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.') + 1) + ".csv");
+        this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
         csv.getParentFile().mkdirs();
 
         try {
