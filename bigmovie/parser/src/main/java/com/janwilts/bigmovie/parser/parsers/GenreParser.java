@@ -50,7 +50,7 @@ public class GenreParser extends Parser {
                 }
                 if (foundList) {
 
-                    //go to next line if it's a serie
+                    // Go to next line if it's a show
                     if (line.startsWith("\"")) {
                         continue;
                     }
@@ -58,7 +58,7 @@ public class GenreParser extends Parser {
                     Matcher m = p.matcher(line);
 
                     if (m.matches()) {
-                        //go to next line if movie suspended
+                        // Go to next line if movie suspended
                         if (m.group(5).toLowerCase().contains("suspended")) {
                             continue;
                         }

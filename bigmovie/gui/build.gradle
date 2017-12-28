@@ -10,3 +10,11 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    compile group: 'com.jfoenix', name: 'jfoenix', version: '9.0.0'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4.1'
+}
+
