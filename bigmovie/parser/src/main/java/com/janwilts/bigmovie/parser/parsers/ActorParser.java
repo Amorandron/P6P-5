@@ -16,6 +16,7 @@ public class ActorParser extends Parser {
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String currentActorName = "";
+            int currentActorOccurance = 0;
 
             char gender = this.csv.getName().equals("actors.csv") ? 'M' : 'F';
 
@@ -33,7 +34,12 @@ public class ActorParser extends Parser {
                     if (line.charAt(0) != '\t') {
 
                         currentActorName = line.substring(0, line.indexOf("\t")).trim();
-                        int length = currentActorName.length();
+
+                        String[] result = RomanNumeral.getFromActorName(currentActorName);
+
+                        currentActorName = result[0];
+                        currentActorOccurance = Integer.parseInt(result[1]);
+
                         line = line.substring(line.indexOf("\t"));
                     }
 
@@ -44,7 +50,7 @@ public class ActorParser extends Parser {
                     String currentFilm;
                     String currentRole = "";
                     String currentYear = "";
-                    int occurance = 0;
+                    int yearOccurance = 0;
 
                     if (line.contains("[")) {
                         currentFilm = line.substring(line.indexOf("\t"), line.indexOf("[")).trim();
@@ -78,7 +84,7 @@ public class ActorParser extends Parser {
 
                             currentYear = searchLine.substring(searchLine.indexOf("(") + 1, searchLine.indexOf(")", searchLine.indexOf("(") + 1));
                             if(currentYear.contains("/")) {
-                                occurance = RomanNumeral.convert(currentYear.substring(currentYear.indexOf("/") + 1, currentYear.length()));
+                                yearOccurance = RomanNumeral.convert(currentYear.substring(currentYear.indexOf("/") + 1, currentYear.length()));
                                 currentYear = currentYear.substring(0,currentYear.indexOf("/"));
                             }
                             if(currentYear.equals("????"))
@@ -89,9 +95,9 @@ public class ActorParser extends Parser {
                         }
                     }
 
-                    writer.println("\"" + currentActorName.replace("\"", "\"\"") + "\"" + "," + gender + "," +
+                    writer.println("\"" + currentActorName.replace("\"", "\"\"") + "\"" + "," + currentActorOccurance + "," + gender + "," +
                             "\"" + currentFilm.replace("\"", "\"\"") + "\"" + "," + currentYear
-                            + "," + occurance + "," + "\"" + currentRole.replace("\"", "\"\"") + "\"");
+                            + "," + yearOccurance + "," + "\"" + currentRole.replace("\"", "\"\"") + "\"");
                 }
             }
         } catch (Exception e) {

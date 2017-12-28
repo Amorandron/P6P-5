@@ -27,4 +27,22 @@ public class RomanNumeral {
             return -1;
         return convertRec(s);
     }
+
+    public static String[] getFromActorName(String actorName) {
+        int num = 0;
+
+        if(actorName.contains("(") && actorName.contains(")")) {
+            int rightComIndex = actorName.indexOf(')');
+            int leftComIndex = actorName.indexOf('(');
+
+            if(rightComIndex - leftComIndex > 0 && actorName.substring(leftComIndex + 1, rightComIndex).matches("^[IVXLCDM]*$")) {
+                num = RomanNumeral.convert(actorName.substring(leftComIndex + 1, rightComIndex));
+
+                actorName = actorName.substring(0, leftComIndex);
+            }
+
+        }
+
+        return new String[]{actorName, Integer.toString(num)};
+    }
 }

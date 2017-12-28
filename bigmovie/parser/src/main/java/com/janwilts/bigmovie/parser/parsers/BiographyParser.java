@@ -1,5 +1,7 @@
 package com.janwilts.bigmovie.parser.parsers;
 
+import com.janwilts.bigmovie.parser.util.RomanNumeral;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -17,7 +19,7 @@ public class BiographyParser extends Parser{
         try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
 
             HashMap<String, String> terms = new HashMap<>();
-            String[] staticTerms = new String[] {"NM", "NK", "HT", "BG", "BY", "SP", "TR", "RN", "OW", "QU", "DB",
+            String[] staticTerms = new String[] {"NM", "OC", "NK", "HT", "BG", "BY", "SP", "TR", "RN", "OW", "QU", "DB",
                                                  "DD", "AT", "TM", "IT", "PT", "CV", "BO", "PI", "BT", "SA", "WN"};
 
             int linesBeforeList = 2;
@@ -48,8 +50,16 @@ public class BiographyParser extends Parser{
                             first = false;
                         }
 
+                        String currentName = line.substring(term.length() + 1);
+
+                        String[] result = RomanNumeral.getFromActorName(currentName);
+
+                        currentName = result[0];
+                        String occurance = result[1];
+
                         terms = new HashMap<>();
-                        terms.put("NM", line.substring(term.length() + 1));
+                        terms.put("NM", currentName);
+                        terms.put("OC", occurance);
                         terms.put("NK", "");
                         terms.put("HT", "");
                         terms.put("BG", "");
