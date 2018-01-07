@@ -1,6 +1,6 @@
 package com.janwilts.bigmovie.parser.parsers;
 
-import com.janwilts.bigmovie.parser.enums.Parsable;
+import com.janwilts.bigmovie.parser.Parsable;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -31,8 +31,7 @@ public abstract class Parser {
 
 
         try {
-            Constructor constructor = parser.getC().getConstructor(File.class);
-            currentParser = (Parser) constructor.newInstance(file);
+            currentParser = parser.getParser(file);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,6 +1,6 @@
 package com.janwilts.bigmovie.parser.commands;
 
-import com.janwilts.bigmovie.parser.enums.Parsable;
+import com.janwilts.bigmovie.parser.Parsable;
 import com.janwilts.bigmovie.parser.tasks.FileParseTask;
 
 import java.io.File;
