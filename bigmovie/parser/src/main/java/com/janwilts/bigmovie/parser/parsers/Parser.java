@@ -37,8 +37,11 @@ public abstract class Parser {
         }
 
         currentParser.parse();
-        return new String[] {file.getName().substring(0, file.getName().indexOf('.')), Integer.toString(Parsable.getList().indexOf(parser) + 1), "10",
-        Integer.toString(lines)};
+        return new String[] {
+                file.getName().substring(0, file.getName().indexOf('.')),
+                String.valueOf(Parsable.getList().indexOf(parser) + 1),
+                String.valueOf(Parsable.getList().size()),
+                String.valueOf(lines)};
     }
 
     public Parser(File file) {
