@@ -5,17 +5,22 @@ import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 import java.io.File;
 
 public class ActorInserter extends Inserter {
+    public ActorInserter(File file, DatabaseConnection connection) {
+        super(file, connection);
+    }
+
     @Override
-    public void insert(File file, DatabaseConnection connection) {
+    void insert() {
 
     }
 
     @Override
     public String[] getRequiredTables() {
         return new String[] {
-                "actors",
-                "actors_movies",
-                "movies"
+                "actor",
+                "actor_movie",
+                "movie"
         };
     }
 }
+

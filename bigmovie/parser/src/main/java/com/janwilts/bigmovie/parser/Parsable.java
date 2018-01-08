@@ -1,10 +1,10 @@
 package com.janwilts.bigmovie.parser;
 
+import com.janwilts.bigmovie.parser.inserters.Inserter;
 import com.janwilts.bigmovie.parser.parsers.Parser;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,15 +26,14 @@ public enum Parsable {
 
     private String name;
     private Class<?> parser;
-    private Method inserter;
+    private Class<?> inserter;
 
     Parsable(String name, String single) {
         this.name = name;
         try {
             this.parser = Class.forName("com.janwilts.bigmovie.parser.parsers." + single + "Parser");
-            this.inserter = Class.forName("com.janwilts.bigmovie.parser.inserters." + single + "Inserter")
-                    .getMethod("insert", File.class, DatabaseConnection.class);
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            this.inserter = Class.forName("com.janwilts.bigmovie.parser.inserters." + single + "Inserter");
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -48,8 +47,9 @@ public enum Parsable {
         return (Parser) parser.getConstructor(File.class).newInstance(file);
     }
 
-    public Method getInserter() {
-        return inserter;
+    public Inserter getInserter(DatabaseConnection connection) throws Exception {
+        return (Inserter) inserter.getConstructor(File.class, DatabaseConnection.class)
+                .newInstance(new File(Main.outputDirectory + name + ".csv"), connection);
     }
 
     public static List<Parsable> getList() {

@@ -5,9 +5,7 @@ import com.janwilts.bigmovie.parser.Parsable;
 import org.postgresql.jdbc.PgConnection;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DatabaseConnection {
@@ -63,10 +61,19 @@ public class DatabaseConnection {
 
         testStatement.close();
 
-        return output.containsAll(Parsable.getList().stream()
-            .map(Parsable::getInserter)
-            .distinct()
-            .collect(Collectors.toList()));
+
+        List<String> requiredTables = new ArrayList<>();
+        for(Parsable p : Parsable.getList()) {
+            try {
+                requiredTables.addAll(Arrays.asList(p.getInserter(this).getRequiredTables()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return output.containsAll(requiredTables.stream()
+                .distinct()
+                .collect(Collectors.toList()));
     }
 
     public void setupPreparedInsert() {
