@@ -17,7 +17,7 @@ public enum Parsable {
     ACTORS("actors", "Actor"),
     ACTRESSES("actresses", "Actor"),
     BIOGRAPHIES("biographies", "Biography"),
-    //BUSINESS("business", "Business"),
+    BUSINESS("business", "Business"),
     RATINGS("ratings", "Rating"),
     SOUNDTRACKS("soundtracks", "Soundtrack"),
     COUNTRIES("countries", "Country"),

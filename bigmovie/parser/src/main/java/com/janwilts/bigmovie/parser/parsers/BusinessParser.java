@@ -8,12 +8,13 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * @author Lars
  */
 public class BusinessParser extends Parser
 {
+    public static final String QUOTE = "\"";
+    
     private static final Map<String, String> MONTH_TO_NUMBER = new HashMap<>();
     
     static
@@ -32,7 +33,8 @@ public class BusinessParser extends Parser
         MONTH_TO_NUMBER.put("December", "12");
     }
     
-    public BusinessParser(File file) {
+    public BusinessParser(File file)
+    {
         super(file);
     }
     
@@ -42,10 +44,10 @@ public class BusinessParser extends Parser
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
         {
             String movie = ""; //movie
-            String budget = ""; //budget in USD
+            double budget = 0; //budget in USD
             
             /*Map<Country, Map<Date, Amount>>*/
-            Map<String, Map<String, String>> grossPerCountry = new HashMap<>();
+            Map<String, Map<String, Double>> grossPerCountry = new HashMap<>();
             
             String line;
             while ((line = this.readLine()) != null)
@@ -59,16 +61,10 @@ public class BusinessParser extends Parser
                 {
                     if (!movie.isEmpty())
                     {
-                        //TODO use the values before resetting
-                        
-                        System.out.println("Movie: " + movie);
-                        System.out.println("Budget: " + budget);
-                        System.out.println("Gross: " + grossPerCountry);
-                        
-                        
+                        writeFileToCSV(writer, movie, budget, grossPerCountry);
                         
                         movie = "";
-                        budget = "";
+                        budget = 0;
                         grossPerCountry.clear();
                     }
                 }
@@ -81,6 +77,39 @@ public class BusinessParser extends Parser
         }
     }
     
+    private void writeFileToCSV(PrintWriter writer, String movie, double budget, Map<String, Map<String, Double>> grossPerCountry)
+    {
+        if (grossPerCountry.isEmpty()) writeLineToCSV(writer, movie, budget, "", "", 0);
+        else
+        {
+            for (Map.Entry<String, Map<String, Double>> grossPerCountryEntry : grossPerCountry.entrySet())
+            {
+                String country = grossPerCountryEntry.getKey();
+                for (Map.Entry<String, Double> grossPerDateEntry : grossPerCountryEntry.getValue().entrySet())
+                {
+                    String date = grossPerDateEntry.getKey();
+                    Double gross = grossPerDateEntry.getValue();
+                    writeLineToCSV(writer, movie, budget, country, date, gross);
+                }
+            }
+        }
+    }
+    
+    private void writeLineToCSV(PrintWriter writer, String movie, double budget, String country, String date, double gross)
+    {
+        writer.println(String.join(",", addQuotes(movie), formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
+    }
+    
+    private String addQuotes(String input)
+    {
+        return "\"" + input + "\"";
+    }
+    
+    private String formatDouble(double amount)
+    {
+        return amount == 0 ? "" : String.format("%.2f", amount).replace(".00", "");
+    }
+    
     private String readMovie(String line)
     {
         String movie = line.substring(4, line.length());
@@ -91,35 +120,35 @@ public class BusinessParser extends Parser
         return movie;
     }
     
-    private String readBudget(String line)
+    private double readBudget(String line)
     {
         String[] values = line.split(" ");
         String currency = values[1];
         double amount = Double.parseDouble(values[2].replaceAll(",", ""));
         
-        if (currency.equals("USD")) return String.format("%.2f", amount);
-        else return String.format("%.2f", CurrencyConverter.convert(amount, currency, "USD"));
+        if (currency.equals("USD")) return amount;
+        else return CurrencyConverter.convert(amount, currency, "USD");
     }
     
-    private void readGrossToMap(String line, Map<String, Map<String, String>> map)
+    private void readGrossToMap(String line, Map<String, Map<String, Double>> map)
     {
         String[] values = line.split("\\(");
         String[] money = values[0].split(" ");
         String currency = money[1];
         double amount = Double.parseDouble(money[2].replaceAll(",", ""));
-        String parsedGross;
+        double parsedGross;
         
-        if (currency.equals("USD")) parsedGross = String.format("%.2f", amount);
-        else parsedGross = String.format("%.2f", CurrencyConverter.convert(amount, currency, "USD"));
+        if (currency.equals("USD")) parsedGross = amount;
+        else parsedGross = CurrencyConverter.convert(amount, currency, "USD");
         
         String country = values[1].substring(0, values[1].indexOf(')'));
-        String date = (values.length > 2 && Character.isDigit(values[2].charAt(0))) ? values[2].substring(0, values[2].indexOf(')')) : "nodate";
+        String date = (values.length > 2 && Character.isDigit(values[2].charAt(0))) ? values[2].substring(0, values[2].indexOf(')')) : "";
         date = fixDate(date);
         
-        if (map.containsKey(country)) map.get(country).put(date, amount + "");
+        if (map.containsKey(country)) map.get(country).put(date, amount);
         else
         {
-            Map<String, String> grossPerDate = new HashMap<>();
+            Map<String, Double> grossPerDate = new HashMap<>();
             grossPerDate.put(date, parsedGross);
             map.put(country, grossPerDate);
         }
@@ -128,7 +157,7 @@ public class BusinessParser extends Parser
     private String fixDate(String date)
     {
         String[] values = date.split(" ");
-        if (values.length == 1) return date;
+        if (values.length == 1) return (values[0].isEmpty() ? "" : "0101") + date;
         else
         {
             String day = values[0].length() == 2 ? values[0] : "0" + values[0];
@@ -137,4 +166,5 @@ public class BusinessParser extends Parser
             return String.join("", day, month, year);
         }
     }
+    
 }
