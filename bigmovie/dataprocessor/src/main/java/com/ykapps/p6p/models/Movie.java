@@ -1,49 +1,81 @@
 package com.ykapps.p6p.models;
 
-import javafx.util.Pair;
+import java.math.BigDecimal;
 
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+public class Movie {
 
-public class Movie extends Model{
+    private int movie_id;
 
-    public Movie(DataSource db) {
-        super(db);
+    private String title;
+
+    private int release_year;
+
+    private int occurance;
+
+    private String mpaa_rating;
+
+    private String mpaa_reason;
+
+    private int rating;
+
+    private int rating_votes;
+
+    private BigDecimal budget;
+
+    private BigDecimal production_costs;
+
+    public Movie(int movie_id, String title, int release_year, int occurance, String mpaa_rating, String mpaa_reason,
+                 int rating, int rating_votes, BigDecimal budget, BigDecimal production_costs) {
+
+        this.movie_id = movie_id;
+        this.title = title;
+        this.release_year = release_year;
+        this.occurance = occurance;
+        this.mpaa_rating = mpaa_rating;
+        this.mpaa_reason = mpaa_reason;
+        this.rating = rating;
+        this.rating_votes = rating_votes;
+        this.budget = budget;
+        this.production_costs = production_costs;
     }
 
-
-    @Override
-    public List<List<Pair>> get(String whereClause) {
-        try(Connection conn = db.getConnection()){
-            PreparedStatement st = conn.prepareStatement("SELECT id, name FROM newtable WHERE id = 0;");
-
-            List<List<Pair>> results = new ArrayList<>();
-
-            ResultSet rs = st.executeQuery();
-
-            while(rs.next()) {
-                Pair idPair = new Pair<String, Integer>("ID", rs.getInt("ID"));
-                Pair namePair = new Pair<String, String>("NAME", rs.getString("NAME"));
-
-                List<Pair> result = new ArrayList<>();
-
-                result.add(idPair);
-                result.add(namePair);
-
-                results.add(result);
-            }
-
-            st.close();
-
-            return results;
-        }
-        catch(SQLException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+    public int getMovie_id() {
+        return movie_id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public int getRelease_year() {
+        return release_year;
+    }
+
+    public int getOccurance() {
+        return occurance;
+    }
+
+    public String getMpaa_rating() {
+        return mpaa_rating;
+    }
+
+    public String getMpaa_reason() {
+        return mpaa_reason;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public int getRating_votes() {
+        return rating_votes;
+    }
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public BigDecimal getProduction_costs() {
+        return production_costs;
+    }
 }

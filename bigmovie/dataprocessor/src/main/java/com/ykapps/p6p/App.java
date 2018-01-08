@@ -1,9 +1,17 @@
 package com.ykapps.p6p;
 
+import com.github.davidmoten.rx.jdbc.Database;
+import com.ykapps.p6p.models.Model;
 import com.ykapps.p6p.models.Movie;
+import com.ykapps.p6p.models.TestModel;
 import javafx.util.Pair;
 import org.jooby.Jooby;
+import org.jooby.banner.Banner;
 import org.jooby.jdbc.Jdbc;
+import org.jooby.json.Jackson;
+import org.jooby.rx.Rx;
+import org.jooby.rx.RxJdbc;
+import rx.Observable;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -13,43 +21,32 @@ import java.util.List;
 /**
  * @author Yannick Kooistra
  */
+@SuppressWarnings("unchecked")
 public class App extends Jooby {
+
     {
+        use(new Rx());
         use(new Jdbc("db"));
+
+        use(new RxJdbc());
+
+        use(new Jackson());
+
+        use(new Banner("Data Processor"));
 
         get("/", () -> "Hello World!");
 
         get("/api", req -> {
-            DataSource db = require(DataSource.class);
+            Database db = require(Database.class);
 
-            Movie movieModel = new Movie(db);
+            Model model = new Model(db);
 
-            List<List<Pair>> results = movieModel.get("id=?");
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<TestModel> obs = model.query(Model.DbClasses.TESTMODEL, "SELECT * FROM test");
+            TestModel tm = obs.toBlocking().first();
 
-            String data = "";
-
-
-            for(List<Pair> result : results) {
-                Pair<String, Integer> idPair = result.stream()
-                        .filter(pair -> pair.getKey().equals("ID"))
-                        .findFirst()
-                        .get();
-
-                int id = idPair.getValue();
-
-                Pair<String, String> namePair = result.stream()
-                        .filter(pair -> pair.getKey().equals("NAME"))
-                        .findFirst()
-                        .get();
-
-                String name = namePair.getValue();
-
-                data += "<li>" + id + ": " + name + "</li>";
-            }
-
-            String html = "<html><head></head><body><ul>" + data + "</ul></body></html>";
-
-        return html;
+            return tm;
         });
     }
 

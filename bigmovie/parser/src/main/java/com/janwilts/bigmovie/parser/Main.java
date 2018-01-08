@@ -20,6 +20,6 @@ public class Main {
 
     public static void main(String[] args) {
         CommandParser.parse(args);
-        //connection.open();
+        connection.open();
     }
 }
