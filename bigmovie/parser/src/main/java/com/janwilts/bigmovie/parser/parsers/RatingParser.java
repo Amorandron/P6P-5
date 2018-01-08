@@ -33,7 +33,7 @@ public class RatingParser extends Parser{
                     line = line.substring(16);
                     line = line.trim();
 
-                    if(line.contains("\""))
+                    if(line.startsWith("\""))
                         continue;
 
                     String[] values = line.split("  ");
@@ -65,7 +65,6 @@ public class RatingParser extends Parser{
                     year + "," + occurance + "," + values[0] + "," + values[1]);
                 }
             }
-            writer.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }

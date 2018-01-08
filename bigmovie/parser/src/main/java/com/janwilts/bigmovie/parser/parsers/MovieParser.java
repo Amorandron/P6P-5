@@ -59,7 +59,6 @@ public class MovieParser extends Parser {
                             year + "," + occurrence);
                 }
             }
-            writer.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }

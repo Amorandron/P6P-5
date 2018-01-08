@@ -99,8 +99,6 @@ public class SoundtrackParser extends Parser {
                     }
                 }
             }
-
-            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

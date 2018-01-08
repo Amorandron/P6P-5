@@ -39,10 +39,10 @@ public class GenreParser extends Parser {
 
             Boolean foundList = false;
             String line;
-            String currentTitle = "";
-            String currentYear = "";
-            String currentGenre = "";
-            String currentRomanNumber = "";
+            String currentTitle;
+            String currentYear;
+            String currentGenre;
+            String currentRomanNumber;
 
             while(((line = this.readLine()) != null)) {
                 if (!foundList && line.equals("8: THE GENRES LIST")) {

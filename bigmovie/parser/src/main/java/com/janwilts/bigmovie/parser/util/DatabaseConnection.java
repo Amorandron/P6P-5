@@ -36,7 +36,7 @@ public class DatabaseConnection {
         this.password = password;
     }
 
-    public boolean open() {
+    public Boolean open() {
         Boolean result;
         try {
             connection = (PgConnection) DriverManager.getConnection(String.format("jdbc:postgresql://%s:%d/%s",
@@ -55,7 +55,7 @@ public class DatabaseConnection {
         statement.close();
     }
 
-    private boolean testTables(Statement testStatement) throws SQLException {
+    private Boolean testTables(Statement testStatement) throws SQLException {
         List<String> output = new ArrayList<>();
         ResultSet testSet = testStatement.executeQuery("SELECT * FROM pg_catalog.pg_tables");
         while(testSet.next())

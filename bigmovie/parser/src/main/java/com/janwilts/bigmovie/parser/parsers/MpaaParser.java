@@ -77,7 +77,6 @@ public class MpaaParser extends Parser{
                     }
                 }
             }
-            writer.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
