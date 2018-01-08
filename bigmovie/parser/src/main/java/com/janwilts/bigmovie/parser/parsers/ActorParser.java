@@ -27,11 +27,18 @@ public class ActorParser extends Parser {
             for (String line; (line = this.readLine()) != null; ) {
                 if (!foundList && line.contains("THE " + file.getName().substring(0, file.getName().indexOf('.')).toUpperCase() + " LIST")) foundList = true;
                 else if (foundList && linesBeforeList != 0) linesBeforeList--;
-                else if (foundList && line.equals("-----------------------")) return;
+                else if (foundList && line.startsWith("-----------------------")) return;
                 else if (linesBeforeList == 0 && line.length() > 0) {
                     if (line.charAt(0) != TAB_CHAR) {
                         
-                        currentActorName = line.substring(0, line.indexOf(TAB)).trim();
+                        
+                        try{
+                            currentActorName = line.substring(0, line.indexOf(TAB)).trim();
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                         
                         String[] result = RomanNumeral.getFromActorName(currentActorName);
                         
