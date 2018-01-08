@@ -33,8 +33,12 @@ public class RatingParser extends Parser{
                     line = line.substring(16);
                     line = line.trim();
 
-                    if(line.startsWith("\""))
+                    if(line.contains("\""))
                         continue;
+
+                    if(line.endsWith("}")) {
+                        line = line.substring(0, line.lastIndexOf("{"));
+                    }
 
                     String[] values = line.split("  ");
                     for (int i = 0; i < values.length; i++)
@@ -51,12 +55,16 @@ public class RatingParser extends Parser{
                     if (values[2].lastIndexOf('(') != -1)
                         yearString = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].length() - 1);
 
-                    if(yearString.contains("/")) {
-                        occurance = RomanNumeral.convert(values[2].substring(values[2].lastIndexOf('/') + 1, values[2].lastIndexOf(')')));
-                    }
-                    else {
-                        if(!yearString.equals("????"))
-                            year = yearString;
+                    try {
+                        if (yearString.contains("/")) {
+                            occurance = RomanNumeral.convert(values[2].substring(values[2].lastIndexOf('/') + 1, values[2].lastIndexOf(')')));
+                        }
+                        else {
+                            if(!yearString.equals("????"))
+                                year = yearString;
+                        }
+                    } catch(IndexOutOfBoundsException e) {
+                        e.printStackTrace();
                     }
 
                     title = values[2].substring(0, values[2].lastIndexOf('(') - 1);
