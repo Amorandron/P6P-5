@@ -34,7 +34,7 @@
     <!-- Database -->
     <dependency>
       <groupId>org.jooby</groupId>
-      <artifactId>jooby-jdbc</artifactId>
+      <artifactId>jooby-rxjava-jdbc</artifactId>
       <version>1.2.3</version>
     </dependency>
 
@@ -44,10 +44,25 @@
       <version>42.1.4</version>
     </dependency>
 
+    <!-- JSON -->
+    <dependency>
+      <groupId>org.jooby</groupId>
+      <artifactId>jooby-jackson</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+
     <!-- logging -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
+    </dependency>
+
+
+    <!-- banner -->
+    <dependency>
+      <groupId>org.jooby</groupId>
+      <artifactId>jooby-banner</artifactId>
+      <version>1.2.3</version>
     </dependency>
 
     <!-- Tests -->
