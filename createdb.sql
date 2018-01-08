@@ -1,13 +1,17 @@
 \c bigmovie
 
 -- Reset queries;
+DROP TABLE IF EXISTS movie_country;
+DROP TABLE IF EXISTS gross;
+DROP SEQUENCE IF EXISTS gross_id_seq;
 DROP TABLE IF EXISTS country;
 DROP SEQUENCE IF EXISTS country_id_seq;
+DROP TABLE IF EXISTS movie_genre;
 DROP TABLE IF EXISTS genre;
 DROP SEQUENCE IF EXISTS genre_id_seq;
 DROP TABLE IF EXISTS soundtrack;
 DROP SEQUENCE IF EXISTS soundtrack_id_seq;
-DROP TABLE IF EXISTS actors_movies;
+DROP TABLE IF EXISTS actor_movie;
 DROP TABLE IF EXISTS movie;
 DROP SEQUENCE IF EXISTS movie_id_seq;
 DROP TABLE IF EXISTS actor;
@@ -55,17 +59,20 @@ GRANT SELECT ON SEQUENCES TO bigmovie_ro;
 
 CREATE SEQUENCE movie_id_seq;
 CREATE TABLE movie (
-  movie_id     BIGINT       NOT NULL DEFAULT nextval('movie_id_seq'),
+  movie_id         BIGINT       NOT NULL DEFAULT nextval('movie_id_seq'),
   -- From movies
-  title        VARCHAR(255) NOT NULL,
-  release_year INTEGER,
-  occurance    INTEGER      NOT NULL,
+  title            VARCHAR(255) NOT NULL,
+  release_year     INTEGER,
+  occurance        INTEGER      NOT NULL,
   -- From MPAA
-  mpaa_rating  VARCHAR(5),
-  mpaa_reason  TEXT,
+  mpaa_rating      VARCHAR(5),
+  mpaa_reason      TEXT,
   -- From ratings
-  rating       INTEGER,
-  rating_votes INTEGER,
+  rating           INTEGER,
+  rating_votes     INTEGER,
+  budget           MONEY,
+  -- From business
+  production_costs MONEY,
   CONSTRAINT movie_pkey
   PRIMARY KEY (movie_id),
   CONSTRAINT movie_uniq
@@ -103,30 +110,45 @@ CREATE TABLE actor_movie (
 
 CREATE SEQUENCE country_id_seq;
 CREATE TABLE country (
-  -- From countries
-  country_id BIGINT       NOT NULL DEFAULT nextval('country_id_seq'),
-  movie_id   BIGINT       NOT NULL,
+  country_id INTEGER      NOT NULL DEFAULT nextval('country_id_seq'),
   country    VARCHAR(255) NOT NULL,
   CONSTRAINT country_pkey
-  PRIMARY KEY (country_id),
-  CONSTRAINT country_movie_id_fkey
+  PRIMARY KEY (country_id)
+);
+
+CREATE TABLE movie_country (
+  movie_id   BIGINT  NOT NULL,
+  country_id INTEGER NOT NULL,
+  CONSTRAINT movie_country_pkey
+  PRIMARY KEY (movie_id, country_id),
+  CONSTRAINT movie_country_movie_id_fkey
   FOREIGN KEY (movie_id)
-  REFERENCES movie (movie_id)
+  REFERENCES movie (movie_id),
+  CONSTRAINT movie_country_country_id_fkey
+  FOREIGN KEY (country_id)
+  REFERENCES country (country_id)
 );
 
 CREATE SEQUENCE genre_id_seq;
 CREATE TABLE genre (
   -- From genres
-  genre_id BIGINT       NOT NULL DEFAULT nextval('genre_id_seq'),
-  movie_id BIGINT       NOT NULL,
+  genre_id INTEGER      NOT NULL DEFAULT nextval('genre_id_seq'),
   genre    VARCHAR(255) NOT NULL,
   CONSTRAINT genre_pkey
-  PRIMARY KEY (genre_id),
-  CONSTRAINT genre_movie_id_fkey
+  PRIMARY KEY (genre_id)
+);
 
+CREATE TABLE movie_genre (
+  movie_id BIGINT  NOT NULL,
+  genre_id INTEGER NOT NULL,
+  CONSTRAINT movie_genre_pkey
+  PRIMARY KEY (movie_id, genre_id),
+  CONSTRAINT movie_genre_movie_id_fkey
   FOREIGN KEY (movie_id)
-  REFERENCES movie (movie_id)
-
+  REFERENCES movie (movie_id),
+  CONSTRAINT movie_genre_genre_id
+  FOREIGN KEY (genre_id)
+  REFERENCES genre (genre_id)
 );
 
 CREATE SEQUENCE soundtrack_id_seq;
@@ -140,4 +162,22 @@ CREATE TABLE soundtrack (
   CONSTRAINT soundtrack_movie_id_fkey
   FOREIGN KEY (movie_id)
   REFERENCES movie (movie_id)
+);
+
+CREATE SEQUENCE gross_id_seq;
+CREATE TABLE gross (
+  -- From business
+  gross_id         BIGINT NOT NULL DEFAULT nextval('gross_id_seq'),
+  movie_id         BIGINT NOT NULL,
+  country_id       INTEGER,
+  amount           MONEY,
+  transaction_date DATE,
+  CONSTRAINT gross_pkey
+  PRIMARY KEY (gross_id),
+  CONSTRAINT gross_movie_id_fkey
+  FOREIGN KEY (movie_id)
+  REFERENCES movie (movie_id),
+  CONSTRAINT gross_country_id_fkey
+  FOREIGN KEY (country_id)
+  REFERENCES country (country_id)
 );
