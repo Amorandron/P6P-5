@@ -8,48 +8,39 @@ import java.io.PrintWriter;
 /**
  * @author Jan
  */
-public class MpaaParser extends Parser
-{
-    public MpaaParser(File file)
-    {
+public class MpaaParser extends Parser {
+    public MpaaParser(File file) {
         super(file);
     }
     
     @Override
-    public void parse()
-    {
+    public void parse() {
         boolean foundList = false;
         boolean prevRating = false;
         
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
-        {
-            for (String line; (line = this.readLine()) != null; )
-            {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
+            for (String line; (line = this.readLine()) != null; ) {
                 if (!foundList && line.equals("=========================")) foundList = true;
                 if (foundList && line.startsWith("------------------")) continue;
-                else if (foundList && line.length() > 0)
-                {
+                else if (foundList && line.length() > 0) {
                     String title;
                     String year;
                     int occurrence = 0;
                     
-                    if (line.charAt(0) == 'M')
-                    {
+                    if (line.charAt(0) == 'M') {
                         if (prevRating) writer.print(QUOTE + NEW_LINE);
                         line = line.substring(4);
                         
                         year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                         title = line.substring(0, line.lastIndexOf('(') - 1);
                         
-                        if (year.charAt(0) == 'T' || year.charAt(0) == 'V')
-                        {
+                        if (year.charAt(0) == 'T' || year.charAt(0) == 'V') {
                             line = line.substring(0, line.lastIndexOf('('));
                             title = line.substring(0, line.lastIndexOf('(') - 1);
                             year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                         }
                         
-                        if (year.contains("/"))
-                        {
+                        if (year.contains("/")) {
                             occurrence = RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length()));
                             year = year.substring(0, year.indexOf("/"));
                         }
@@ -57,14 +48,12 @@ public class MpaaParser extends Parser
                         writer.print(QUOTE + title.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + year + "," + occurrence + ",");
                         
                     }
-                    else if (line.charAt(0) == 'R')
-                    {
+                    else if (line.charAt(0) == 'R') {
                         prevRating = true;
                         String rating;
                         String reason;
                         
-                        if (line.contains("Rated"))
-                        {
+                        if (line.contains("Rated")) {
                             line = line.substring(10);
                             rating = line.substring(0, line.indexOf(" "));
                             
@@ -73,8 +62,7 @@ public class MpaaParser extends Parser
                             
                             writer.print(QUOTE + rating.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + QUOTE + reason.replace(QUOTE, DOUBLE_QUOTE));
                         }
-                        else
-                        {
+                        else {
                             reason = line.substring(4);
                             writer.print(reason);
                         }
@@ -83,8 +71,7 @@ public class MpaaParser extends Parser
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

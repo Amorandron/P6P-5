@@ -11,12 +11,10 @@ import java.util.Map;
 /**
  * @author Lars
  */
-public class BusinessParser extends Parser
-{
+public class BusinessParser extends Parser {
     private static final Map<String, String> MONTH_TO_NUMBER = new HashMap<>();
     
-    static
-    {
+    static {
         MONTH_TO_NUMBER.put("January", "01");
         MONTH_TO_NUMBER.put("February", "02");
         MONTH_TO_NUMBER.put("March", "03");
@@ -31,16 +29,13 @@ public class BusinessParser extends Parser
         MONTH_TO_NUMBER.put("December", "12");
     }
     
-    public BusinessParser(File file)
-    {
+    public BusinessParser(File file) {
         super(file);
     }
     
     @Override
-    public void parse()
-    {
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
-        {
+    public void parse() {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String movie = ""; //movie
             double budget = 0; //budget in USD
             
@@ -48,17 +43,14 @@ public class BusinessParser extends Parser
             Map<String, Map<String, Double>> grossPerCountry = new HashMap<>();
             
             String line;
-            while ((line = this.readLine()) != null)
-            {
+            while ((line = this.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
                 if (line.startsWith("MV: ") && !(line.charAt(4) == QUOTE_CHAR)) movie = readMovie(line);
                 else if (line.startsWith("BT: ")) budget = readBudget(line);
                 else if (line.startsWith("GR: ")) readGrossToMap(line, grossPerCountry);
                 
-                else if (line.startsWith("--------------"))
-                {
-                    if (!movie.isEmpty())
-                    {
+                else if (line.startsWith("--------------")) {
+                    if (!movie.isEmpty()) {
                         writeFileToCSV(writer, movie, budget, grossPerCountry);
                         
                         movie = "";
@@ -69,22 +61,17 @@ public class BusinessParser extends Parser
                 else if (line.equals("                                    =====")) break;
             }
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
     
-    private void writeFileToCSV(PrintWriter writer, String movie, double budget, Map<String, Map<String, Double>> grossPerCountry)
-    {
+    private void writeFileToCSV(PrintWriter writer, String movie, double budget, Map<String, Map<String, Double>> grossPerCountry) {
         if (grossPerCountry.isEmpty()) writeLineToCSV(writer, movie, budget, "", "", 0);
-        else
-        {
-            for (Map.Entry<String, Map<String, Double>> grossPerCountryEntry : grossPerCountry.entrySet())
-            {
+        else {
+            for (Map.Entry<String, Map<String, Double>> grossPerCountryEntry : grossPerCountry.entrySet()) {
                 String country = grossPerCountryEntry.getKey();
-                for (Map.Entry<String, Double> grossPerDateEntry : grossPerCountryEntry.getValue().entrySet())
-                {
+                for (Map.Entry<String, Double> grossPerDateEntry : grossPerCountryEntry.getValue().entrySet()) {
                     String date = grossPerDateEntry.getKey();
                     Double gross = grossPerDateEntry.getValue();
                     writeLineToCSV(writer, movie, budget, country, date, gross);
@@ -93,18 +80,15 @@ public class BusinessParser extends Parser
         }
     }
     
-    private void writeLineToCSV(PrintWriter writer, String movie, double budget, String country, String date, double gross)
-    {
+    private void writeLineToCSV(PrintWriter writer, String movie, double budget, String country, String date, double gross) {
         writer.println(String.join(",", addQuotes(movie), formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
     }
     
-    private String formatDouble(double amount)
-    {
+    private String formatDouble(double amount) {
         return amount == 0 ? "" : String.format("%.2f", amount).replace(".00", "");
     }
     
-    private String readMovie(String line)
-    {
+    private String readMovie(String line) {
         String movie = line.substring(4, line.length());
         
         movie = movie.replace("(TV)", "");
@@ -113,8 +97,7 @@ public class BusinessParser extends Parser
         return movie;
     }
     
-    private double readBudget(String line)
-    {
+    private double readBudget(String line) {
         String[] values = line.split(" ");
         String currency = values[1];
         double amount = Double.parseDouble(values[2].replaceAll(",", ""));
@@ -123,8 +106,7 @@ public class BusinessParser extends Parser
         else return CurrencyConverter.convert(amount, currency, "USD");
     }
     
-    private void readGrossToMap(String line, Map<String, Map<String, Double>> map)
-    {
+    private void readGrossToMap(String line, Map<String, Map<String, Double>> map) {
         String[] values = line.split("\\(");
         String[] money = values[0].split(" ");
         String currency = money[1];
@@ -139,20 +121,17 @@ public class BusinessParser extends Parser
         date = fixDate(date);
         
         if (map.containsKey(country)) map.get(country).put(date, amount);
-        else
-        {
+        else {
             Map<String, Double> grossPerDate = new HashMap<>();
             grossPerDate.put(date, parsedGross);
             map.put(country, grossPerDate);
         }
     }
     
-    private String fixDate(String date)
-    {
+    private String fixDate(String date) {
         String[] values = date.split(" ");
         if (values.length == 1) return (values[0].isEmpty() ? "" : "0101") + date;
-        else
-        {
+        else {
             String day = values[0].length() == 2 ? values[0] : "0" + values[0];
             String month = MONTH_TO_NUMBER.get(values[1]);
             String year = values[2];

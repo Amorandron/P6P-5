@@ -10,18 +10,14 @@ import java.util.regex.Pattern;
 /**
  * @author Everdien
  */
-public class GenreParser extends Parser
-{
-    public GenreParser(File file)
-    {
+public class GenreParser extends Parser {
+    public GenreParser(File file) {
         super(file);
     }
     
     @Override
-    public void parse()
-    {
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
-        {
+    public void parse() {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String pattern = "(.*?)\\s\\((.{4})(|/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
             Pattern p = Pattern.compile(pattern);
 
@@ -50,18 +46,15 @@ public class GenreParser extends Parser
             String currentGenre;
             String currentRomanNumber;
             
-            while (((line = this.readLine()) != null))
-            {
+            while (((line = this.readLine()) != null)) {
                 if (!foundList && line.equals("8: THE GENRES LIST")) foundList = true;
-                if (foundList)
-                {
+                if (foundList) {
                     // Go to next line if it's a show
                     if (line.startsWith(QUOTE)) continue;
                     
                     Matcher m = p.matcher(line);
                     
-                    if (m.matches())
-                    {
+                    if (m.matches()) {
                         // Go to next line if movie suspended
                         if (m.group(5).toLowerCase().contains("suspended")) continue;
                         
@@ -78,8 +71,7 @@ public class GenreParser extends Parser
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

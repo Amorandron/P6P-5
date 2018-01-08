@@ -11,8 +11,7 @@ import java.util.zip.ZipInputStream;
 /**
  * @author Yannick & Jan
  */
-public abstract class Parser
-{
+public abstract class Parser {
     public static final String NEW_LINE = "\n";
     public static final String QUOTE = "\"";
     public static final char QUOTE_CHAR = '\"';
@@ -27,8 +26,7 @@ public abstract class Parser
     File csv;
     private static int lines = 0;
     
-    public static String[] parseFile(File file)
-    {
+    public static String[] parseFile(File file) {
         //@formatter:off
         int index = Parsable.getList()
                             .stream()
@@ -39,12 +37,10 @@ public abstract class Parser
         
         Parsable parser = Parsable.getList().get(index);
         
-        try
-        {
+        try {
             currentParser = parser.getParser(file);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
         
@@ -52,28 +48,23 @@ public abstract class Parser
         return new String[]{file.getName().substring(0, file.getName().indexOf('.')), String.valueOf(Parsable.getList().indexOf(parser) + 1), String.valueOf(Parsable.getList().size()), String.valueOf(lines)};
     }
     
-    public Parser(File file)
-    {
+    public Parser(File file) {
         this.file = file;
         this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
         csv.getParentFile().mkdirs();
         
-        try
-        {
+        try {
             this.reader = getReader();
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
     
-    private BufferedReader getReader() throws IOException
-    {
+    private BufferedReader getReader() throws IOException {
         String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
         
-        switch (extension)
-        {
+        switch (extension) {
             case "gz":
                 return new BufferedReader(new InputStreamReader(new GZIPInputStream(new FileInputStream(file)), StandardCharsets.ISO_8859_1));
             case "zip":
@@ -83,8 +74,7 @@ public abstract class Parser
         }
     }
     
-    protected String readLine() throws IOException
-    {
+    protected String readLine() throws IOException {
         lines++;
         return this.reader.readLine();
     }
@@ -97,8 +87,7 @@ public abstract class Parser
      * @param input the String input to be surrounded with quotation marks
      * @return the String input surrounded with quotation marks
      */
-    protected String addQuotes(String input)
-    {
+    protected String addQuotes(String input) {
         return QUOTE + input + QUOTE;
     }
 }

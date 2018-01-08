@@ -8,28 +8,22 @@ import java.io.PrintWriter;
 /**
  * @author Jan
  */
-public class RatingParser extends Parser
-{
-    public RatingParser(File file)
-    {
+public class RatingParser extends Parser {
+    public RatingParser(File file) {
         super(file);
     }
     
     @Override
-    public void parse()
-    {
+    public void parse() {
         int linesBeforeList = 3;
         boolean foundList = false;
         
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
-        {
-            for (String line; (line = this.readLine()) != null; )
-            {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
+            for (String line; (line = this.readLine()) != null; ) {
                 if (!foundList && line.contains("MOVIE RATINGS REPORT")) foundList = true;
                 if (foundList && linesBeforeList > 0) linesBeforeList--;
                 else if (foundList && line.equals("")) return;
-                else if (linesBeforeList == 0 && line.length() > 0)
-                {
+                else if (linesBeforeList == 0 && line.length() > 0) {
                     line = line.substring(16);
                     line = line.trim();
                     
@@ -49,13 +43,11 @@ public class RatingParser extends Parser
                     
                     if (values[2].lastIndexOf('(') != -1) yearString = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].length() - 1);
                     
-                    try
-                    {
+                    try {
                         if (yearString.contains("/")) occurance = RomanNumeral.convert(values[2].substring(values[2].lastIndexOf('/') + 1, values[2].lastIndexOf(')')));
                         else if (!yearString.equals("????")) year = yearString;
                     }
-                    catch (IndexOutOfBoundsException e)
-                    {
+                    catch (IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
                     
@@ -65,8 +57,7 @@ public class RatingParser extends Parser
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

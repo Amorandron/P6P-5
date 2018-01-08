@@ -9,40 +9,31 @@ import java.util.HashMap;
 /**
  * @author Yannick
  */
-public class BiographyParser extends Parser
-{
+public class BiographyParser extends Parser {
     public static String[] STATIC_TERMS = new String[]{"NM", "OC", "NK", "HT", "BG", "BY", "SP", "TR", "RN", "OW", "QU", "DB", "DD", "AT", "TM", "IT", "PT", "CV", "BO", "PI", "BT", "SA", "WN"};
     
-    public BiographyParser(File file)
-    {
+    public BiographyParser(File file) {
         super(file);
     }
     
     @Override
-    public void parse()
-    {
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
-        {
+    public void parse() {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             HashMap<String, String> terms = new HashMap<>();
             
             int linesBeforeList = 2;
             boolean foundList = false;
             boolean first = true;
             
-            for (String line; (line = this.readLine()) != null; )
-            {
+            for (String line; (line = this.readLine()) != null; ) {
                 if (!foundList && line.contains("BIOGRAPHY LIST")) foundList = true;
                 else if (foundList && linesBeforeList != 0) linesBeforeList--;
-                else if (foundList && line.length() > 0 && line.contains(":"))
-                {
+                else if (foundList && line.length() > 0 && line.contains(":")) {
                     String term = line.substring(0, line.indexOf(':'));
                     
-                    if (term.equals("NM"))
-                    {
-                        if (!first)
-                        {
-                            for (String staticTerm : STATIC_TERMS)
-                            {
+                    if (term.equals("NM")) {
+                        if (!first) {
+                            for (String staticTerm : STATIC_TERMS) {
                                 if (!staticTerm.equals("NM")) writer.print(",");
                                 
                                 writer.print(addQuotes(terms.get(staticTerm).replace(QUOTE, DOUBLE_QUOTE)));
@@ -83,8 +74,7 @@ public class BiographyParser extends Parser
                         terms.put("SA", "");
                         terms.put("WN", "");
                     }
-                    else
-                    {
+                    else {
                         if (terms.get(term).equals("")) terms.put(term, line.substring(term.length() + 1));
                         else terms.put(term, terms.get(term) + line.substring(term.length() + 1));
                     }
@@ -92,8 +82,7 @@ public class BiographyParser extends Parser
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -10,18 +10,14 @@ import java.util.regex.Pattern;
 /**
  * @author Sven Mark
  */
-public class CountryParser extends Parser
-{
-    public CountryParser(File file)
-    {
+public class CountryParser extends Parser {
+    public CountryParser(File file) {
         super(file);
     }
     
     @Override
-    public void parse()
-    {
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
-        {
+    public void parse() {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String pattern = "(.*?)\\s\\((.{4})(|/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
             Pattern p = Pattern.compile(pattern);
             
@@ -36,21 +32,18 @@ public class CountryParser extends Parser
             // Amount of lines till first data entry
             int linesBeforeList = 1;
             
-            while (((line = this.readLine()) != null))
-            {
+            while (((line = this.readLine()) != null)) {
                 if (!foundList && line.equals("COUNTRIES LIST")) foundList = true;
                 else if (foundList && linesBeforeList != 0) linesBeforeList--;
                 else if (foundList && line.startsWith("---------")) return;
                 
-                else if (linesBeforeList == 0 && line.length() > 0)
-                {
+                else if (linesBeforeList == 0 && line.length() > 0) {
                     // Go the next line, if line contains a series
                     if (line.startsWith(QUOTE)) continue;
                     
                     Matcher m = p.matcher(line);
                     
-                    if (m.matches())
-                    {
+                    if (m.matches()) {
                         // Skip line when group contains SUSPENDED
                         if (m.group(5).toUpperCase().contains("SUSPENDED")) continue;
                         
@@ -71,8 +64,7 @@ public class CountryParser extends Parser
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
