@@ -2,8 +2,10 @@ package com.janwilts.bigmovie.parser.parsers;
 
 import com.janwilts.bigmovie.parser.util.RomanNumeral;
 
-import java.io.*;
-import java.util.regex.*;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Everdien
@@ -12,11 +14,11 @@ public class SoundtrackParser extends Parser {
     public SoundtrackParser(File file) {
         super(file);
     }
-
+    
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            String titleMoviePattern = "#\\s(.*?)\\s\\((.{4})(|\\/(.*?))\\)";
+            String titleMoviePattern = "#\\s(.*?)\\s\\((.{4})(|/(.*?))\\)";
             Pattern mp = Pattern.compile(titleMoviePattern);
 
             /*
@@ -34,8 +36,8 @@ public class SoundtrackParser extends Parser {
             \2 --> year of movie
             \4 --> romans number (only movies with same title as year, but different movies are)
              */
-
-            String titleSongPattern = "\\-\\s\\\"(.*?)\\\"";
+            
+            String titleSongPattern = "-\\s\"(.*?)\"";
             Pattern sp = Pattern.compile(titleSongPattern);
 
             /*
@@ -48,58 +50,52 @@ public class SoundtrackParser extends Parser {
 
             \1 --> song title
              */
-
+            
             Boolean foundList = false;
             String line;
             String currentMovieTitle = "";
             String currentMovieYear = "";
             String currentRomanNumber = "";
             String currentSong = "";
-
+            
             while (((line = this.readLine()) != null)) {
-                if (!foundList && line.equals("SOUNDTRACKS")) {
-                    foundList = true;
-                }
+                if (!foundList && line.equals("SOUNDTRACKS")) foundList = true;
                 if (foundList) {
-
                     Matcher mm = mp.matcher(line);
-
+                    
                     if (mm.matches()) {
                         //go to next line if it's a serie
-                        if (mm.group(1).startsWith("\"")) {
-                            continue;
-                        }
-
+                        if (mm.group(1).startsWith(QUOTE)) continue;
+                        
                         currentMovieTitle = mm.group(1);
-                        if (mm.group(2).contains("?")) {
-                            currentMovieYear = "";
-                        } else {
-                            currentMovieYear = mm.group(2);
-                        }
-
-                        if (mm.group(4) == null) {
-                            currentRomanNumber = "0";
-                        } else {
-                            currentRomanNumber = Integer.toString(RomanNumeral.convert(mm.group(4)));
-                        }
-
+                        
+                        if (mm.group(2).contains("?")) currentMovieYear = "";
+                        else currentMovieYear = mm.group(2);
+                        
+                        if (mm.group(4) == null) currentRomanNumber = "0";
+                        else currentRomanNumber = Integer.toString(RomanNumeral.convert(mm.group(4)));
+                        
                         //got to next line
                         line = reader.readLine().trim();
+                        
                         //while line is not empty check for song matches
                         do {
                             Matcher sm = sp.matcher(line);
-
+                            
                             if (sm.matches()) {
                                 currentSong = sm.group(1);
-                                writer.println("\"" + currentMovieTitle + "\"," + currentMovieYear + "," + currentRomanNumber + ",\"" + currentSong + "\"");
+                                
+                                writer.println(String.join(",", addQuotes(currentMovieTitle), currentMovieYear, currentRomanNumber, addQuotes(currentSong)));
                             }
-
+                            
                             line = reader.readLine().trim();
-                        } while (!line.isEmpty());
+                        }
+                        while (!line.isEmpty());
                     }
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
