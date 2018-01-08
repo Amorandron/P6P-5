@@ -112,8 +112,7 @@ public class ActorParser extends Parser
                         }
                     }
                     
-                    //                    writer.println(QUOTE + currentActorName.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + currentActorOccurance + "," + gender + "," + QUOTE + currentFilm.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + currentYear + "," + yearOccurance + "," + QUOTE + currentRole.replace(QUOTE, DOUBLE_QUOTE) + QUOTE);
-                    writer.println(String.join(",", QUOTE + currentActorName.replace(QUOTE, DOUBLE_QUOTE) + QUOTE, currentActorOccurance + "", gender, QUOTE + currentFilm.replace(QUOTE, DOUBLE_QUOTE) + QUOTE, currentYear, yearOccurance + "", QUOTE + currentRole.replace(QUOTE, DOUBLE_QUOTE) + QUOTE));
+                    writer.println(String.join(",", addQuotes(currentActorName.replace(QUOTE, DOUBLE_QUOTE)), currentActorOccurance + "", gender, addQuotes(currentFilm.replace(QUOTE, DOUBLE_QUOTE)), currentYear, yearOccurance + "", addQuotes(currentRole.replace(QUOTE, DOUBLE_QUOTE))));
                 }
             }
         }

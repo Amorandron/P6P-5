@@ -66,9 +66,7 @@ public class CountryParser extends Parser
                         
                         country = m.group(6);
                         // Write all variables to a line in countries.csv
-//                        writer.println(QUOTE + movieName + QUOTE + "," + year + "," + iteration + "," + QUOTE + country + QUOTE);
-                        
-                        writer.println(String.join(",", QUOTE + movieName + QUOTE, year, iteration, QUOTE + country + QUOTE));
+                        writer.println(String.join(",", addQuotes(movieName), year, iteration, addQuotes(country)));
                     }
                 }
             }

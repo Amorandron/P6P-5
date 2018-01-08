@@ -51,11 +51,11 @@ public class BusinessParser extends Parser
             while ((line = this.readLine()) != null)
             {
                 if (line.trim().isEmpty()) continue;
-                if (line.startsWith("MV: ") && !(line.charAt(4) == '"')) movie = readMovie(line);
+                if (line.startsWith("MV: ") && !(line.charAt(4) == QUOTE_CHAR)) movie = readMovie(line);
                 else if (line.startsWith("BT: ")) budget = readBudget(line);
                 else if (line.startsWith("GR: ")) readGrossToMap(line, grossPerCountry);
                 
-                else if (line.equals("-------------------------------------------------------------------------------"))
+                else if (line.startsWith("--------------"))
                 {
                     if (!movie.isEmpty())
                     {
@@ -96,11 +96,6 @@ public class BusinessParser extends Parser
     private void writeLineToCSV(PrintWriter writer, String movie, double budget, String country, String date, double gross)
     {
         writer.println(String.join(",", addQuotes(movie), formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
-    }
-    
-    private String addQuotes(String input)
-    {
-        return QUOTE + input + QUOTE;
     }
     
     private String formatDouble(double amount)

@@ -45,7 +45,7 @@ public class BiographyParser extends Parser
                             {
                                 if (!staticTerm.equals("NM")) writer.print(",");
                                 
-                                writer.print(QUOTE + terms.get(staticTerm).replace(QUOTE, DOUBLE_QUOTE) + QUOTE);
+                                writer.print(addQuotes(terms.get(staticTerm).replace(QUOTE, DOUBLE_QUOTE)));
                             }
                             writer.print(NEW_LINE);
                         }

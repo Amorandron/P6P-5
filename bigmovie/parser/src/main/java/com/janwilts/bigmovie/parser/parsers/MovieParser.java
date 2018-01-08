@@ -8,60 +8,60 @@ import java.io.PrintWriter;
 /**
  * @author Jan
  */
-public class MovieParser extends Parser {
-
-    public MovieParser(File file) {
-        super(file); }
-
+public class MovieParser extends Parser
+{
+    
+    public MovieParser(File file)
+    {
+        super(file);
+    }
+    
     @Override
-    public void parse() {
+    public void parse()
+    {
         int linesBeforeList = 2;
         boolean foundList = false;
-
-        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
-            for(String line; (line = this.readLine()) != null; ) {
-                if(!foundList && line.equals("==========="))
-                    foundList = true;
-                if(foundList && linesBeforeList > 0)
-                    linesBeforeList--;
-                else if(foundList && line.equals(""))
-                    return;
-                else if(linesBeforeList == 0 && line.length() > 0) {
-                    if(line.equals("--------------------------------------------------------------------------------"))
-                        break;
-                    if(line.charAt(0) == '\"')
-                        continue;
-                    if(line.contains("{{SUSPENDED}}"))
-                        continue;
-
-                    String title;
-                    String year;
+        
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
+        {
+            for (String line; (line = this.readLine()) != null; )
+            {
+                if (!foundList && line.equals("===========")) foundList = true;
+                if (foundList && linesBeforeList > 0) linesBeforeList--;
+                else if (foundList && line.equals("")) return;
+                else if (linesBeforeList == 0 && line.length() > 0)
+                {
+                    if (line.startsWith("-----------------")) break;
+                    if (line.charAt(0) == QUOTE_CHAR) continue;
+                    if (line.contains("{{SUSPENDED}}")) continue;
+                    
+                    String year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
+                    String title = line.substring(0, line.lastIndexOf('(') - 1);
                     int occurrence = 0;
-
-                    year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
-                    title = line.substring(0, line.lastIndexOf('(')  - 1);
-
-                    if(year.charAt(0) == 'T' || year.charAt(0) == 'V') {
+                    
+                    if (year.charAt(0) == 'T' || year.charAt(0) == 'V')
+                    {
                         line = line.substring(0, line.lastIndexOf('('));
-                        title = line.substring(0, line.lastIndexOf('(')  - 1);
+                        title = line.substring(0, line.lastIndexOf('(') - 1);
                         year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                     }
-
-                    if(year.contains("/")) {
+                    
+                    if (year.contains("/"))
+                    {
                         occurrence = RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length()));
-                        year = year.substring(0,year.indexOf("/"));
+                        year = year.substring(0, year.indexOf("/"));
                     }
-
-                    if(year.equals("????"))
-                        year = "";
-
-                    writer.println(QUOTE + title.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," +
-                            year + "," + occurrence);
+                    
+                    if (year.equals("????")) year = "";
+                    
+                    writer.println(String.join(",", addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, occurrence + ""));
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
-
+        
     }
 }
