@@ -33,7 +33,7 @@ public class RatingParser extends Parser{
                     line = line.substring(16);
                     line = line.trim();
 
-                    if(line.contains("\""))
+                    if(line.contains(QUOTE))
                         continue;
 
                     if(line.endsWith("}")) {
@@ -69,7 +69,7 @@ public class RatingParser extends Parser{
 
                     title = values[2].substring(0, values[2].lastIndexOf('(') - 1);
 
-                    writer.println("\"" + title.replace("\"", "\"\"") + "\"" + "," +
+                    writer.println(QUOTE + title.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," +
                     year + "," + occurance + "," + values[0] + "," + values[1]);
                 }
             }

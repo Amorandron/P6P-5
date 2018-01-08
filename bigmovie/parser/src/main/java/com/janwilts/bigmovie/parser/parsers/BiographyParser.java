@@ -9,54 +9,55 @@ import java.util.HashMap;
 /**
  * @author Yannick
  */
-public class BiographyParser extends Parser{
-    public BiographyParser(File file) {
+public class BiographyParser extends Parser
+{
+    public static String[] STATIC_TERMS = new String[]{"NM", "OC", "NK", "HT", "BG", "BY", "SP", "TR", "RN", "OW", "QU", "DB", "DD", "AT", "TM", "IT", "PT", "CV", "BO", "PI", "BT", "SA", "WN"};
+    
+    public BiographyParser(File file)
+    {
         super(file);
     }
-
+    
     @Override
-    public void parse() {
-        try(PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))  {
-
+    public void parse()
+    {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
+        {
             HashMap<String, String> terms = new HashMap<>();
-            String[] staticTerms = new String[] {"NM", "OC", "NK", "HT", "BG", "BY", "SP", "TR", "RN", "OW", "QU", "DB",
-                                                 "DD", "AT", "TM", "IT", "PT", "CV", "BO", "PI", "BT", "SA", "WN"};
-
+            
             int linesBeforeList = 2;
             boolean foundList = false;
             boolean first = true;
-
-            for(String line; (line = this.readLine()) != null; ) {
-                if(!foundList && line.contains("BIOGRAPHY LIST")) {
-                    foundList = true;
-                }
-                else if(foundList && linesBeforeList != 0) {
-                    linesBeforeList--;
-                }
-                else if(foundList && line.length() > 0 && line.contains(":")) {
+            
+            for (String line; (line = this.readLine()) != null; )
+            {
+                if (!foundList && line.contains("BIOGRAPHY LIST")) foundList = true;
+                else if (foundList && linesBeforeList != 0) linesBeforeList--;
+                else if (foundList && line.length() > 0 && line.contains(":"))
+                {
                     String term = line.substring(0, line.indexOf(':'));
-
-                    if(term.equals("NM")) {
-                        if(!first) {
-                            for(String staticTerm : staticTerms) {
-                                if(!staticTerm.equals("NM")) {
-                                    writer.print(",");
-                                }
-                                writer.print("\"" + terms.get(staticTerm).replace("\"", "\"\"") + "\"");
+                    
+                    if (term.equals("NM"))
+                    {
+                        if (!first)
+                        {
+                            for (String staticTerm : STATIC_TERMS)
+                            {
+                                if (!staticTerm.equals("NM")) writer.print(",");
+                                
+                                writer.print(QUOTE + terms.get(staticTerm).replace(QUOTE, DOUBLE_QUOTE) + QUOTE);
                             }
-                            writer.print("\n");
+                            writer.print(NEW_LINE);
                         }
-                        else {
-                            first = false;
-                        }
-
+                        else first = false;
+                        
                         String currentName = line.substring(term.length() + 1);
-
+                        
                         String[] result = RomanNumeral.getFromActorName(currentName);
-
+                        
                         currentName = result[0];
                         String occurance = result[1];
-
+                        
                         terms = new HashMap<>();
                         terms.put("NM", currentName);
                         terms.put("OC", occurance);
@@ -82,18 +83,17 @@ public class BiographyParser extends Parser{
                         terms.put("SA", "");
                         terms.put("WN", "");
                     }
-                    else {
-                        if(terms.get(term).equals("")) {
-                            terms.put(term, line.substring(term.length() + 1));
-                        }
-                        else {
-                            terms.put(term, terms.get(term) + line.substring(term.length() + 1));
-                        }
+                    else
+                    {
+                        if (terms.get(term).equals("")) terms.put(term, line.substring(term.length() + 1));
+                        else terms.put(term, terms.get(term) + line.substring(term.length() + 1));
                     }
-
+                    
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }

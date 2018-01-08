@@ -50,7 +50,7 @@ public class MpaaParser extends Parser{
                             year = year.substring(0,year.indexOf("/"));
                         }
 
-                        writer.print("\"" + title.replace("\"", "\"\"") + "\"" + "," + year + ","
+                        writer.print(QUOTE + title.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + year + ","
                         + occurrence + ",");
 
                     }
@@ -66,8 +66,8 @@ public class MpaaParser extends Parser{
                             line = line.substring(line.indexOf(" ") + 1).trim();
                             reason = line;
 
-                            writer.print("\"" + rating.replace("\"", "\"\"") + "\"" + "," + "\"" +
-                                    reason.replace("\"", "\"\""));
+                            writer.print(QUOTE + rating.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + QUOTE +
+                                    reason.replace(QUOTE, DOUBLE_QUOTE));
                         }
                         else {
                             reason = line.substring(4);

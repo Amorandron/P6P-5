@@ -13,6 +13,12 @@ import java.util.zip.ZipInputStream;
  * @author Yannick & Jan
  */
 public abstract class Parser {
+    public static final String NEW_LINE = "\n";
+    public static final String QUOTE = "\"";
+    public static final String DOUBLE_QUOTE = "\"\"";
+    public static final String TAB = "\t";
+    public static final char TAB_CHAR ='\t';
+    
     private static Parser currentParser;
 
     protected File file;

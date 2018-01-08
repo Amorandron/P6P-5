@@ -13,8 +13,6 @@ import java.util.Map;
  */
 public class BusinessParser extends Parser
 {
-    public static final String QUOTE = "\"";
-    
     private static final Map<String, String> MONTH_TO_NUMBER = new HashMap<>();
     
     static
@@ -102,7 +100,7 @@ public class BusinessParser extends Parser
     
     private String addQuotes(String input)
     {
-        return "\"" + input + "\"";
+        return QUOTE + input + QUOTE;
     }
     
     private String formatDouble(double amount)

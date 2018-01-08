@@ -10,17 +10,21 @@ import java.util.regex.Pattern;
 /**
  * @author Sven Mark
  */
-public class CountryParser extends Parser {
-    public CountryParser(File file) {
+public class CountryParser extends Parser
+{
+    public CountryParser(File file)
+    {
         super(file);
     }
-
+    
     @Override
-    public void parse() {
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            String pattern = "(.*?)\\s\\((.{4})(|\\/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
+    public void parse()
+    {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
+        {
+            String pattern = "(.*?)\\s\\((.{4})(|/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
             Pattern p = Pattern.compile(pattern);
-
+            
             // Initialize variables
             String line;
             String movieName;
@@ -28,57 +32,49 @@ public class CountryParser extends Parser {
             String iteration;
             String country;
             Boolean foundList = false;
-
+            
             // Amount of lines till first data entry
             int linesBeforeList = 1;
-
-            while (((line = this.readLine()) != null)) {
-                if (!foundList && line.equals("COUNTRIES LIST")) {
-                    foundList = true;
-                } else if (foundList && linesBeforeList != 0) {
-                    linesBeforeList--;
-                } else if (foundList && line.equals("-----------------------------------------------------------------------------")) {
-                    return;
-                } else if (linesBeforeList == 0 && line.length() > 0) {
-
+            
+            while (((line = this.readLine()) != null))
+            {
+                if (!foundList && line.equals("COUNTRIES LIST")) foundList = true;
+                else if (foundList && linesBeforeList != 0) linesBeforeList--;
+                else if (foundList && line.startsWith("---------")) return;
+                
+                else if (linesBeforeList == 0 && line.length() > 0)
+                {
                     // Go the next line, if line contains a series
-                    if (line.startsWith("\"")) {
-                        continue;
-                    }
-
+                    if (line.startsWith(QUOTE)) continue;
+                    
                     Matcher m = p.matcher(line);
-
-                    if (m.matches()) {
-
+                    
+                    if (m.matches())
+                    {
                         // Skip line when group contains SUSPENDED
-                        if (m.group(5).toUpperCase().contains("SUSPENDED")) {
-                            continue;
-                        }
-
+                        if (m.group(5).toUpperCase().contains("SUSPENDED")) continue;
+                        
                         movieName = m.group(1);
-
+                        
                         // Set year variable, if year is unknown return ""
-                        if (m.group(2).contains("?")) {
-                            year = "";
-                        } else {
-                            year = m.group(2);
-                        }
-
+                        if (m.group(2).contains("?")) year = "";
+                        else year = m.group(2);
+                        
                         // Convert Roman number to integer
-                        if (m.group(4) == null) {
-                            iteration = "0";
-                        } else {
-                            iteration = Integer.toString(RomanNumeral.convert(m.group(4)));
-                        }
-
+                        if (m.group(4) == null) iteration = "0";
+                        else iteration = Integer.toString(RomanNumeral.convert(m.group(4)));
+                        
                         country = m.group(6);
-
                         // Write all variables to a line in countries.csv
-                        writer.println("\"" + movieName + "\"" + "," + year + "," + iteration + "," + "\"" + country + "\"");
+//                        writer.println(QUOTE + movieName + QUOTE + "," + year + "," + iteration + "," + QUOTE + country + QUOTE);
+                        
+                        writer.println(String.join(",", QUOTE + movieName + QUOTE, year, iteration, QUOTE + country + QUOTE));
                     }
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }

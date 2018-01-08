@@ -7,100 +7,118 @@ import java.io.*;
 /**
  * @author Yannick
  */
-public class ActorParser extends Parser {
-    public ActorParser(File file) {
+public class ActorParser extends Parser
+{
+    public ActorParser(File file)
+    {
         super(file);
     }
-
+    
     @Override
-    public void parse() {
-        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
+    public void parse()
+    {
+        try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8"))
+        {
             String currentActorName = "";
             int currentActorOccurance = 0;
-
-            char gender = this.csv.getName().equals("actors.csv") ? 'M' : 'F';
-
+            
+            String gender = this.csv.getName().equals("actors.csv") ? "M" : "F";
+            
             int linesBeforeList = 4;
             boolean foundList = false;
-
-            for (String line; (line = this.readLine()) != null; ) {
-                if (!foundList && line.contains("THE " + file.getName().substring(0, file.getName().indexOf('.')).toUpperCase() + " LIST")) {
+            
+            for (String line; (line = this.readLine()) != null; )
+            {
+                if (!foundList && line.contains("THE " + file.getName().substring(0, file.getName().indexOf('.')).toUpperCase() + " LIST"))
+                {
                     foundList = true;
-                } else if (foundList && linesBeforeList != 0) {
+                }
+                else if (foundList && linesBeforeList != 0)
+                {
                     linesBeforeList--;
-                } else if (foundList && line.equals("-----------------------------------------------------------------------------")) {
+                }
+                else if (foundList && line.equals("-----------------------------------------------------------------------------"))
+                {
                     return;
-                } else if (linesBeforeList == 0 && line.length() > 0) {
-                    if (line.charAt(0) != '\t') {
-
-                        currentActorName = line.substring(0, line.indexOf("\t")).trim();
-
+                }
+                else if (linesBeforeList == 0 && line.length() > 0)
+                {
+                    if (line.charAt(0) != TAB_CHAR)
+                    {
+                        
+                        currentActorName = line.substring(0, line.indexOf(TAB)).trim();
+                        
                         String[] result = RomanNumeral.getFromActorName(currentActorName);
-
+                        
                         currentActorName = result[0];
                         currentActorOccurance = Integer.parseInt(result[1]);
-
-                        line = line.substring(line.indexOf("\t"));
+                        
+                        line = line.substring(line.indexOf(TAB));
                     }
-
-                    if (line.contains("\"")) {
+                    
+                    if (line.contains(QUOTE))
+                    {
                         continue;
                     }
-
+                    
                     String currentFilm;
                     String currentRole = "";
                     String currentYear = "";
                     int yearOccurance = 0;
-
-                    if (line.contains("[")) {
-                        currentFilm = line.substring(line.indexOf("\t"), line.indexOf("[")).trim();
+                    
+                    if (line.contains("["))
+                    {
+                        currentFilm = line.substring(line.indexOf(TAB), line.indexOf("[")).trim();
                         currentRole = line.substring(line.indexOf("[") + 1, line.indexOf("]", line.indexOf("["))).trim();
-                    } else if (line.contains("<")) {
-                        currentFilm = line.substring(line.indexOf("\t"), line.indexOf("<")).trim();
-                    } else {
-                        currentFilm = line.substring(line.indexOf("\t"));
                     }
-
+                    else if (line.contains("<"))
+                    {
+                        currentFilm = line.substring(line.indexOf(TAB), line.indexOf("<")).trim();
+                    }
+                    else
+                    {
+                        currentFilm = line.substring(line.indexOf(TAB));
+                    }
+                    
                     String searchLine = line;
-
-                    while (searchLine.contains("(")) {
+                    
+                    while (searchLine.contains("("))
+                    {
                         int leftCommaInd = searchLine.indexOf("(");
                         int rightCommaInd = searchLine.indexOf(")", searchLine.indexOf("(") + 1);
-
-                        if (rightCommaInd == -1) {
+                        
+                        if (rightCommaInd == -1)
+                        {
                             break;
                         }
-
-                        if (searchLine.contains("(") && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
-                                (rightCommaInd - leftCommaInd == 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
-                                        Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
-                                (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
-                                        searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' ||
-                                        searchLine.charAt(rightCommaInd - 1) == 'X') || (
-                                rightCommaInd - leftCommaInd <= 5 && searchLine.charAt(rightCommaInd - 1) == '?' &&
-                                        searchLine.charAt(leftCommaInd + 1) == '?')) {
-
-                            currentFilm = line.substring(line.indexOf("\t"), line.indexOf("(", line.indexOf(searchLine))).trim();
-
+                        
+                        if (searchLine.contains("(") && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && (rightCommaInd - leftCommaInd == 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && Character.isDigit(searchLine.charAt(rightCommaInd - 1))) || (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' || searchLine.charAt(rightCommaInd - 1) == 'X') || (rightCommaInd - leftCommaInd <= 5 && searchLine.charAt(rightCommaInd - 1) == '?' && searchLine.charAt(leftCommaInd + 1) == '?'))
+                        {
+                            
+                            currentFilm = line.substring(line.indexOf(TAB), line.indexOf("(", line.indexOf(searchLine))).trim();
+                            
                             currentYear = searchLine.substring(searchLine.indexOf("(") + 1, searchLine.indexOf(")", searchLine.indexOf("(") + 1));
-                            if(currentYear.contains("/")) {
+                            if (currentYear.contains("/"))
+                            {
                                 yearOccurance = RomanNumeral.convert(currentYear.substring(currentYear.indexOf("/") + 1, currentYear.length()));
-                                currentYear = currentYear.substring(0,currentYear.indexOf("/"));
+                                currentYear = currentYear.substring(0, currentYear.indexOf("/"));
                             }
-                            if(currentYear.equals("????"))
-                                currentYear = "";
+                            if (currentYear.equals("????")) currentYear = "";
                             break;
-                        } else {
+                        }
+                        else
+                        {
                             searchLine = searchLine.substring(searchLine.indexOf("(") + 1);
                         }
                     }
-
-                    writer.println("\"" + currentActorName.replace("\"", "\"\"") + "\"" + "," + currentActorOccurance + "," + gender + "," +
-                            "\"" + currentFilm.replace("\"", "\"\"") + "\"" + "," + currentYear
-                            + "," + yearOccurance + "," + "\"" + currentRole.replace("\"", "\"\"") + "\"");
+                    
+                    //                    writer.println(QUOTE + currentActorName.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + currentActorOccurance + "," + gender + "," + QUOTE + currentFilm.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + currentYear + "," + yearOccurance + "," + QUOTE + currentRole.replace(QUOTE, DOUBLE_QUOTE) + QUOTE);
+                    writer.println(String.join(",", QUOTE + currentActorName.replace(QUOTE, DOUBLE_QUOTE) + QUOTE, currentActorOccurance + "", gender, QUOTE + currentFilm.replace(QUOTE, DOUBLE_QUOTE) + QUOTE, currentYear, yearOccurance + "", QUOTE + currentRole.replace(QUOTE, DOUBLE_QUOTE) + QUOTE));
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }

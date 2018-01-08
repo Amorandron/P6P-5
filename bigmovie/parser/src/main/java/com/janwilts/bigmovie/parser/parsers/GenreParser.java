@@ -51,7 +51,7 @@ public class GenreParser extends Parser {
                 if (foundList) {
 
                     // Go to next line if it's a show
-                    if (line.startsWith("\"")) {
+                    if (line.startsWith(QUOTE)) {
                         continue;
                     }
 
@@ -76,7 +76,7 @@ public class GenreParser extends Parser {
                             currentRomanNumber = Integer.toString(RomanNumeral.convert(m.group(4)));
                         }
 
-                        writer.println("\"" + currentTitle + "\"," + currentYear + "," + currentRomanNumber + ",\"" + currentGenre + "\"");
+                        writer.println(QUOTE + currentTitle + "\"," + currentYear + "," + currentRomanNumber + ",\"" + currentGenre + QUOTE);
                     }
                 }
             }

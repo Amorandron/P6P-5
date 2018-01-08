@@ -66,7 +66,7 @@ public class SoundtrackParser extends Parser {
 
                     if (mm.matches()) {
                         //go to next line if it's a serie
-                        if (mm.group(1).startsWith("\"")) {
+                        if (mm.group(1).startsWith(QUOTE)) {
                             continue;
                         }
 
@@ -91,7 +91,7 @@ public class SoundtrackParser extends Parser {
 
                             if (sm.matches()) {
                                 currentSong = sm.group(1);
-                                writer.println("\"" + currentMovieTitle + "\"," + currentMovieYear + "," + currentRomanNumber + ",\"" + currentSong + "\"");
+                                writer.println(QUOTE + currentMovieTitle + "\"," + currentMovieYear + "," + currentRomanNumber + ",\"" + currentSong + QUOTE);
                             }
 
                             line = reader.readLine().trim();
