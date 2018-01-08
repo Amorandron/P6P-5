@@ -30,13 +30,8 @@ public class ActorParser extends Parser {
                 else if (foundList && line.startsWith("-----------------------")) return;
                 else if (linesBeforeList == 0 && line.length() > 0) {
                     if (line.charAt(0) != TAB_CHAR) {
-                        try{
-                            currentActorName = line.substring(0, line.indexOf(TAB)).trim();
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
+                        
+                        currentActorName = line.substring(0, line.indexOf(TAB)).trim();
                         
                         String[] result = RomanNumeral.getFromActorName(currentActorName);
                         
