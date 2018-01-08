@@ -30,15 +30,14 @@ public class ActorParser extends Parser {
                 else if (foundList && line.equals("-----------------------")) return;
                 else if (linesBeforeList == 0 && line.length() > 0) {
                     if (line.charAt(0) != TAB_CHAR) {
-                        
-                        currentActorName = line.substring(0, line.indexOf(TAB)).trim();
+                        currentActorName = line.substring(0, line.indexOf(TAB_CHAR)).trim();
                         
                         String[] result = RomanNumeral.getFromActorName(currentActorName);
                         
                         currentActorName = result[0];
                         currentActorOccurance = Integer.parseInt(result[1]);
                         
-                        line = line.substring(line.indexOf(TAB));
+                        line = line.substring(line.indexOf(TAB_CHAR));
                     }
                     
                     if (line.contains(QUOTE)) {
@@ -53,6 +52,9 @@ public class ActorParser extends Parser {
                     if (line.contains("[")) {
                         currentFilm = line.substring(line.indexOf(TAB), line.indexOf("[")).trim();
                         currentRole = line.substring(line.indexOf("[") + 1, line.indexOf("]", line.indexOf("["))).trim();
+
+                        if(currentRole.startsWith("Undetermined"))
+                            currentRole = "";
                     }
                     else if (line.contains("<")) {
                         currentFilm = line.substring(line.indexOf(TAB), line.indexOf("<")).trim();
@@ -68,14 +70,12 @@ public class ActorParser extends Parser {
                         int rightCommaInd = searchLine.indexOf(")", searchLine.indexOf("(") + 1);
                         
                         if (rightCommaInd == -1) break;
-                        
-                        //@formatter:off
+
                         if (searchLine.contains("(") &&
                                 Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                 (rightCommaInd - leftCommaInd == 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
                                 (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' || searchLine.charAt(rightCommaInd - 1) == 'X') ||
                                 (rightCommaInd - leftCommaInd <= 5 && searchLine.charAt(rightCommaInd - 1) == '?' && searchLine.charAt(leftCommaInd + 1) == '?')) {
-                        //@formatter:on
     
                             currentFilm = line.substring(line.indexOf(TAB), line.indexOf("(", line.indexOf(searchLine))).trim();
     
