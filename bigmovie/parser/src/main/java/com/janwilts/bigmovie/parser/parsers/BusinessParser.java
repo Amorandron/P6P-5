@@ -1,11 +1,14 @@
 package com.janwilts.bigmovie.parser.parsers;
 
 import com.janwilts.bigmovie.parser.util.CurrencyConverter;
+import com.janwilts.bigmovie.parser.util.RomanNumeral;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +40,8 @@ public class BusinessParser extends Parser {
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String movie = ""; //movie
+            String year = ""; //release date
+            String occurence = ""; //occurence this year
             double budget = 0; //budget in USD
             
             /*Map<Country, Map<Date, Amount>>*/
@@ -45,13 +50,18 @@ public class BusinessParser extends Parser {
             String line;
             while ((line = this.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
-                if (line.startsWith("MV: ") && !(line.charAt(4) == QUOTE_CHAR)) movie = readMovie(line);
+                if (line.startsWith("MV: ") && !(line.charAt(4) == QUOTE_CHAR)) {
+                    List<String> movieData = readMovie(line);
+                    movie = movieData.get(0);
+                    year = movieData.get(1);
+                    occurence = movieData.get(2);
+                }
                 else if (line.startsWith("BT: ")) budget = readBudget(line);
                 else if (line.startsWith("GR: ")) readGrossToMap(line, grossPerCountry);
                 
                 else if (line.startsWith("--------------")) {
                     if (!movie.isEmpty()) {
-                        writeFileToCSV(writer, movie, budget, grossPerCountry);
+                        writeFileToCSV(writer, movie, year, occurence, budget, grossPerCountry);
                         
                         movie = "";
                         budget = 0;
@@ -66,35 +76,49 @@ public class BusinessParser extends Parser {
         }
     }
     
-    private void writeFileToCSV(PrintWriter writer, String movie, double budget, Map<String, Map<String, Double>> grossPerCountry) {
-        if (grossPerCountry.isEmpty()) writeLineToCSV(writer, movie, budget, "", "", 0);
+    private void writeFileToCSV(PrintWriter writer, String movie, String year, String occurence, double budget, Map<String, Map<String, Double>> grossPerCountry) {
+        if (grossPerCountry.isEmpty()) writeLineToCSV(writer, movie, year, occurence, budget, "", "", 0);
         else {
             for (Map.Entry<String, Map<String, Double>> grossPerCountryEntry : grossPerCountry.entrySet()) {
                 String country = grossPerCountryEntry.getKey();
                 for (Map.Entry<String, Double> grossPerDateEntry : grossPerCountryEntry.getValue().entrySet()) {
                     String date = grossPerDateEntry.getKey();
                     Double gross = grossPerDateEntry.getValue();
-                    writeLineToCSV(writer, movie, budget, country, date, gross);
+                    writeLineToCSV(writer, movie, year, occurence, budget, country, date, gross);
                 }
             }
         }
     }
     
-    private void writeLineToCSV(PrintWriter writer, String movie, double budget, String country, String date, double gross) {
-        writer.println(String.join(",", addQuotes(movie), formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
+    private void writeLineToCSV(PrintWriter writer, String movie, String year, String occurence, double budget, String country, String date, double gross) {
+        writer.println(String.join(",", addQuotes(movie), year, occurence, formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
     }
     
     private String formatDouble(double amount) {
-        return amount == 0 ? "" : String.format("%.2f", amount).replace(".00", "");
+        return amount == 0 ? "" : String.format("%.2f", amount).replace(",", ".").replace(".00", "");
     }
     
-    private String readMovie(String line) {
-        String movie = line.substring(4, line.length());
+    private List<String> readMovie(String line) {
+        line = line.replace("(TV)", "");
+        line = line.replace("(V)", "");
         
-        movie = movie.replace("(TV)", "");
-        movie = movie.replace("(V)", "");
+        String movie = line.substring(4, line.lastIndexOf("("));
+        movie = movie.trim();
         
-        return movie;
+        String yearAndOccurence = line.substring(line.lastIndexOf("(") + 1, line.lastIndexOf(")"));
+        
+        String year = yearAndOccurence;
+        String occurence = "";
+        
+        if (yearAndOccurence.contains("/")) {
+            String[] yearOccurenceSplit = yearAndOccurence.split("/");
+            year = yearOccurenceSplit[0];
+            occurence = RomanNumeral.convert(yearOccurenceSplit[1]) + "";
+        }
+        
+        if (year.equals("????")) year = "";
+        
+        return Arrays.asList(movie, year, occurence);
     }
     
     private double readBudget(String line) {
