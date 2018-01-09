@@ -3,16 +3,23 @@ package com.janwilts.bigmovie.parser.inserters;
 import com.janwilts.bigmovie.parser.Main;
 import com.janwilts.bigmovie.parser.Parsable;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class Inserter {
-    private static final String[] order = new String[] {"movie", "actor", "country", "business", "genre", "soundtrack"};
+    private static final String[] order = new String[] {"movies", "actors", "countries", "business", "genres", "soundtracks"};
 
-    protected BufferedReader reader;
     protected DatabaseConnection connection;
 
     public static void insertFiles(DatabaseConnection connection) {
@@ -39,15 +46,31 @@ public abstract class Inserter {
 
     public Inserter(File file, DatabaseConnection connection) {
         this.connection = connection;
-        try {
-            this.reader = new BufferedReader(new FileReader(file));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    public String[] nextLine() throws IOException {
-        return reader.readLine().split(",");
+    protected void executeFile(String file, String csv, String delimiter) throws IOException {
+        URL url = this.getClass().getClassLoader().getResource("/scripts/" + file);
+        File sqlFile = null;
+        try {
+            sqlFile = new File(Objects.requireNonNull(url).toURI());
+        } catch (URISyntaxException e) {
+            sqlFile = new File(Objects.requireNonNull(url).getPath());
+        }
+        String sql = FileUtils.readFileToString(sqlFile, "UTF-8");
+        sql.replaceAll("\\{\\{csv}}", csv);
+        sql.replaceAll("\\{\\{delimiter}}", delimiter);
+
+        List<String> queries = Arrays.stream(sql.split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
+
+        for(String query : queries) {
+            try {
+                connection.execute(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     abstract void insert();

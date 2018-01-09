@@ -53,7 +53,7 @@ public class RatingParser extends Parser {
                     
                     title = values[2].substring(0, values[2].lastIndexOf('(') - 1);
                     
-                    writer.println(String.join(",", addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, occurance + "", values[0], values[1]));
+                    writer.println(String.join(DELIMITER, addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, occurance + "", values[0], values[1]));
                 }
             }
         }

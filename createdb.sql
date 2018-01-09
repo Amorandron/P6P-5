@@ -1,4 +1,6 @@
-\c bigmovie
+\c bigmovie;
+
+DROP SCHEMA IF EXISTS insertion;
 
 -- Reset queries;
 DROP TABLE IF EXISTS movie_country;
@@ -34,9 +36,12 @@ CREATE DATABASE bigmovie;
 
 \c bigmovie;
 
+CREATE SCHEMA insertion;
+
 -- Revoke all permissions to be reset later
 REVOKE ALL ON DATABASE bigmovie FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA insertion FROM PUBLIC;
 
 -- Make users able to connect
 GRANT CONNECT ON DATABASE bigmovie TO bigmovie_admin;
@@ -44,17 +49,27 @@ GRANT CONNECT ON DATABASE bigmovie TO bigmovie_ro;
 
 GRANT USAGE ON SCHEMA public TO bigmovie_admin;
 GRANT USAGE ON SCHEMA public TO bigmovie_ro;
+GRANT USAGE ON SCHEMA insertion TO bigmovie_admin;
+GRANT USAGE ON SCHEMA insertion TO bigmovie_ro;
 
 -- Give superuser access to everything
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLES TO bigmovie_admin;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, UPDATE ON SEQUENCES TO bigmovie_admin;
+ALTER DEFAULT PRIVILEGES IN SCHEMA insertion
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLES TO bigmovie_admin;
+ALTER DEFAULT PRIVILEGES IN SCHEMA insertion
+GRANT SELECT, UPDATE ON SEQUENCES TO bigmovie_admin;
 
 -- Give read only user only access to selecting
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT ON TABLES TO bigmovie_ro;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT SELECT ON SEQUENCES TO bigmovie_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA insertion
+GRANT SELECT ON TABLES TO bigmovie_ro;
+ALTER DEFAULT PRIVILEGES IN SCHEMA insertion
 GRANT SELECT ON SEQUENCES TO bigmovie_ro;
 
 CREATE SEQUENCE movie_id_seq;

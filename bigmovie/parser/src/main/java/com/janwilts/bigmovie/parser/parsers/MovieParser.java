@@ -46,7 +46,7 @@ public class MovieParser extends Parser {
                     
                     if (year.equals("????")) year = "";
                     
-                    writer.println(String.join(",", addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, occurrence + ""));
+                    writer.println(String.join(DELIMITER, addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, occurrence + ""));
                 }
             }
         }

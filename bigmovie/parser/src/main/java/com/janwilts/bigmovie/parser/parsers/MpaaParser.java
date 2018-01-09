@@ -60,7 +60,7 @@ public class MpaaParser extends Parser {
                             line = line.substring(line.indexOf(" ") + 1).trim();
                             reason = line;
                             
-                            writer.print(QUOTE + rating.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + QUOTE + reason.replace(QUOTE, DOUBLE_QUOTE));
+                            writer.print(QUOTE + rating.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + DELIMITER + QUOTE + reason.replace(QUOTE, DOUBLE_QUOTE));
                         }
                         else {
                             reason = line.substring(4);

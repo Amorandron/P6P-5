@@ -98,7 +98,7 @@ public class ActorParser extends Parser {
                         }
                     }
                     
-                    writer.println(String.join(",", addQuotes(currentActorName.replace(QUOTE, DOUBLE_QUOTE)), currentActorOccurance + "", gender, addQuotes(currentFilm.replace(QUOTE, DOUBLE_QUOTE)), currentYear, yearOccurance + "", addQuotes(currentRole.replace(QUOTE, DOUBLE_QUOTE))));
+                    writer.println(String.join(DELIMITER, addQuotes(currentActorName.replace(QUOTE, DOUBLE_QUOTE)), currentActorOccurance + "", gender, addQuotes(currentFilm.replace(QUOTE, DOUBLE_QUOTE)), currentYear, yearOccurance + "", addQuotes(currentRole.replace(QUOTE, DOUBLE_QUOTE))));
                 }
             }
         }
