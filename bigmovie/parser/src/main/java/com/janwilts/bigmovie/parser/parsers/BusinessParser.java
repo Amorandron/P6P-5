@@ -91,7 +91,7 @@ public class BusinessParser extends Parser {
     }
     
     private void writeLineToCSV(PrintWriter writer, String movie, String year, String occurence, double budget, String country, String date, double gross) {
-        writer.println(String.join(",", addQuotes(movie), year, occurence, formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
+        writer.println(String.join(DELIMITER, addQuotes(movie), year, occurence, formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
     }
     
     private String formatDouble(double amount) {

@@ -34,7 +34,7 @@ public class BiographyParser extends Parser {
                     if (term.equals("NM")) {
                         if (!first) {
                             for (String staticTerm : STATIC_TERMS) {
-                                if (!staticTerm.equals("NM")) writer.print(",");
+                                if (!staticTerm.equals("NM")) writer.print(DELIMITER);
                                 
                                 writer.print(addQuotes(terms.get(staticTerm).replace(QUOTE, DOUBLE_QUOTE)));
                             }

@@ -18,7 +18,6 @@ public class DatabaseConnection {
     private Boolean status;
 
     private PgConnection connection;
-    private PreparedStatement statement;
 
     public DatabaseConnection(String host, Integer port, String database, String username, String password) {
         if(Strings.isNullOrEmpty(host) ||
@@ -50,7 +49,6 @@ public class DatabaseConnection {
 
     public void close() throws SQLException {
         connection.close();
-        statement.close();
     }
 
     private Boolean testTables(Statement testStatement) throws SQLException {
@@ -76,7 +74,9 @@ public class DatabaseConnection {
                 .collect(Collectors.toList()));
     }
 
-    public void setupPreparedInsert() {
-
+    public void execute(String query) throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.execute(query);
+        statement.close();
     }
 }

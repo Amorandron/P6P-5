@@ -12,6 +12,7 @@ import java.util.zip.ZipInputStream;
  * @author Yannick & Jan
  */
 public abstract class Parser {
+    public static final String DELIMITER = ",";
     public static final String NEW_LINE = "\n";
     public static final String QUOTE = "\"";
     public static final char QUOTE_CHAR = '\"';

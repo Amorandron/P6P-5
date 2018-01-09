@@ -66,7 +66,7 @@ public class GenreParser extends Parser {
                         if (m.group(4) == null) currentRomanNumber = "0";
                         else currentRomanNumber = Integer.toString(RomanNumeral.convert(m.group(4)));
                         
-                        writer.println(String.join(",", addQuotes(currentTitle), currentYear, currentRomanNumber, addQuotes(currentGenre)));
+                        writer.println(String.join(DELIMITER, addQuotes(currentTitle), currentYear, currentRomanNumber, addQuotes(currentGenre)));
                     }
                 }
             }
