@@ -28,7 +28,6 @@ public class Model{
         this.db = db;
     }
 
-
     public Observable query(DbClasses dbClass, String sql) {
 
         Class mappingClass = null;

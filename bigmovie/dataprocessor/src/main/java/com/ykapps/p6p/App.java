@@ -10,6 +10,7 @@ import org.jooby.jdbc.Jdbc;
 import org.jooby.json.Jackson;
 import org.jooby.rx.Rx;
 import org.jooby.rx.RxJdbc;
+import org.rosuda.JRI.Rengine;
 import rx.Observable;
 
 /**
@@ -19,6 +20,8 @@ import rx.Observable;
 public class App extends Jooby {
 
     private Model model;
+
+    private Rengine re;
 
     {
         use(new Rx());
@@ -35,6 +38,12 @@ public class App extends Jooby {
 
         onStart(() -> {
             model = new Model(require(Database.class));
+
+            re=new Rengine();
+            // the engine creates R is a new thread, so we should wait until it's ready
+            if (!re.waitForR()) {
+                throw new Exception("Cannot load R");
+            }
         });
 
 

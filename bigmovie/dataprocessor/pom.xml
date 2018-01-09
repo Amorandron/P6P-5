@@ -51,6 +51,13 @@
       <version>1.2.3</version>
     </dependency>
 
+    <!-- R integration -->
+    <dependency>
+      <groupId>org.nuiton.thirdparty</groupId>
+      <artifactId>JRI</artifactId>
+      <version>0.9-9</version>
+    </dependency>
+
     <!-- logging -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -63,7 +70,6 @@
       <artifactId>jooby-apitool</artifactId>
       <version>1.2.3</version>
     </dependency>
-
 
     <!-- banner -->
     <dependency>
