@@ -20,7 +20,6 @@ public class Model{
         SOUNDTRACK,
         GROSS,
         COUNTRY,
-        TESTMODEL
     }
 
     private Database db;
@@ -28,7 +27,6 @@ public class Model{
     public Model(Database db) {
         this.db = db;
     }
-
 
     public Observable query(DbClasses dbClass, String sql) {
 
@@ -52,9 +50,6 @@ public class Model{
                 break;
             case COUNTRY:
                 mappingClass = Country.class;
-                break;
-            case TESTMODEL:
-                mappingClass = TestModel.class;
                 break;
         }
 

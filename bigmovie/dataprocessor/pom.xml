@@ -51,12 +51,25 @@
       <version>1.2.3</version>
     </dependency>
 
+    <!-- R integration -->
+    <dependency>
+      <groupId>org.nuiton.thirdparty</groupId>
+      <artifactId>JRI</artifactId>
+      <version>0.9-9</version>
+    </dependency>
+
     <!-- logging -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
     </dependency>
 
+    <!-- API tool -->
+    <dependency>
+      <groupId>org.jooby</groupId>
+      <artifactId>jooby-apitool</artifactId>
+      <version>1.2.3</version>
+    </dependency>
 
     <!-- banner -->
     <dependency>
@@ -77,6 +90,14 @@
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- Jaxb compatibility Java 9 -->
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>
