@@ -1,11 +1,10 @@
 package com.ykapps.p6p;
 
 import com.github.davidmoten.rx.jdbc.Database;
-import com.ykapps.p6p.models.Model;
-import com.ykapps.p6p.models.Movie;
-import com.ykapps.p6p.models.TestModel;
-import javafx.util.Pair;
+import com.ykapps.p6p.models.*;
 import org.jooby.Jooby;
+import org.jooby.Results;
+import org.jooby.apitool.ApiTool;
 import org.jooby.banner.Banner;
 import org.jooby.jdbc.Jdbc;
 import org.jooby.json.Jackson;
@@ -13,40 +12,88 @@ import org.jooby.rx.Rx;
 import org.jooby.rx.RxJdbc;
 import rx.Observable;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.List;
-
 /**
  * @author Yannick Kooistra
  */
 @SuppressWarnings("unchecked")
 public class App extends Jooby {
 
+    private Model model;
+
     {
         use(new Rx());
         use(new Jdbc("db"));
-
         use(new RxJdbc());
 
         use(new Jackson());
 
+        use(new ApiTool()
+            .raml("/api")
+            .filter(route -> !route.pattern().equals("/")));
+
         use(new Banner("Data Processor"));
 
-        get("/", () -> "Hello World!");
+        onStart(() -> {
+            model = new Model(require(Database.class));
+        });
 
-        get("/api", req -> {
-            Database db = require(Database.class);
 
-            Model model = new Model(db);
+        get("/", () -> {
+           return Results.redirect("/api");
+        });
 
+        get("/movies", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<TestModel> obs = model.query(Model.DbClasses.TESTMODEL, "SELECT * FROM test");
-            TestModel tm = obs.toBlocking().first();
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, "SELECT * FROM movie");
+            Movie movie = obs.toBlocking().first();
 
-            return tm;
+            return movie;
+        });
+
+        get("/actors", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, "SELECT * FROM actor");
+            Actor actor = obs.toBlocking().first();
+
+            return actor;
+        });
+
+        get("/countries", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT * FROM country");
+            Country country = obs.toBlocking().first();
+
+            return country;
+        });
+
+        get("/genres", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Genre> obs = model.query(Model.DbClasses.GENRE, "SELECT * FROM genre");
+            Genre genre = obs.toBlocking().first();
+
+            return genre;
+        });
+
+        get("/gross", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Gross> obs = model.query(Model.DbClasses.GROSS, "SELECT * FROM gross");
+            Gross gross = obs.toBlocking().first();
+
+            return gross;
+        });
+
+        get("/soundtracks", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Soundtrack> obs = model.query(Model.DbClasses.MOVIE, "SELECT * FROM soundtrack");
+            Soundtrack soundtrack = obs.toBlocking().first();
+
+            return soundtrack;
         });
     }
 
