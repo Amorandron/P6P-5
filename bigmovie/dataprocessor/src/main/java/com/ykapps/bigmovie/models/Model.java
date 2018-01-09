@@ -1,15 +1,7 @@
-package com.ykapps.p6p.models;
+package com.ykapps.bigmovie.models;
 
 import com.github.davidmoten.rx.jdbc.Database;
-import javafx.util.Pair;
 import rx.Observable;
-
-import javax.sql.DataSource;
-import javax.xml.crypto.Data;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class Model{
 

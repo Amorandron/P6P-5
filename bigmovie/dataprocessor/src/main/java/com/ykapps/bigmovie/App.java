@@ -1,7 +1,7 @@
-package com.ykapps.p6p;
+package com.ykapps.bigmovie;
 
 import com.github.davidmoten.rx.jdbc.Database;
-import com.ykapps.p6p.models.*;
+import com.ykapps.bigmovie.models.*;
 import org.jooby.Jooby;
 import org.jooby.Results;
 import org.jooby.apitool.ApiTool;

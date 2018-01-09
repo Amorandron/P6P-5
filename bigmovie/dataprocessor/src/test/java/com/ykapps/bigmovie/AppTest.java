@@ -1,4 +1,4 @@
-package com.ykapps.p6p;
+package com.ykapps.bigmovie;
 
 import static io.restassured.RestAssured.get;
 import static org.hamcrest.Matchers.equalTo;
