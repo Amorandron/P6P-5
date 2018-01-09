@@ -115,6 +115,9 @@ public class BusinessParser extends Parser {
             year = yearOccurenceSplit[0];
             occurence = RomanNumeral.convert(yearOccurenceSplit[1]) + "";
         }
+
+        if(occurence.equals(""))
+            occurence = "0";
         
         if (year.equals("????")) year = "";
         
