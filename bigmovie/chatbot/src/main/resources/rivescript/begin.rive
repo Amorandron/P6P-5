@@ -2,6 +2,7 @@
 ! var name = The IMDB Bot
 ! var age  = 0
 ! var mood = fine
+! var error = Sorry, I don't understand...
 
 // Substitutions
 ! sub i'm     = i am
@@ -30,4 +31,4 @@
 ! person you     = I
 ! person i       = you
 
-!sub film = movie
+! sub film = movie

@@ -2,12 +2,12 @@
 //+ (which|what) (movie|film) was the (most expensive|least expensive|cheapest) to record
 //- get,movie,record,most expensive
 
-+ (which|what) (movie|actor) *
-- <set type=<star2>> <@>
++ (which|what) (movie|actor) * {weight=10}
+- <set type=<star2>> {@ <star3>}
 
 + was the (most|least) (expensive|cheapest) to record
-* <get type> == movie => <set what=<star1><star2>>
-@ *
+* <get type> == movie => <set what=<star1><star2>> Type: <get type>
+- <bot error>
 
 //+ (which|what) (movie|actor) *
 //- <set type=<star2>> {@ <star3>}
