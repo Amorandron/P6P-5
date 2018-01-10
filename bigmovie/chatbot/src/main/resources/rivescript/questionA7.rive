@@ -1,0 +1,15 @@
+//Which movie was the most expensive to record?
++ which movie was the most expensive to record
+- get,movie,record,most expensive
+
++ which (movie|film) [*] (expensive|pricey|costly|cost a lot) [*] record
+@ which movie has been the most expensive to record
+
+//+ which (movie|film) *
+//- get,movie,<@>
+
+//+ * (expensive|pricey|costly|cost a lot) *
+//- expensive,<@>
+
+//+ * record *
+//- ,record

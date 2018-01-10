@@ -1,2 +1,38 @@
 + hello bot
 - Hello human.
+
++ hello
+* <get name> != undefined => {random}
+^ Hello there, <get name>!|
+^ Nice to see you again, <get name>!|
+^ Hey, <get name>!{/random}
+- Hello there!
+- Hi there!
+- Hello!
+
++ how are you
+- I am <bot mood>, how are you?
+
++ my name is *
+- <set name=<star>>It's nice to meet you, <get name>.
+
++ what is my name
+- Your name is <get name>, silly!
+
++ who am i
+@ what is my name
+
++ i am # years old
+- <set age=<star>>I will remember that you are <get age> years old.
+
++ how old am i
+- You are <get age> years old.
+
++ i have a question
+- Tell me your question, maybe i can answer it.
+
++ google *
+- Google search: <a href="http://google.com/search?q=<star>">Click Here</a>
+
++ *
+- Sorry, i don't understand...
