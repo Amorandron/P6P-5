@@ -32,3 +32,5 @@
 ! person i       = you
 
 ! sub film = movie
+
+//! array movie = movie film
