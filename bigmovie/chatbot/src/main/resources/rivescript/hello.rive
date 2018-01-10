@@ -1,2 +1,11 @@
 + hello bot
 - Hello human.
+
++ my name is *
+- Nice to meet you, <<star1>>!
+
++ what is the md5 hash of "*"
+- The hash of "<star>" is: <call>hash <star></call>
+
++ *
+- Sorry, I don't understand...

@@ -9,7 +9,7 @@ public class Main {
         RiveScript bot = new RiveScript(Config.utf8());
         bot.loadDirectory("src/main/resources/rivescript");
         bot.sortReplies();
-        
+        bot.setSubroutine("hash", new HashSubroutine());
 //        String response = bot.reply("user", "hello bot");
 //        System.out.println(response);
 //

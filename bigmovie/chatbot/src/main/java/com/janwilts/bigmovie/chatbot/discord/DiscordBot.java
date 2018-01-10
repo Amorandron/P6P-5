@@ -1,11 +1,17 @@
 package com.janwilts.bigmovie.chatbot.discord;
 
 import com.rivescript.RiveScript;
+import com.rivescript.macro.ObjectHandler;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.util.DiscordException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DiscordBot {
+    
+    public static String CLIENT_ID = "<@400614142534221824>";
     
     private IDiscordClient discordClient;
     private RiveScript bot;
