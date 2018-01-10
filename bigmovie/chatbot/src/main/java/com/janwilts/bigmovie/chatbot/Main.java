@@ -1,5 +1,6 @@
 package com.janwilts.bigmovie.chatbot;
 
+import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.rivescript.Config;
 import com.rivescript.RiveScript;
 
@@ -9,8 +10,10 @@ public class Main {
         bot.loadDirectory("src/main/resources/rivescript");
         bot.sortReplies();
         
-        String response = bot.reply("user", "hello bot");
-        System.out.println(response);
-        
+//        String response = bot.reply("user", "hello bot");
+//        System.out.println(response);
+//
+        DiscordBot discordBot = new DiscordBot(args[0], bot);
+        discordBot.initialize();
     }
 }
