@@ -17,7 +17,10 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
         if (event.getMessage().getContent().startsWith(DiscordBot.CLIENT_ID)) {
             
             String message = input.substring(DiscordBot.CLIENT_ID.length(), input.length()).trim();
-            if (message.equals("purge")) event.getChannel().bulkDelete();
+            if (message.equals("purge")) {
+                event.getChannel().bulkDelete();
+                bot.clearAllUservars();
+            }
             else {
                 String response = bot.reply(event.getAuthor().getDisplayName(event.getGuild()), message);
                 event.getChannel().sendMessage(response);
