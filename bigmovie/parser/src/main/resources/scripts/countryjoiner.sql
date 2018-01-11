@@ -25,6 +25,7 @@ INSERT INTO public.movie_country (
     JOIN insertion.country c
       ON c.title = m.title :: TEXT
          AND c.year = m.release_year :: TEXT
+         AND c.type = m.type :: TEXT
          AND c.occurence = m.occurence :: TEXT
   WHERE id = (SELECT pc.country_id
                       FROM public.country pc

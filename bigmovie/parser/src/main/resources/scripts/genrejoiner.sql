@@ -24,6 +24,7 @@ INSERT INTO public.movie_genre (
     JOIN insertion.genre g
       ON g.title = m.title :: TEXT
          AND g.year = m.release_year :: TEXT
+         AND g.type = m.type :: TEXT
          AND g.occurence = m.occurence :: TEXT
   WHERE id = (SELECT pg.genre_id
                       FROM public.genre pg

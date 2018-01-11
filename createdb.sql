@@ -86,6 +86,7 @@ CREATE TABLE public.movie (
   title            VARCHAR(255) NOT NULL,
   release_year     INTEGER,
   occurence        INTEGER      NOT NULL,
+  type             VARCHAR(2),
   -- From MPAA
   mpaa_rating      VARCHAR(5),
   mpaa_reason      TEXT,

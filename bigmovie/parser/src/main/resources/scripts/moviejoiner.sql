@@ -9,6 +9,7 @@ public.movie_genre;
 INSERT INTO public.movie (
   title,
   release_year,
+  type,
   occurence,
   mpaa_rating,
   mpaa_reason,
@@ -19,6 +20,7 @@ INSERT INTO public.movie (
   SELECT
     m.title :: VARCHAR(255),
     m.year :: INTEGER,
+    m.type :: VARCHAR(2),
     m.occurence :: INTEGER,
     mp.rating :: VARCHAR(5),
     mp.reason,
@@ -29,12 +31,15 @@ INSERT INTO public.movie (
     JOIN insertion.mpaa mp
       ON m.title = mp.title
          AND m.year = mp.year
+         AND m.type = mp.type
          AND m.occurence = mp.occurence
     JOIN insertion.ratings r
       ON m.title = r.title
          AND m.year = r.year
+         AND m.type = r.type
          AND m.occurence = r.occurence
     JOIN insertion.business b
       ON m.title = b.title
          AND m.year = b.year
+         AND m.type = b.type
          AND m.occurence = b.occurence
