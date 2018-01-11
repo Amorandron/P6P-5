@@ -1,17 +1,10 @@
-DROP TABLE IF EXISTS insertion.rating;
+DROP TABLE IF EXISTS insertion.ratings;
 
-CREATE TABLE insertion.rating(
-  title TEXT,
+CREATE TABLE insertion.ratings (
+  title     TEXT,
+  year      TEXT,
+  type      TEXT,
   occurence TEXT,
-  year TEXT,
-  votes TEXT,
-  rating TEXT
-);
-
-COPY insertion.rating
-  FROM '{{csv}}' (
-  FORMAT CSV,
-  DELIMITER '{{delimiter}}',
-  QUOTE '"',
-  ESCAPE '\'
+  votes     TEXT,
+  rating    TEXT
 );

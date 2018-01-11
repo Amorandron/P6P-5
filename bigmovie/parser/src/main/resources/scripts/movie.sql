@@ -1,17 +1,8 @@
 DROP TABLE IF EXISTS insertion.movie;
 
-CREATE TABLE insertion.movie(
-  title TEXT,
-  occurence TEXT,
-  year TEXT
+CREATE TABLE insertion.movie (
+  title     TEXT,
+  year      TEXT,
+  type      TEXT,
+  occurence TEXT
 );
-
-COPY insertion.movie
-FROM '{{csv}}' (
-  FORMAT CSV,
-  DELIMITER '{{delimiter}}',
-  QUOTE '"',
-  ESCAPE '\'
-);
-
-

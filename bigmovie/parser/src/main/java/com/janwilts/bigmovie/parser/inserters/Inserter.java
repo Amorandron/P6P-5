@@ -3,6 +3,8 @@ package com.janwilts.bigmovie.parser.inserters;
 import com.janwilts.bigmovie.parser.Main;
 import com.janwilts.bigmovie.parser.Parsable;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
@@ -21,6 +23,7 @@ public abstract class Inserter {
     private static final String[] order = new String[] {"movies", "actors", "countries", "business", "genres", "soundtracks"};
 
     protected DatabaseConnection connection;
+    protected File csv;
 
     public static void insertFiles(DatabaseConnection connection) {
         try {
@@ -31,7 +34,7 @@ public abstract class Inserter {
         }
     }
 
-    private static Inserter getInserter(String csv, DatabaseConnection connection) throws Exception {
+    public static Inserter getInserter(String csv, DatabaseConnection connection) throws Exception {
         return getInserter(new File(Main.outputDirectory + csv + ".csv"), connection);
     }
 
@@ -45,11 +48,12 @@ public abstract class Inserter {
     }
 
     public Inserter(File file, DatabaseConnection connection) {
+        this.csv = file;
         this.connection = connection;
     }
 
-    protected void executeFile(String file, String csv, String delimiter) throws IOException {
-        URL url = this.getClass().getClassLoader().getResource("/scripts/" + file);
+    protected void executeSQL(String file) throws IOException {
+        URL url = this.getClass().getResource("/scripts/" + file);
         File sqlFile = null;
         try {
             sqlFile = new File(Objects.requireNonNull(url).toURI());
@@ -57,10 +61,10 @@ public abstract class Inserter {
             sqlFile = new File(Objects.requireNonNull(url).getPath());
         }
         String sql = FileUtils.readFileToString(sqlFile, "UTF-8");
-        sql.replaceAll("\\{\\{csv}}", csv);
-        sql.replaceAll("\\{\\{delimiter}}", delimiter);
+        sql = sql.replaceAll("[\n]", " ");
+        sql = sql.replaceAll("[ ]{2,}", " ");
 
-        List<String> queries = Arrays.stream(sql.split(","))
+        List<String> queries = Arrays.stream(sql.split(";"))
                 .map(String::trim)
                 .collect(Collectors.toList());
 
@@ -71,6 +75,11 @@ public abstract class Inserter {
                 e.printStackTrace();
             }
         }
+    }
+
+    protected void executeInsert(String table, String csv, String delimiter) throws Exception {
+        connection.getManager().copyIn(String.format("COPY %s FROM STDIN (FORMAT csv, DELIMITER '%s')", table, delimiter),
+                new FileReader(new File(csv)));
     }
 
     abstract void insert();

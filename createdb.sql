@@ -1,23 +1,30 @@
+-- Remove this line if it's the first time inserting
 \c bigmovie;
 
+DROP TABLE IF EXISTS insertion.movie;
+DROP TABLE IF EXISTS insertion.country;
+DROP TABLE IF EXISTS insertion.mpaa;
+DROP TABLE IF EXISTS insertion.ratings;
+DROP TABLE IF EXISTS insertion.genre;
+DROP TABLE IF EXISTS insertion.business;
 DROP SCHEMA IF EXISTS insertion;
 
 -- Reset queries;
-DROP TABLE IF EXISTS movie_country;
-DROP TABLE IF EXISTS gross;
-DROP SEQUENCE IF EXISTS gross_id_seq;
-DROP TABLE IF EXISTS country;
-DROP SEQUENCE IF EXISTS country_id_seq;
-DROP TABLE IF EXISTS movie_genre;
-DROP TABLE IF EXISTS genre;
-DROP SEQUENCE IF EXISTS genre_id_seq;
-DROP TABLE IF EXISTS soundtrack;
-DROP SEQUENCE IF EXISTS soundtrack_id_seq;
-DROP TABLE IF EXISTS actor_movie;
-DROP TABLE IF EXISTS movie;
-DROP SEQUENCE IF EXISTS movie_id_seq;
-DROP TABLE IF EXISTS actor;
-DROP SEQUENCE IF EXISTS actor_id_seq;
+DROP TABLE IF EXISTS public.movie_country;
+DROP TABLE IF EXISTS public.gross;
+DROP SEQUENCE IF EXISTS public.gross_id_seq;
+DROP TABLE IF EXISTS public.country;
+DROP SEQUENCE IF EXISTS public.country_id_seq;
+DROP TABLE IF EXISTS public.movie_genre;
+DROP TABLE IF EXISTS public.genre;
+DROP SEQUENCE IF EXISTS public.genre_id_seq;
+DROP TABLE IF EXISTS public.soundtrack;
+DROP SEQUENCE IF EXISTS public.soundtrack_id_seq;
+DROP TABLE IF EXISTS public.actor_movie;
+DROP TABLE IF EXISTS public.movie;
+DROP SEQUENCE IF EXISTS public.movie_id_seq;
+DROP TABLE IF EXISTS public.actor;
+DROP SEQUENCE IF EXISTS public.actor_id_seq;
 
 \c postgres;
 DROP DATABASE IF EXISTS bigmovie;
@@ -54,11 +61,11 @@ GRANT USAGE ON SCHEMA insertion TO bigmovie_ro;
 
 -- Give superuser access to everything
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLES TO bigmovie_admin;
+GRANT SELECT, UPDATE, INSERT, DELETE, TRUNCATE ON TABLES TO bigmovie_admin;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT SELECT, UPDATE ON SEQUENCES TO bigmovie_admin;
 ALTER DEFAULT PRIVILEGES IN SCHEMA insertion
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLES TO bigmovie_admin;
+GRANT SELECT, UPDATE, INSERT, DELETE, TRUNCATE ON TABLES TO bigmovie_admin;
 ALTER DEFAULT PRIVILEGES IN SCHEMA insertion
 GRANT SELECT, UPDATE ON SEQUENCES TO bigmovie_admin;
 
@@ -72,44 +79,43 @@ GRANT SELECT ON TABLES TO bigmovie_ro;
 ALTER DEFAULT PRIVILEGES IN SCHEMA insertion
 GRANT SELECT ON SEQUENCES TO bigmovie_ro;
 
-CREATE SEQUENCE movie_id_seq;
-CREATE TABLE movie (
+CREATE SEQUENCE public.movie_id_seq;
+CREATE TABLE public.movie (
   movie_id         BIGINT       NOT NULL DEFAULT nextval('movie_id_seq'),
   -- From movies
   title            VARCHAR(255) NOT NULL,
   release_year     INTEGER,
-  occurance        INTEGER      NOT NULL,
+  occurence        INTEGER      NOT NULL,
+  type             VARCHAR(2),
   -- From MPAA
   mpaa_rating      VARCHAR(5),
   mpaa_reason      TEXT,
   -- From ratings
-  rating           INTEGER,
+  rating           REAL,
   rating_votes     INTEGER,
-  budget           MONEY,
-  -- From business
-  production_costs MONEY,
+  budget           NUMERIC(30, 2),
   CONSTRAINT movie_pkey
   PRIMARY KEY (movie_id),
   CONSTRAINT movie_uniq
-  UNIQUE (title, release_year, occurance)
+  UNIQUE (title, release_year, occurence)
 );
 
-CREATE SEQUENCE actor_id_seq;
-CREATE TABLE actor (
+CREATE SEQUENCE public.actor_id_seq;
+CREATE TABLE public.actor (
   actor_id   BIGINT       NOT NULL DEFAULT nextval('actor_id_seq'),
   -- From actors & actresses
   name       VARCHAR(255) NOT NULL,
-  occurance  INTEGER      NOT NULL,
+  occurence  INTEGER      NOT NULL,
   gender     CHAR(1)      NOT NULL,
   -- From biographies
   birth_date DATE,
   CONSTRAINT actor_pkey
   PRIMARY KEY (actor_id),
   CONSTRAINT actor_uniq
-  UNIQUE (name, occurance)
+  UNIQUE (name, occurence)
 );
 
-CREATE TABLE actor_movie (
+CREATE TABLE public.actor_movie (
   movie_id BIGINT NOT NULL,
   actor_id BIGINT NOT NULL,
   role     VARCHAR(255),
@@ -123,15 +129,15 @@ CREATE TABLE actor_movie (
   REFERENCES actor (actor_id)
 );
 
-CREATE SEQUENCE country_id_seq;
-CREATE TABLE country (
+CREATE SEQUENCE public.country_id_seq;
+CREATE TABLE public.country (
   country_id INTEGER      NOT NULL DEFAULT nextval('country_id_seq'),
   country    VARCHAR(255) NOT NULL,
   CONSTRAINT country_pkey
   PRIMARY KEY (country_id)
 );
 
-CREATE TABLE movie_country (
+CREATE TABLE public.movie_country (
   movie_id   BIGINT  NOT NULL,
   country_id INTEGER NOT NULL,
   CONSTRAINT movie_country_pkey
@@ -144,8 +150,8 @@ CREATE TABLE movie_country (
   REFERENCES country (country_id)
 );
 
-CREATE SEQUENCE genre_id_seq;
-CREATE TABLE genre (
+CREATE SEQUENCE public.genre_id_seq;
+CREATE TABLE public.genre (
   -- From genres
   genre_id INTEGER      NOT NULL DEFAULT nextval('genre_id_seq'),
   genre    VARCHAR(255) NOT NULL,
@@ -153,7 +159,7 @@ CREATE TABLE genre (
   PRIMARY KEY (genre_id)
 );
 
-CREATE TABLE movie_genre (
+CREATE TABLE public.movie_genre (
   movie_id BIGINT  NOT NULL,
   genre_id INTEGER NOT NULL,
   CONSTRAINT movie_genre_pkey
@@ -166,8 +172,8 @@ CREATE TABLE movie_genre (
   REFERENCES genre (genre_id)
 );
 
-CREATE SEQUENCE soundtrack_id_seq;
-CREATE TABLE soundtrack (
+CREATE SEQUENCE public.soundtrack_id_seq;
+CREATE TABLE public.soundtrack (
   -- From soundtracks
   soundtrack_id BIGINT       NOT NULL DEFAULT nextval('soundtrack_id_seq'),
   movie_id      BIGINT       NOT NULL,
@@ -179,8 +185,8 @@ CREATE TABLE soundtrack (
   REFERENCES movie (movie_id)
 );
 
-CREATE SEQUENCE gross_id_seq;
-CREATE TABLE gross (
+CREATE SEQUENCE public.gross_id_seq;
+CREATE TABLE public.gross (
   -- From business
   gross_id         BIGINT NOT NULL DEFAULT nextval('gross_id_seq'),
   movie_id         BIGINT NOT NULL,
