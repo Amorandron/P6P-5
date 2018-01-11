@@ -18,8 +18,8 @@ public class CountryParser extends Parser {
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            //String pattern = "(.*?)\\s\\((.{4})(|/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
-            String pattern = "(.*?)\\s\\((\\d{4})|(|(.*?))\\)(.*?)\\s([a-zA-Z].*)";
+            //String pattern = "(.*?)\s\((.{4})|(|(.*?))\)(.*?)\s([a-zA-Z].*)";
+            String pattern = "(.*?)\\s\\((\\d{4}|\\?{4})(|/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
             Pattern p = Pattern.compile(pattern);
             
             // Initialize variables
@@ -28,6 +28,7 @@ public class CountryParser extends Parser {
             String year;
             String iteration;
             String country;
+            String category = "";
             Boolean foundList = false;
             
             // Amount of lines till first data entry
@@ -47,7 +48,6 @@ public class CountryParser extends Parser {
                     if (m.matches()) {
                         // Skip line when group contains SUSPENDED
                         if (m.group(5).toUpperCase().contains("SUSPENDED")) continue;
-                        
                         movieName = m.group(1);
                         
                         // Set year variable, if year is unknown return ""
@@ -57,10 +57,14 @@ public class CountryParser extends Parser {
                         // Convert Roman number to integer
                         if (m.group(4) == null) iteration = "0";
                         else iteration = Integer.toString(RomanNumeral.convert(m.group(4)));
-                        
+
+                        if (m.group(5).contains("TV")) category = "TV";
+                        if (m.group(5).contains("V")) category = "V";
+                        if (m.group(5).contains("VG")) category = "VG";
+
                         country = m.group(6);
                         // Write all variables to a line in countries.csv
-                        writer.println(String.join(DELIMITER, addQuotes(movieName), year, iteration, addQuotes(country)));
+                        writer.println(String.join(DELIMITER, addQuotes(movieName), year, iteration, addQuotes(category),addQuotes(country)));
                     }
                     else {
                         System.out.println("Failed: line: " + line);
