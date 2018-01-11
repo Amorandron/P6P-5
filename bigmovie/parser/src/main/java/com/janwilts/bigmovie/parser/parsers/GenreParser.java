@@ -18,14 +18,11 @@ public class GenreParser extends Parser {
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            //String pattern = "(.*?)\\s\\((.{4})(|\\/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
-            // fixed error:  (.*?)\s\(([[:digit:]]{4}|[?]{4})(|\/(.*?))\)(.*?)\s([a-zA-Z].*)
-            // also takes (tv) etc:
-            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|\\/(.*?))\\)\\s(|\\((.*?)\\))(.*?)\\s([a-zA-Z].*)";
+            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|\\/(.*?))\\)\\s(|\\((.*?)\\))\\t(.*)";
             Pattern p = Pattern.compile(pattern);
 
             /*
-            regex (series still included!): (.*?)\s\((\d{4}|[?]{4})(|\/(.*?))\)\s(|\((.*?)\))(.*?)\s([a-zA-Z].*)
+            regex (series still included!): (.*?)\s\((\d{4}|[?]{4})(|\/(.*?))\)\s(|\((.*?)\))\t(.*)
             (.*?) --> (first group) matches any character (except for line terminators) --> title
             \s --> matches any whitespace character; de space after the title
             \( --> matches the '(' character; first character before the year
@@ -34,15 +31,14 @@ public class GenreParser extends Parser {
             \) --> matches the ')' character; first character after the year
             \s --> matches the whitespace after the year
             (|\((.*?)\)) --> (fifth group) matches null or '(' and (sixth group) matches any character till ')' --> type (TV/V/VG)
-            (.*?) --> (seventh group) matches any character; white space(and extra stuff like {{SUSPENDED}}) between year and genre
-            \s --> matches any whitespace character; whitespace character before genre
-            ([a-zA-Z].*) --> (eight group) match a character one or more times --> genre
+            \t --> tab after year of type
+            (.*) --> (seventh group) matches any character one or more times --> genre (needs trim)
 
             \1 --> title
             \2 --> year
             \4 --> romans number (only movies with same title as year, but different movies are)
             \6 --> type (TV/V/VG)
-            \8 --> genre
+            \7 --> genre
              */
             
             Boolean foundList = false;
@@ -69,7 +65,7 @@ public class GenreParser extends Parser {
                         
                         currentTitle = m.group(1);
                         currentType = m.group(6);
-                        currentGenre = m.group(8);
+                        currentGenre = m.group(7).trim();
 
                         if (m.group(2).contains("?")) {
                             currentYear = "";

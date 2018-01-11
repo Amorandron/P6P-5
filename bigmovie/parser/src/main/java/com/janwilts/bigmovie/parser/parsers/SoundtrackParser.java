@@ -18,23 +18,26 @@ public class SoundtrackParser extends Parser {
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            String titleMoviePattern = "#\\s(.*?)\\s\\((.{4})(|/(.*?))\\)";
+            String titleMoviePattern = "#\\s(.*?)\\s\\((.{4})(|\\/(.*?))\\)(\\s\\((.*?)\\)|)\n";
             Pattern mp = Pattern.compile(titleMoviePattern);
 
             /*
-            regex movietitleline: #\s(.*?)\s\((.{4})(|\/(.*?))\)
+            regex movietitleline: #\s(.*?)\s\((.{4})(|\/(.*?))\)(\s\((.*?)\)|)\n
             # --> matches the character # literally --> first character of line with movie title
             \s --> matches any whitespace character --> space before title
-            (.*?) -->first group; matches any character --> movie title
+            (.*?) --> (first group) matches any character --> movie title
             \s --> matches any whitespace character --> space after title
             \( --> matches the '(' character; first character before the year of the movie
-            (.{4}) --> second group; matches any character exactly 4 times; --> year
-            (|\/(.*?)) --> matches null or '/' character and (fourth group) matches any character --> romanNumber
+            (.{4}) --> (second group) matches any character exactly 4 times; --> year
+            (|\/(.*?)) --> (third group) matches null or '/' character and (fourth group) matches any character --> romanNumber
             \) --> matches the ')' character; first character after the year of the movie
+            (\s\((.*?)\)|) --> (fifth group) matches null or '(' and (sixth group) matches any character till ')' --> type (TV/V/VG)
+            \n --> matches enter
 
             \1 --> movie title
             \2 --> year of movie
             \4 --> romans number (only movies with same title as year, but different movies are)
+            \6 --> type (TV/V/VG)
              */
             
             String titleSongPattern = "-\\s\"(.*?)\"";
@@ -55,6 +58,7 @@ public class SoundtrackParser extends Parser {
             String line;
             String currentMovieTitle = "";
             String currentMovieYear = "";
+            String currentType = "";
             String currentRomanNumber = "";
             String currentSong = "";
             
@@ -68,6 +72,7 @@ public class SoundtrackParser extends Parser {
                         if (mm.group(1).startsWith(QUOTE)) continue;
                         
                         currentMovieTitle = mm.group(1);
+                        currentType = mm.group(6);
                         
                         if (mm.group(2).contains("?")) currentMovieYear = "";
                         else currentMovieYear = mm.group(2);
@@ -85,7 +90,7 @@ public class SoundtrackParser extends Parser {
                             if (sm.matches()) {
                                 currentSong = sm.group(1);
                                 
-                                writer.println(String.join(DELIMITER, addQuotes(currentMovieTitle), currentMovieYear, currentRomanNumber, addQuotes(currentSong)));
+                                writer.println(String.join(DELIMITER, addQuotes(currentMovieTitle), currentMovieYear, addQuotes(currentType), currentRomanNumber, addQuotes(currentSong)));
                             }
                             
                             line = reader.readLine().trim();
