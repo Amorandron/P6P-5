@@ -1,5 +1,6 @@
 package com.janwilts.bigmovie.parser.inserters;
 
+import com.janwilts.bigmovie.parser.parsers.Parser;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 
 import java.io.File;
@@ -11,7 +12,16 @@ public class MovieInserter extends Inserter{
 
     @Override
     public void insert() {
-
+        try {
+            Inserter.getInserter("business", connection).insert();
+            Inserter.getInserter("mpaa-ratings-reasons", connection).insert();
+            Inserter.getInserter("ratings", connection).insert();
+            executeSQL("movie.sql");
+            executeInsert("insertion.movie", csv.getCanonicalPath(), Parser.DELIMITER);
+            executeSQL("moviejoiner.sql");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

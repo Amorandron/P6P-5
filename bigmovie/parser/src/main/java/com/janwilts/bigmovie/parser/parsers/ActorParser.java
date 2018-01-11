@@ -65,14 +65,26 @@ public class ActorParser extends Parser {
                     }
                     
                     String searchLine = line;
-                    
+                    String videoTvGame = "";
+
                     while (searchLine.contains("(")) {
+                        if(gender.equals("M")) {
+                            System.out.print("");
+                        }
+
                         int leftCommaInd = searchLine.indexOf("(");
                         int rightCommaInd = searchLine.indexOf(")", searchLine.indexOf("(") + 1);
                         
                         if (rightCommaInd == -1) break;
 
                         if (searchLine.contains("(") &&
+                                searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("TV") ||
+                                searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("V") ||
+                                searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("VG")) {
+
+                            videoTvGame = searchLine.substring(leftCommaInd + 1, rightCommaInd);
+                        }
+                        else if (searchLine.contains("(") &&
                                 Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                 (rightCommaInd - leftCommaInd == 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
                                 (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' || searchLine.charAt(rightCommaInd - 1) == 'X') ||
@@ -86,14 +98,16 @@ public class ActorParser extends Parser {
                                 currentYear = currentYear.substring(0, currentYear.indexOf("/"));
                             }
                             if (currentYear.equals("????")) currentYear = "";
-                            break;
+
                         }
-                        else {
-                            searchLine = searchLine.substring(searchLine.indexOf("(") + 1);
-                        }
+
+                        searchLine = searchLine.substring(searchLine.indexOf("(") + 1);
                     }
-                    
-                    writer.println(String.join(DELIMITER, addQuotes(currentActorName.replace(QUOTE, DOUBLE_QUOTE)), currentActorOccurance + "", gender, addQuotes(currentFilm.replace(QUOTE, DOUBLE_QUOTE)), currentYear, yearOccurance + "", addQuotes(currentRole.replace(QUOTE, DOUBLE_QUOTE))));
+
+
+                    writer.println(String.join(",", addQuotes(currentActorName.replace(QUOTE, DOUBLE_QUOTE)),
+                            currentActorOccurance + "", gender, addQuotes(currentFilm.replace(QUOTE, DOUBLE_QUOTE)),
+                            currentYear, yearOccurance + "", addQuotes(videoTvGame), addQuotes(currentRole.replace(QUOTE, DOUBLE_QUOTE))));
                 }
             }
         }

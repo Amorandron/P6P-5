@@ -1,5 +1,6 @@
 package com.janwilts.bigmovie.parser.inserters;
 
+import com.janwilts.bigmovie.parser.parsers.Parser;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 
 import java.io.File;
@@ -12,7 +13,12 @@ public class MpaaInserter extends Inserter {
 
     @Override
     void insert() {
-
+        try {
+            executeSQL("mpaa.sql");
+            executeInsert("insertion.mpaa", csv.getCanonicalPath(), Parser.DELIMITER);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
