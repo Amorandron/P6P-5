@@ -14,10 +14,17 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
     @Override
     public void handle(MessageReceivedEvent event) {
         String input = event.getMessage().getContent();
-        if (input.startsWith("!")) {
-            String message = input.substring(1,input.length());
-            String response = bot.reply(event.getAuthor().getDisplayName(event.getGuild()), message);
-            event.getChannel().sendMessage(response);
+        if (event.getMessage().getContent().startsWith(DiscordBot.CLIENT_ID)) {
+            
+            String message = input.substring(DiscordBot.CLIENT_ID.length(), input.length()).trim();
+            if (message.equals("purge")) {
+                event.getChannel().bulkDelete();
+                bot.clearAllUservars();
+            }
+            else {
+                String response = bot.reply(event.getAuthor().getDisplayName(event.getGuild()), message);
+                event.getChannel().sendMessage(response);
+            }
         }
     }
 }
