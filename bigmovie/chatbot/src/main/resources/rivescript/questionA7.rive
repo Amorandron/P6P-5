@@ -6,7 +6,7 @@
 
 //FIXME film can be a verb, but in begin.rive is said: ! sub film = movie. This gives an error here.
 + was the (most expensive|least expensive|cheapest) to (record|shoot|film) {weight=15}
-* <get type> == movie => <call>movieCost <star1></call>
+* <get type> == movieubu => <call>movieCost <star1></call>
 - <bot error>
 
 //FIXME film can be a verb, but in begin.rive is said: ! sub film = movie. This gives an error here.
