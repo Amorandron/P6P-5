@@ -8,10 +8,25 @@ sourceCompatibility = 1.9
 
 repositories {
     mavenCentral()
+
+    jcenter() //This prevents issues with transitive dependencies
+    maven {
+        url  "https://jitpack.io"
+    }
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.4.1'
 }
 
+run {
+    if(project.hasProperty('chatbotArgs')) {
+        args Eval.me(chatbotArgs)
+    }
+}
+
+dependencies {
+    compile "com.rivescript:rivescript-core:0.10.0"
+    compile "com.github.austinv11:Discord4J:2.9.3"
+}
 
