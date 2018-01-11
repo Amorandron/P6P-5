@@ -19,7 +19,7 @@ public class CountryParser extends Parser {
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             //String pattern = "(.*?)\s\((.{4})|(|(.*?))\)(.*?)\s([a-zA-Z].*)";
-            String pattern = "(.*?)\\s\\((\\d{4}|\\?{4})(|/(.*?))\\)(.*?)\\s([a-zA-Z].*)";
+            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|/(.*?))\\)(|\\s\\((.*?)\\))\\t(.*)";
             Pattern p = Pattern.compile(pattern);
             
             // Initialize variables
@@ -28,7 +28,7 @@ public class CountryParser extends Parser {
             String year;
             String iteration;
             String country;
-            String category = "";
+            String category;
             Boolean foundList = false;
             
             // Amount of lines till first data entry
@@ -46,8 +46,7 @@ public class CountryParser extends Parser {
                     Matcher m = p.matcher(line);
                     
                     if (m.matches()) {
-                        // Skip line when group contains SUSPENDED
-                        if (m.group(5).toUpperCase().contains("SUSPENDED")) continue;
+                        // Set movie name
                         movieName = m.group(1);
                         
                         // Set year variable, if year is unknown return ""
@@ -58,17 +57,21 @@ public class CountryParser extends Parser {
                         if (m.group(4) == null) iteration = "0";
                         else iteration = Integer.toString(RomanNumeral.convert(m.group(4)));
 
-                        if (m.group(5).contains("TV")) category = "TV";
-                        if (m.group(5).contains("V")) category = "V";
-                        if (m.group(5).contains("VG")) category = "VG";
+                        if (m.group(6) == null) category = "";
+                        else if (m.group(6).contains("TV")) category = "TV";
+                        else if (m.group(6).contains("V")) category = "V";
+                        else if (m.group(6).contains("VG")) category = "VG";
+                        else {
+                            category = "";
+                        }
 
-                        country = m.group(6);
+                        country = m.group(7).trim();
                         // Write all variables to a line in countries.csv
                         writer.println(String.join(DELIMITER, addQuotes(movieName), year, iteration, addQuotes(category),addQuotes(country)));
                     }
-                    else {
-                        System.out.println("Failed: line: " + line);
-                    }
+//                    else {
+//                        System.out.println("Failed: line: " + line);
+//                    }
                 }
             }
         }
