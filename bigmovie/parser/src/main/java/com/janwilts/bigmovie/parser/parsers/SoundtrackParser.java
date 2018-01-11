@@ -18,11 +18,11 @@ public class SoundtrackParser extends Parser {
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            String titleMoviePattern = "#\\s(.*?)\\s\\((.{4})(|\\/(.*?))\\)(\\s\\((.*?)\\)|)\n";
+            String titleMoviePattern = "#\\s(.*?)\\s\\((.{4})(|\\/(.*?))\\)(\\s\\((.*?)\\)|)+$";
             Pattern mp = Pattern.compile(titleMoviePattern);
 
             /*
-            regex movietitleline: #\s(.*?)\s\((.{4})(|\/(.*?))\)(\s\((.*?)\)|)\n
+            regex movietitleline: #\s(.*?)\s\((.{4})(|\/(.*?))\)(\s\((.*?)\)|)+$
             # --> matches the character # literally --> first character of line with movie title
             \s --> matches any whitespace character --> space before title
             (.*?) --> (first group) matches any character --> movie title
@@ -32,7 +32,7 @@ public class SoundtrackParser extends Parser {
             (|\/(.*?)) --> (third group) matches null or '/' character and (fourth group) matches any character --> romanNumber
             \) --> matches the ')' character; first character after the year of the movie
             (\s\((.*?)\)|) --> (fifth group) matches null or '(' and (sixth group) matches any character till ')' --> type (TV/V/VG)
-            \n --> matches enter
+            +$ --> read backwards
 
             \1 --> movie title
             \2 --> year of movie
