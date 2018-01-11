@@ -58,11 +58,6 @@ public class GenreParser extends Parser {
                     Matcher m = p.matcher(line);
 
                     if (m.matches()) {
-                        // Go to next line if movie suspended
-                        if (m.group(7).toLowerCase().contains("suspended")) {
-                            continue;
-                        }
-
                         currentTitle = m.group(1);
                         currentGenre = m.group(7).trim();
 
