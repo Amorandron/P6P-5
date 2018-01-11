@@ -14,7 +14,7 @@ public class SoundtrackParser extends Parser {
     public SoundtrackParser(File file) {
         super(file);
     }
-    
+
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
@@ -39,7 +39,7 @@ public class SoundtrackParser extends Parser {
             \4 --> romans number (only movies with same title as year, but different movies are)
             \6 --> type (TV/V/VG)
              */
-            
+
             String titleSongPattern = "-\\s\"(.*?)\"";
             Pattern sp = Pattern.compile(titleSongPattern);
 
@@ -53,7 +53,7 @@ public class SoundtrackParser extends Parser {
 
             \1 --> song title
              */
-            
+
             Boolean foundList = false;
             String line;
             String currentMovieTitle = "";
@@ -61,46 +61,56 @@ public class SoundtrackParser extends Parser {
             String currentType = "";
             String currentRomanNumber = "";
             String currentSong = "";
-            
+
             while (((line = this.readLine()) != null)) {
                 if (!foundList && line.equals("SOUNDTRACKS")) foundList = true;
                 if (foundList) {
                     Matcher mm = mp.matcher(line);
-                    
+
                     if (mm.matches()) {
                         //go to next line if it's a serie
                         if (mm.group(1).startsWith(QUOTE)) continue;
-                        
+
                         currentMovieTitle = mm.group(1);
-                        currentType = mm.group(6);
-                        
-                        if (mm.group(2).contains("?")) currentMovieYear = "";
-                        else currentMovieYear = mm.group(2);
-                        
-                        if (mm.group(4) == null) currentRomanNumber = "0";
-                        else currentRomanNumber = Integer.toString(RomanNumeral.convert(mm.group(4)));
-                        
+
+                        if (mm.group(6) == null) {
+                            currentType = "";
+                        } else {
+                            currentType = mm.group(6);
+                        }
+
+                        if (mm.group(2).contains("?")) {
+                            currentMovieYear = "";
+                        } else {
+                            currentMovieYear = mm.group(2);
+                        }
+
+                        if (mm.group(4) == null) {
+                            currentRomanNumber = "0";
+                        } else {
+                            currentRomanNumber = Integer.toString(RomanNumeral.convert(mm.group(4)));
+                        }
+
                         //got to next line
                         line = reader.readLine().trim();
-                        
+
                         //while line is not empty check for song matches
                         do {
                             Matcher sm = sp.matcher(line);
-                            
+
                             if (sm.matches()) {
                                 currentSong = sm.group(1);
-                                
+
                                 writer.println(String.join(DELIMITER, addQuotes(currentMovieTitle), currentMovieYear, addQuotes(currentType), currentRomanNumber, addQuotes(currentSong)));
                             }
-                            
+
                             line = reader.readLine().trim();
                         }
                         while (!line.isEmpty());
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

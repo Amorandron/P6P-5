@@ -14,11 +14,11 @@ public class GenreParser extends Parser {
     public GenreParser(File file) {
         super(file);
     }
-    
+
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|\\/(.*?))\\)\\s(|\\((.*?)\\))\\t(.*)";
+            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|\\/(.*?))\\)(|\\s\\((.*?)\\))\\t(.*)";
             Pattern p = Pattern.compile(pattern);
 
             /*
@@ -40,7 +40,7 @@ public class GenreParser extends Parser {
             \6 --> type (TV/V/VG)
             \7 --> genre
              */
-            
+
             Boolean foundList = false;
             String line;
             String currentTitle;
@@ -48,45 +48,47 @@ public class GenreParser extends Parser {
             String currentGenre;
             String currentRomanNumber;
             String currentType;
-            
+
             while (((line = this.readLine()) != null)) {
                 if (!foundList && line.equals("8: THE GENRES LIST")) foundList = true;
                 if (foundList) {
                     // Go to next line if it's a show
                     if (line.startsWith(QUOTE)) continue;
-                    
+
                     Matcher m = p.matcher(line);
-                    
+
                     if (m.matches()) {
                         // Go to next line if movie suspended
-                        if (m.group(7).toLowerCase().contains("suspended")){
+                        if (m.group(7).toLowerCase().contains("suspended")) {
                             continue;
                         }
-                        
+
                         currentTitle = m.group(1);
-                        currentType = m.group(6);
                         currentGenre = m.group(7).trim();
+
+                        if (m.group(6) == null) {
+                            currentType = "";
+                        } else {
+                            currentType = m.group(6);
+                        }
 
                         if (m.group(2).contains("?")) {
                             currentYear = "";
-                        }
-                        else {
+                        } else {
                             currentYear = m.group(2);
                         }
 
                         if (m.group(4) == null) {
                             currentRomanNumber = "0";
-                        }
-                        else {
+                        } else {
                             currentRomanNumber = Integer.toString(RomanNumeral.convert(m.group(4)));
                         }
-                        
+
                         writer.println(String.join(DELIMITER, addQuotes(currentTitle), currentYear, addQuotes(currentType), currentRomanNumber, addQuotes(currentGenre)));
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
