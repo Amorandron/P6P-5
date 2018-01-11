@@ -2,6 +2,7 @@ package com.janwilts.bigmovie.parser.util;
 
 import com.google.common.base.Strings;
 import com.janwilts.bigmovie.parser.Parsable;
+import org.postgresql.copy.CopyManager;
 import org.postgresql.jdbc.PgConnection;
 
 import java.sql.*;
@@ -18,6 +19,7 @@ public class DatabaseConnection {
     private Boolean status;
 
     private PgConnection connection;
+    private CopyManager manager;
 
     public DatabaseConnection(String host, Integer port, String database, String username, String password) {
         if(Strings.isNullOrEmpty(host) ||
@@ -40,10 +42,12 @@ public class DatabaseConnection {
                     host, port, database), username, password);
 
             result = testTables(connection.createStatement());
+            manager = new CopyManager(connection);
         } catch (SQLException e) {
             result = false;
         }
         status = result;
+
         return result;
     }
 
@@ -78,5 +82,9 @@ public class DatabaseConnection {
         Statement statement = connection.createStatement();
         statement.execute(query);
         statement.close();
+    }
+
+    public CopyManager getManager() {
+        return manager;
     }
 }

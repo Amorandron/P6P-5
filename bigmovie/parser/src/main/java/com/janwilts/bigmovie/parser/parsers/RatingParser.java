@@ -35,11 +35,15 @@ public class RatingParser extends Parser {
                     for (int i = 0; i < values.length; i++) values[i] = values[i].trim();
                     
                     int occurance = 0;
+                    String type = "";
                     String title = "";
                     String yearString = "";
                     String year = "";
                     
-                    if (values[2].charAt(values[2].lastIndexOf('(') + 1) == 'V' || values[2].charAt(values[2].lastIndexOf('(') + 1) == 'T') values[2] = values[2].substring(0, values[2].lastIndexOf('(') - 1);
+                    if (values[2].charAt(values[2].lastIndexOf('(') + 1) == 'V' || values[2].charAt(values[2].lastIndexOf('(') + 1) == 'T') {
+                        type = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].lastIndexOf(')'));
+                        values[2] = values[2].substring(0, values[2].lastIndexOf('(') - 1);
+                    }
                     
                     if (values[2].lastIndexOf('(') != -1) yearString = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].length() - 1);
                     
@@ -53,7 +57,7 @@ public class RatingParser extends Parser {
                     
                     title = values[2].substring(0, values[2].lastIndexOf('(') - 1);
                     
-                    writer.println(String.join(DELIMITER, addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, occurance + "", values[0], values[1]));
+                    writer.println(String.join(DELIMITER, addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, addQuotes(type), occurance + "", values[0], values[1]));
                 }
             }
         }

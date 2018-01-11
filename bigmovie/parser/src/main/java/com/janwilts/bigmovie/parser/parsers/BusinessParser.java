@@ -41,6 +41,7 @@ public class BusinessParser extends Parser {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             String movie = ""; //movie
             String year = ""; //release date
+            String type = "";
             String occurence = ""; //occurence this year
             double budget = 0; //budget in USD
             
@@ -54,14 +55,15 @@ public class BusinessParser extends Parser {
                     List<String> movieData = readMovie(line);
                     movie = movieData.get(0);
                     year = movieData.get(1);
-                    occurence = movieData.get(2);
+                    type = movieData.get(2);
+                    occurence = movieData.get(3);
                 }
                 else if (line.startsWith("BT: ")) budget = readBudget(line);
                 else if (line.startsWith("GR: ")) readGrossToMap(line, grossPerCountry);
                 
                 else if (line.startsWith("--------------")) {
                     if (!movie.isEmpty()) {
-                        writeFileToCSV(writer, movie, year, occurence, budget, grossPerCountry);
+                        writeFileToCSV(writer, movie, year, type, occurence, budget, grossPerCountry);
                         
                         movie = "";
                         budget = 0;
@@ -76,22 +78,22 @@ public class BusinessParser extends Parser {
         }
     }
     
-    private void writeFileToCSV(PrintWriter writer, String movie, String year, String occurence, double budget, Map<String, Map<String, Double>> grossPerCountry) {
-        if (grossPerCountry.isEmpty()) writeLineToCSV(writer, movie, year, occurence, budget, "", "", 0);
+    private void writeFileToCSV(PrintWriter writer, String movie, String year, String type, String occurence, double budget, Map<String, Map<String, Double>> grossPerCountry) {
+        if (grossPerCountry.isEmpty()) writeLineToCSV(writer, movie, year, type, occurence, budget, "", "", 0);
         else {
             for (Map.Entry<String, Map<String, Double>> grossPerCountryEntry : grossPerCountry.entrySet()) {
                 String country = grossPerCountryEntry.getKey();
                 for (Map.Entry<String, Double> grossPerDateEntry : grossPerCountryEntry.getValue().entrySet()) {
                     String date = grossPerDateEntry.getKey();
                     Double gross = grossPerDateEntry.getValue();
-                    writeLineToCSV(writer, movie, year, occurence, budget, country, date, gross);
+                    writeLineToCSV(writer, movie, year, type, occurence, budget, country, date, gross);
                 }
             }
         }
     }
     
-    private void writeLineToCSV(PrintWriter writer, String movie, String year, String occurence, double budget, String country, String date, double gross) {
-        writer.println(String.join(DELIMITER, addQuotes(movie), year, occurence, formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
+    private void writeLineToCSV(PrintWriter writer, String movie, String year, String type, String occurence, double budget, String country, String date, double gross) {
+        writer.println(String.join(DELIMITER, addQuotes(movie), year, addQuotes(type), occurence, formatDouble(budget), addQuotes(country), date, formatDouble(gross)));
     }
     
     private String formatDouble(double amount) {
@@ -99,8 +101,12 @@ public class BusinessParser extends Parser {
     }
     
     private List<String> readMovie(String line) {
-        line = line.replace("(TV)", "");
-        line = line.replace("(V)", "");
+        String type = "";
+
+        if(line.charAt(line.lastIndexOf('(') + 1) == 'T' || line.charAt(line.lastIndexOf('(') + 1) == 'V') {
+            type = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
+            line = line.substring(0, line.lastIndexOf('(') - 1).trim();
+        }
         
         String movie = line.substring(4, line.lastIndexOf("("));
         movie = movie.trim();
@@ -121,7 +127,7 @@ public class BusinessParser extends Parser {
         
         if (year.equals("????")) year = "";
         
-        return Arrays.asList(movie, year, occurence);
+        return Arrays.asList(movie, year, type, occurence);
     }
     
     private double readBudget(String line) {

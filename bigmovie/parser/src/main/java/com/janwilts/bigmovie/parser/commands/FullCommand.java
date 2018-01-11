@@ -4,6 +4,7 @@ import com.janwilts.bigmovie.parser.Parsable;
 import com.janwilts.bigmovie.parser.tasks.FileParseTask;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class FullCommand implements Command
 {
     private String directory;
+    private List<Thread> tasks;
 
     FullCommand(String directory)
     {
         this.directory = directory;
+        this.tasks = new ArrayList<>();
     }
 
 
@@ -38,7 +41,16 @@ public class FullCommand implements Command
                         .collect(Collectors.toList());
 
         for(File f : filesFiltered) {
-            new Thread(new FileParseTask(f)).start();
+            tasks.add(new Thread(new FileParseTask(f)));
+        }
+        tasks.forEach(Thread::start);
+
+        for(Thread t : tasks) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
