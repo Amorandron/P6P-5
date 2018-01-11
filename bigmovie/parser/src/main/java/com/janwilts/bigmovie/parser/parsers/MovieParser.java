@@ -31,9 +31,11 @@ public class MovieParser extends Parser {
                     
                     String year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                     String title = line.substring(0, line.lastIndexOf('(') - 1);
+                    String type = "";
                     int occurrence = 0;
                     
                     if (year.charAt(0) == 'T' || year.charAt(0) == 'V') {
+                        type = year;
                         line = line.substring(0, line.lastIndexOf('('));
                         title = line.substring(0, line.lastIndexOf('(') - 1);
                         year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
@@ -46,7 +48,7 @@ public class MovieParser extends Parser {
                     
                     if (year.equals("????")) year = "";
                     
-                    writer.println(String.join(",", addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, occurrence + ""));
+                    writer.println(String.join(DELIMITER, addQuotes(title.replace(QUOTE, DOUBLE_QUOTE)), year, String.format("%s%s%s", QUOTE, type, QUOTE), occurrence + ""));
                 }
             }
         }

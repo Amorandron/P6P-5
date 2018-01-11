@@ -1,4 +1,4 @@
-package com.ykapps.p6p.models;
+package com.ykapps.bigmovie.models;
 
 public class Genre {
 

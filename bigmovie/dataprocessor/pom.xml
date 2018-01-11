@@ -11,7 +11,7 @@
   </parent>
 
   <artifactId>dataprocessor</artifactId>
-  <groupId>com.ykapps.p6p</groupId>
+  <groupId>com.ykapps.bigmovie</groupId>
   <version>1.0</version>
 
   <name>Data Processor</name>
@@ -21,7 +21,7 @@
     <jooby.version>1.2.3</jooby.version>
 
     <!-- Startup class -->
-    <application.class>com.ykapps.p6p.App</application.class>
+    <application.class>com.ykapps.bigmovie.App</application.class>
   </properties>
 
   <dependencies>

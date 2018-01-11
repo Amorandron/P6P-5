@@ -3,17 +3,27 @@ package com.janwilts.bigmovie.parser.inserters;
 import com.janwilts.bigmovie.parser.Main;
 import com.janwilts.bigmovie.parser.Parsable;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class Inserter {
-    private static final String[] order = new String[] {"movie", "actor", "country", "business", "genre", "soundtrack"};
+    private static final String[] order = new String[] {"movies", "actors", "countries", "business", "genres", "soundtracks"};
 
-    protected BufferedReader reader;
     protected DatabaseConnection connection;
+    protected File csv;
 
     public static void insertFiles(DatabaseConnection connection) {
         try {
@@ -24,7 +34,7 @@ public abstract class Inserter {
         }
     }
 
-    private static Inserter getInserter(String csv, DatabaseConnection connection) throws Exception {
+    public static Inserter getInserter(String csv, DatabaseConnection connection) throws Exception {
         return getInserter(new File(Main.outputDirectory + csv + ".csv"), connection);
     }
 
@@ -38,16 +48,38 @@ public abstract class Inserter {
     }
 
     public Inserter(File file, DatabaseConnection connection) {
+        this.csv = file;
         this.connection = connection;
+    }
+
+    protected void executeSQL(String file) throws IOException {
+        URL url = this.getClass().getResource("/scripts/" + file);
+        File sqlFile = null;
         try {
-            this.reader = new BufferedReader(new FileReader(file));
-        } catch (Exception e) {
-            e.printStackTrace();
+            sqlFile = new File(Objects.requireNonNull(url).toURI());
+        } catch (URISyntaxException e) {
+            sqlFile = new File(Objects.requireNonNull(url).getPath());
+        }
+        String sql = FileUtils.readFileToString(sqlFile, "UTF-8");
+        sql = sql.replaceAll("[\n]", " ");
+        sql = sql.replaceAll("[ ]{2,}", " ");
+
+        List<String> queries = Arrays.stream(sql.split(";"))
+                .map(String::trim)
+                .collect(Collectors.toList());
+
+        for(String query : queries) {
+            try {
+                connection.execute(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public String[] nextLine() throws IOException {
-        return reader.readLine().split(",");
+    protected void executeInsert(String table, String csv, String delimiter) throws Exception {
+        connection.getManager().copyIn(String.format("COPY %s FROM STDIN (FORMAT csv, DELIMITER '%s')", table, delimiter),
+                new FileReader(new File(csv)));
     }
 
     abstract void insert();
