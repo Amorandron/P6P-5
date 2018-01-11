@@ -54,7 +54,7 @@ public class App extends Jooby {
         get("/movies", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, "SELECT * FROM movie");
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_ALL_MOVIES);
             Movie movie = obs.toBlocking().first();
 
             return movie;
