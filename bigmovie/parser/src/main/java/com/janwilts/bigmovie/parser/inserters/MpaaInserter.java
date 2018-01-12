@@ -13,6 +13,7 @@ public class MpaaInserter extends Inserter {
 
     @Override
     void insert() {
+        message();
         try {
             executeSQL("mpaa.sql");
             executeInsert("insertion.mpaa", csv.getCanonicalPath(), Parser.DELIMITER);

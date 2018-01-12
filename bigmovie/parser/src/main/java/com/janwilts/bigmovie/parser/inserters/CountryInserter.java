@@ -12,6 +12,7 @@ public class CountryInserter extends Inserter {
 
     @Override
     public void insert() {
+        message();
         try {
             executeSQL("country.sql");
             executeInsert("insertion.country", csv.getCanonicalPath(), Parser.DELIMITER);

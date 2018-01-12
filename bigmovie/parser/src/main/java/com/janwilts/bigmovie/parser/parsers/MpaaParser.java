@@ -23,14 +23,12 @@ public class MpaaParser extends Parser {
 
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             for (String line; (line = this.readLine()) != null; ) {
-                if(line.contains("Swearnet"))
-                    System.out.println("x");
-
                 if (!foundList && line.equals("=========================")) foundList = true;
                 if (foundList && line.startsWith("------------------")) continue;
                 else if (foundList && line.length() > 0) {
                     String title;
                     String year;
+                    String type = "";
                     int occurrence = 0;
 
                     if (line.charAt(0) == 'M') {
@@ -44,6 +42,7 @@ public class MpaaParser extends Parser {
                         title = line.substring(0, line.lastIndexOf('(') - 1);
 
                         if (year.charAt(0) == 'T' || year.charAt(0) == 'V') {
+                            type = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                             line = line.substring(0, line.lastIndexOf('('));
                             title = line.substring(0, line.lastIndexOf('(') - 1);
                             year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
@@ -54,7 +53,7 @@ public class MpaaParser extends Parser {
                             year = year.substring(0, year.indexOf("/"));
                         }
 
-                        writer.print(QUOTE + title.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + year + "," + occurrence + ",");
+                        writer.print(QUOTE + title.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + year + "," + addQuotes(type) + "," + occurrence + ",");
 
                     }
                     else if (line.charAt(0) == 'R') {

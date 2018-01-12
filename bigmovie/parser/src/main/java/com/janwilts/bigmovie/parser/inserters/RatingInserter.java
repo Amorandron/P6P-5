@@ -12,6 +12,7 @@ public class RatingInserter extends Inserter {
 
     @Override
     public void insert() {
+        message();
         try {
             executeSQL("ratings.sql");
             executeInsert("insertion.ratings", csv.getCanonicalPath(), Parser.DELIMITER);

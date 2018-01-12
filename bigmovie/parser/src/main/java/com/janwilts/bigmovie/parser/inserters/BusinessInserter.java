@@ -12,6 +12,7 @@ public class BusinessInserter extends Inserter {
 
     @Override
     public void insert() {
+        message();
         try {
             executeSQL("business.sql");
             executeInsert("insertion.business", csv.getCanonicalPath(), Parser.DELIMITER);

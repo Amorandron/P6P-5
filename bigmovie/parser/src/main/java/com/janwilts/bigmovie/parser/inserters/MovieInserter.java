@@ -12,6 +12,7 @@ public class MovieInserter extends Inserter{
 
     @Override
     public void insert() {
+        message();
         try {
             Inserter.getInserter("business", connection).insert();
             Inserter.getInserter("mpaa-ratings-reasons", connection).insert();
