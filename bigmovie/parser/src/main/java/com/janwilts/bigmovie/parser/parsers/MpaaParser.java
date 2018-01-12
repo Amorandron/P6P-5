@@ -20,6 +20,7 @@ public class MpaaParser extends Parser {
     public void parse() {
         boolean foundList = false;
         boolean prevRating = false;
+        boolean skipGame = false;
 
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             for (String line; (line = this.readLine()) != null; ) {
@@ -32,9 +33,10 @@ public class MpaaParser extends Parser {
                     int occurrence = 0;
 
                     if (line.charAt(0) == 'M') {
-                        if (prevRating) {
+                        if(!skipGame && prevRating) {
                             writer.print(QUOTE + "\n");
                         }
+                        skipGame = false;
 
                         line = line.substring(4);
 
@@ -46,8 +48,10 @@ public class MpaaParser extends Parser {
                             line = line.substring(0, line.lastIndexOf('('));
                             title = line.substring(0, line.lastIndexOf('(') - 1);
                             year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
-                            if(type.equals("VG"))
+                            if(type.equals("VG")) {
+                                skipGame = true;
                                 continue;
+                            }
                         }
 
                         if (year.contains("/")) {
@@ -59,6 +63,9 @@ public class MpaaParser extends Parser {
 
                     }
                     else if (line.charAt(0) == 'R') {
+
+                        if(skipGame)
+                            continue;
 
                         prevRating = true;
                         String rating;
