@@ -93,7 +93,7 @@ CREATE SEQUENCE public.movie_id_seq;
 CREATE TABLE public.movie (
   movie_id         BIGINT       NOT NULL DEFAULT nextval('movie_id_seq'),
   -- From movies
-  title            VARCHAR(255) NOT NULL,
+  title            VARCHAR(511) NOT NULL,
   release_year     INTEGER,
   type             VARCHAR(2),
   occurence        INTEGER      NOT NULL,

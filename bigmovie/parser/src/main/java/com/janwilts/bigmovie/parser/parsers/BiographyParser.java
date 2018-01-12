@@ -5,6 +5,8 @@ import com.janwilts.bigmovie.parser.util.RomanNumeral;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Yannick
@@ -73,6 +75,23 @@ public class BiographyParser extends Parser {
                         terms.put("BT", "");
                         terms.put("SA", "");
                         terms.put("WN", "");
+                    }
+                    else if(term.equals("DB")) {
+                        Pattern p = Pattern.compile("(\\d.*\\d{1,4}|\\d{1,4}|[?]{1,4})([B][C])?");
+                        Matcher m = p.matcher(line.substring(term.length() + 1));
+
+                        if(m.matches()) {
+                            String date = m.group(1);
+
+                            if (!m.group(2).equals("")) {
+                                date = date.substring(0, date.lastIndexOf(" ")) + "-" + date.substring(date.lastIndexOf(" ") + 1);
+                            }
+
+                            terms.put(term, date.trim());
+                        }
+                        else {
+                            terms.put(term, "");
+                        }
                     }
                     else {
                         if (terms.get(term).equals("")) terms.put(term, line.substring(term.length() + 1));

@@ -65,6 +65,8 @@ public class GenreParser extends Parser {
                             currentType = "";
                         } else {
                             currentType = m.group(6);
+                            if(currentType.equals("VG"))
+                                continue;
                         }
 
                         if (m.group(2).contains("?")) {

@@ -6,10 +6,7 @@ import com.janwilts.bigmovie.parser.util.RomanNumeral;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Lars
@@ -53,6 +50,8 @@ public class BusinessParser extends Parser {
                 if (line.trim().isEmpty()) continue;
                 if (line.startsWith("MV: ") && !(line.charAt(4) == QUOTE_CHAR)) {
                     List<String> movieData = readMovie(line);
+                    if(movieData.size() == 0)
+                        continue;
                     movie = movieData.get(0);
                     year = movieData.get(1);
                     type = movieData.get(2);
@@ -106,6 +105,9 @@ public class BusinessParser extends Parser {
         if(line.charAt(line.lastIndexOf('(') + 1) == 'T' || line.charAt(line.lastIndexOf('(') + 1) == 'V') {
             type = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
             line = line.substring(0, line.lastIndexOf('(') - 1).trim();
+
+            if(type.equals("VG"))
+                return new ArrayList<>();
         }
         
         String movie = line.substring(4, line.lastIndexOf("("));

@@ -39,6 +39,8 @@ public class MovieParser extends Parser {
                         line = line.substring(0, line.lastIndexOf('('));
                         title = line.substring(0, line.lastIndexOf('(') - 1);
                         year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
+                        if(type.contains("VG"))
+                            continue;
                     }
                     
                     if (year.contains("/")) {
