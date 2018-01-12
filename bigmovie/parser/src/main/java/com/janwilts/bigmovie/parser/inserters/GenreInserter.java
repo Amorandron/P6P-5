@@ -13,6 +13,7 @@ public class GenreInserter extends Inserter {
 
     @Override
     public void insert() {
+        message();
         try {
             executeSQL("genre.sql");
             executeInsert("insertion.genre", csv.getCanonicalPath(), Parser.DELIMITER);

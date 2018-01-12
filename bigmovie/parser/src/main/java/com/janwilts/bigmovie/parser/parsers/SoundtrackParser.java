@@ -101,7 +101,7 @@ public class SoundtrackParser extends Parser {
                             if (sm.matches()) {
                                 currentSong = sm.group(1);
 
-                                writer.println(String.join(DELIMITER, addQuotes(currentMovieTitle), currentMovieYear, addQuotes(currentType), currentRomanNumber, addQuotes(currentSong)));
+                                writer.println(String.join(DELIMITER, addQuotes(currentMovieTitle), currentMovieYear, addQuotes(currentType), currentRomanNumber, addQuotes(currentSong.replace(QUOTE, DOUBLE_QUOTE))));
                             }
 
                             line = reader.readLine().trim();

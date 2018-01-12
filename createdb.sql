@@ -1,15 +1,25 @@
 -- Remove this line if it's the first time inserting
 \c bigmovie;
 
+-- Reset queries;
 DROP TABLE IF EXISTS insertion.movie;
 DROP TABLE IF EXISTS insertion.country;
 DROP TABLE IF EXISTS insertion.mpaa;
 DROP TABLE IF EXISTS insertion.ratings;
 DROP TABLE IF EXISTS insertion.genre;
 DROP TABLE IF EXISTS insertion.business;
+DROP TABLE IF EXISTS insertion.soundtrack;
+DROP TABLE IF EXISTS insertion.biography;
+DROP TABLE IF EXISTS insertion.actor;
 DROP SCHEMA IF EXISTS insertion;
 
--- Reset queries;
+DROP INDEX IF EXISTS movie_movie_id_indx;
+DROP INDEX IF EXISTS movie_full_movie_indx;
+DROP INDEX IF EXISTS genre_genre_id_indx;
+DROP INDEX IF EXISTS genre_genre_indx;
+DROP INDEX IF EXISTS country_country_id_idx;
+DROP INDEX IF EXISTS country_country_idx;
+
 DROP TABLE IF EXISTS public.movie_country;
 DROP TABLE IF EXISTS public.gross;
 DROP SEQUENCE IF EXISTS public.gross_id_seq;
@@ -85,19 +95,17 @@ CREATE TABLE public.movie (
   -- From movies
   title            VARCHAR(255) NOT NULL,
   release_year     INTEGER,
-  occurence        INTEGER      NOT NULL,
   type             VARCHAR(2),
+  occurence        INTEGER      NOT NULL,
   -- From MPAA
   mpaa_rating      VARCHAR(5),
   mpaa_reason      TEXT,
   -- From ratings
-  rating           REAL,
+  rating           NUMERIC(3, 1),
   rating_votes     INTEGER,
   budget           NUMERIC(30, 2),
   CONSTRAINT movie_pkey
-  PRIMARY KEY (movie_id),
-  CONSTRAINT movie_uniq
-  UNIQUE (title, release_year, occurence)
+  PRIMARY KEY (movie_id)
 );
 
 CREATE SEQUENCE public.actor_id_seq;

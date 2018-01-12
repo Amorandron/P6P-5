@@ -22,6 +22,7 @@ public class ActorParser extends Parser {
             String gender = this.csv.getName().equals("actors.csv") ? "M" : "F";
             
             int linesBeforeList = 4;
+
             boolean foundList = false;
             
             for (String line; (line = this.readLine()) != null; ) {
@@ -74,8 +75,10 @@ public class ActorParser extends Parser {
 
                         int leftCommaInd = searchLine.indexOf("(");
                         int rightCommaInd = searchLine.indexOf(")", searchLine.indexOf("(") + 1);
-                        
+
                         if (rightCommaInd == -1) break;
+
+                        if (!searchLine.substring(rightCommaInd).contains(currentRole)) break;
 
                         if (searchLine.contains("(") &&
                                 searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("TV") ||

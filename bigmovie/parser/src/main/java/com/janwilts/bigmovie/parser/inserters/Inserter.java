@@ -20,7 +20,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class Inserter {
-    private static final String[] order = new String[] {"movies", "actors", "countries", "business", "genres", "soundtracks"};
+    private static final String[] order = new String[] {"movies", "actors", "countries", "genres", "soundtracks"};
 
     protected DatabaseConnection connection;
     protected File csv;
@@ -80,6 +80,10 @@ public abstract class Inserter {
     protected void executeInsert(String table, String csv, String delimiter) throws Exception {
         connection.getManager().copyIn(String.format("COPY %s FROM STDIN (FORMAT csv, DELIMITER '%s')", table, delimiter),
                 new FileReader(new File(csv)));
+    }
+
+    protected void message() {
+        System.out.println(String.format("Inserting %s...", csv.getName()));
     }
 
     abstract void insert();

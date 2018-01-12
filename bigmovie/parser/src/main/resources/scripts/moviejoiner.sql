@@ -6,6 +6,9 @@ public.actor_movie,
 public.movie_country,
 public.movie_genre;
 
+DROP INDEX IF EXISTS movie_movie_id_indx;
+DROP INDEX IF EXISTS movie_full_movie_indx;
+
 INSERT INTO public.movie (
   title,
   release_year,
@@ -17,7 +20,7 @@ INSERT INTO public.movie (
   rating,
   budget
 )
-  SELECT
+  SELECT DISTINCT
     m.title :: VARCHAR(255),
     m.year :: INTEGER,
     m.type :: VARCHAR(2),
@@ -25,21 +28,24 @@ INSERT INTO public.movie (
     mp.rating :: VARCHAR(5),
     mp.reason,
     r.votes :: INTEGER,
-    r.rating :: REAL,
-    b.budget :: MONEY
+    r.rating :: NUMERIC(3, 1),
+    b.budget :: NUMERIC(30, 2)
   FROM insertion.movie m
-    JOIN insertion.mpaa mp
+    LEFT JOIN insertion.mpaa mp
       ON m.title = mp.title
          AND m.year = mp.year
          AND m.type = mp.type
          AND m.occurence = mp.occurence
-    JOIN insertion.ratings r
+    LEFT JOIN insertion.ratings r
       ON m.title = r.title
          AND m.year = r.year
          AND m.type = r.type
          AND m.occurence = r.occurence
-    JOIN insertion.business b
+    LEFT JOIN insertion.business b
       ON m.title = b.title
          AND m.year = b.year
          AND m.type = b.type
-         AND m.occurence = b.occurence
+         AND m.occurence = b.occurence;
+
+CREATE INDEX movie_movie_id_indx ON public.movie (movie_id);
+CREATE INDEX movie_full_movie_indx ON public.movie (title, release_year, type, occurence);

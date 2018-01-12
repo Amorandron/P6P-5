@@ -67,7 +67,7 @@ public class CountryParser extends Parser {
 
                         country = m.group(7).trim();
                         // Write all variables to a line in countries.csv
-                        writer.println(String.join(DELIMITER, addQuotes(movieName), year, iteration, addQuotes(category),addQuotes(country)));
+                        writer.println(String.join(DELIMITER, addQuotes(movieName), year, addQuotes(category), iteration, addQuotes(country)));
                     }
 //                    else {
 //                        System.out.println("Failed: line: " + line);

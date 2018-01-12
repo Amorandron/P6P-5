@@ -14,6 +14,8 @@ public class Model{
         COUNTRY,
     }
 
+    public static final String SQL_SELECT_ALL_MOVIES = "SELECT * FROM movie";
+
     private Database db;
 
     public Model(Database db) {

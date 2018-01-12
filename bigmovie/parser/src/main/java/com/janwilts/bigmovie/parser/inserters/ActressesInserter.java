@@ -5,17 +5,16 @@ import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 
 import java.io.File;
 
-public class BiographyInserter extends Inserter {
-    public BiographyInserter(File file, DatabaseConnection connection) {
+public class ActressesInserter extends Inserter {
+    public ActressesInserter(File file, DatabaseConnection connection) {
         super(file, connection);
     }
 
     @Override
-    public void insert() {
+    void insert() {
         message();
         try {
-            executeSQL("biography.sql");
-            executeInsert("insertion.biography", csv.getCanonicalPath(), Parser.DELIMITER);
+            executeInsert("insertion.actor", csv.getCanonicalPath(), Parser.DELIMITER);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -24,7 +23,9 @@ public class BiographyInserter extends Inserter {
     @Override
     public String[] getRequiredTables() {
         return new String[] {
-                "actor"
+                "actor",
+                "actor_movie",
+                "movie"
         };
     }
 }

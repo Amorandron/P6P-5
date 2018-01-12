@@ -3,6 +3,9 @@ public.movie_country,
 public.gross,
 public.country;
 
+DROP INDEX IF EXISTS country_country_id_idx;
+DROP INDEX IF EXISTS country_country_idx;
+
 INSERT INTO public.country (
   country
 )
@@ -14,20 +17,21 @@ INSERT INTO public.country (
     WHERE pc.country = c.country
   );
 
+CREATE INDEX country_country_id_idx ON public.country (country_id);
+CREATE INDEX country_country_idx ON public.country (country);
+
 INSERT INTO public.movie_country (
   movie_id,
   country_id
 )
   SELECT
-    m.movie_id,
-    id
-  FROM public.movie m
-    JOIN insertion.country c
-      ON c.title = m.title :: TEXT
-         AND c.year = m.release_year :: TEXT
-         AND c.type = m.type :: TEXT
-         AND c.occurence = m.occurence :: TEXT
-  WHERE id = (SELECT pc.country_id
-                      FROM public.country pc
-                      WHERE pc.country = c.country
-  );
+    (SELECT m.movie_id
+     FROM public.movie m
+     WHERE m.title :: TEXT = c.title
+           AND (m.release_year :: TEXT = c.year or (m.release_year is null and c.year is null))
+           AND m.type :: TEXT = c.type
+           AND m.occurence :: TEXT = c.occurence) :: BIGINT AS movie_id,
+    (SELECT pc.country_id
+     FROM public.country pc
+     WHERE c.country :: TEXT = pc.country) :: INTEGER AS country_id
+  FROM insertion.country c;
