@@ -1,0 +1,8 @@
+//Question: Which actor or actress plays the most in the worst-rated films?
+
+// Exist in questionA7
+//+ (which|what) (@movie|@actors) * {weight=20}
+//- <set type=<star2>> {@ <star3>}
+
++ (plays|act|acts) the (most|least) in [the] (worst-rated|best-rated|worst|best) (@movie) {weight=15}
+- <get type> == (@actors) => <call>actorInfo <get type> <star2> <star3></call>
