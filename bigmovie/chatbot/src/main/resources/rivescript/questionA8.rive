@@ -6,8 +6,10 @@
 
 + has earned the (most|least) money {weight=10}
 * <get type> == movie => <call>movieEarned <star1></call>
+* <get type> == film => <call>movieEarned <star1></call>
 - <bot error>
 
 + has earned the (most|least) money (in a week|in a month|in a year) {weight=15}
 * <get type> == movie => <call>movieEarned <star1> <star2></call>
+* <get type> == film => <call>movieEarned <star1> <star2></call>
 - <bot error>

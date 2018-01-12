@@ -32,7 +32,7 @@
 - Tell me your question, maybe i can answer it.
 
 + google *
-- Google search: <a href="http://google.com/search?q=<star>">Click Here</a>
+- Google search: <a href=\"http://www.google.com/search?q="<star>"\">Click Here!</a>
 
 + what is the md5 hash of "*"
 - The hash of "<star>" is: <call>hash <star></call>

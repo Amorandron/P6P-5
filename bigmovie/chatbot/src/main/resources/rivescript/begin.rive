@@ -32,4 +32,5 @@
 ! person i       = you
 
 ! array movie = movie film
+! array movies =  films movies
 ! array actors = actor|actress|actor/actress|actor or actress

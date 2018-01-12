@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class DiscordBot {
     
-    public static String CLIENT_ID = "<@400614142534221824>";
+    public static String CLIENT_ID = "<@!400614142534221824>";
     
     private IDiscordClient discordClient;
     private RiveScript bot;
