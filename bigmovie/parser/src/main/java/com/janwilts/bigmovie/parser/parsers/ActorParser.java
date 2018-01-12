@@ -24,6 +24,7 @@ public class ActorParser extends Parser {
             int linesBeforeList = 4;
 
             boolean foundList = false;
+            boolean gameFound = false;
             
             for (String line; (line = this.readLine()) != null; ) {
                 if (!foundList && line.contains("THE " + file.getName().substring(0, file.getName().indexOf('.')).toUpperCase() + " LIST")) foundList = true;
@@ -82,10 +83,13 @@ public class ActorParser extends Parser {
 
                         if (searchLine.contains("(") &&
                                 searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("TV") ||
-                                searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("V") ||
-                                searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("VG")) {
+                                searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("V")) {
 
                             videoTvGame = searchLine.substring(leftCommaInd + 1, rightCommaInd);
+                        }
+                        else if (searchLine.contains("(") && searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("VG")) {
+                            gameFound = true;
+                            break;
                         }
                         else if (searchLine.contains("(") &&
                                 Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
@@ -107,6 +111,10 @@ public class ActorParser extends Parser {
                         searchLine = searchLine.substring(searchLine.indexOf("(") + 1);
                     }
 
+                    if(gameFound) {
+                        gameFound = false;
+                        continue;
+                    }
 
                     writer.println(String.join(",", addQuotes(currentActorName.replace(QUOTE, DOUBLE_QUOTE)),
                             currentActorOccurance + "", gender, addQuotes(currentFilm.replace(QUOTE, DOUBLE_QUOTE)),

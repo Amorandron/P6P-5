@@ -77,6 +77,8 @@ public class SoundtrackParser extends Parser {
                             currentType = "";
                         } else {
                             currentType = mm.group(6);
+                            if(mm.group(6).equals("VG"))
+                                continue;
                         }
 
                         if (mm.group(2).contains("?")) {

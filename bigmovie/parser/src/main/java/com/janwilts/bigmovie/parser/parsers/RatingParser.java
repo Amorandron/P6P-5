@@ -43,6 +43,8 @@ public class RatingParser extends Parser {
                     if (values[2].charAt(values[2].lastIndexOf('(') + 1) == 'V' || values[2].charAt(values[2].lastIndexOf('(') + 1) == 'T') {
                         type = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].lastIndexOf(')'));
                         values[2] = values[2].substring(0, values[2].lastIndexOf('(') - 1);
+                        if(type.contains("VG"))
+                            continue;
                     }
                     
                     if (values[2].lastIndexOf('(') != -1) yearString = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].length() - 1);

@@ -60,7 +60,7 @@ public class CountryParser extends Parser {
                         if (m.group(6) == null) category = "";
                         else if (m.group(6).contains("TV")) category = "TV";
                         else if (m.group(6).contains("V")) category = "V";
-                        else if (m.group(6).contains("VG")) category = "VG";
+                        else if (m.group(6).contains("VG")) continue;
                         else {
                             category = "";
                         }
