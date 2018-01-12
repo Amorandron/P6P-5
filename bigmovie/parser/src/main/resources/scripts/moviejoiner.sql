@@ -21,7 +21,7 @@ INSERT INTO public.movie (
   budget
 )
   SELECT DISTINCT
-    m.title :: VARCHAR(255),
+    m.title :: VARCHAR(511),
     m.year :: INTEGER,
     m.type :: VARCHAR(2),
     m.occurence :: INTEGER,
