@@ -28,7 +28,7 @@ INSERT INTO public.movie_country (
     (SELECT m.movie_id
      FROM public.movie m
      WHERE m.title :: TEXT = c.title
-           AND m.release_year :: TEXT = c.year
+           AND (m.release_year :: TEXT = c.year or (m.release_year is null and c.year is null))
            AND m.type :: TEXT = c.type
            AND m.occurence :: TEXT = c.occurence) :: BIGINT AS movie_id,
     (SELECT pc.country_id
