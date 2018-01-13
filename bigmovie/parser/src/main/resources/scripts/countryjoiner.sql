@@ -24,14 +24,16 @@ INSERT INTO public.movie_country (
   movie_id,
   country_id
 )
-  SELECT
-    (SELECT m.movie_id
-     FROM public.movie m
-     WHERE m.title :: TEXT = c.title
-           AND (m.release_year :: TEXT = c.year or (m.release_year is null and c.year is null))
-           AND m.type :: TEXT = c.type
-           AND m.occurence :: TEXT = c.occurence) :: BIGINT AS movie_id,
-    (SELECT pc.country_id
-     FROM public.country pc
-     WHERE c.country :: TEXT = pc.country) :: INTEGER AS country_id
-  FROM insertion.country c;
+
+ SELECT ( SELECT m.movie_id
+           FROM movie m
+          WHERE m.title::text = c.title AND (m.release_year::text = c.year OR m.release_year IS NULL AND c.year IS NULL) AND m.type::text = c.type AND m.occurence::text = c.occurence AND m.movie_id IS NOT NULL
+         LIMIT 1) AS movie_id,
+    ( SELECT pc.country_id
+           FROM country pc
+          WHERE c.country = pc.country::text) AS country_id
+   FROM insertion.country c
+  WHERE (( SELECT m.movie_id
+           FROM movie m
+          WHERE m.title::text = c.title AND (m.release_year::text = c.year OR m.release_year IS NULL AND c.year IS NULL) AND m.type::text = c.type AND m.occurence::text = c.occurence AND m.movie_id IS NOT NULL
+         LIMIT 1)) IS NOT NULL;
