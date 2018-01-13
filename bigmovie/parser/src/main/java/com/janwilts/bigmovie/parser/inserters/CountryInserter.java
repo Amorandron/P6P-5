@@ -17,6 +17,7 @@ public class CountryInserter extends Inserter {
             executeSQL("country.sql");
             executeInsert("insertion.country", csv.getCanonicalPath(), Parser.DELIMITER);
             executeSQL("countryjoiner.sql");
+            executeSQL("gross.sql");
         } catch (Exception e) {
             e.printStackTrace();
         }

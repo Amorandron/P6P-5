@@ -48,6 +48,7 @@ public class BusinessParser extends Parser {
             String line;
             while ((line = this.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
+                if (line.contains("{{SUSPENDED}}")) continue;
                 if (line.startsWith("MV: ") && !(line.charAt(4) == QUOTE_CHAR)) {
                     List<String> movieData = readMovie(line);
                     if(movieData.size() == 0)
@@ -152,6 +153,10 @@ public class BusinessParser extends Parser {
         else parsedGross = CurrencyConverter.convert(amount, currency, "USD");
         
         String country = values[1].substring(0, values[1].indexOf(')'));
+
+        if(country.toLowerCase().contains("worldwide") || country.toLowerCase().contains("non-usa"))
+            country = "";
+
         String date = (values.length > 2 && Character.isDigit(values[2].charAt(0))) ? values[2].substring(0, values[2].indexOf(')')) : "";
         date = fixDate(date);
         

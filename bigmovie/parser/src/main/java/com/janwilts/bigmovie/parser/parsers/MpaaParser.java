@@ -21,19 +21,25 @@ public class MpaaParser extends Parser {
         boolean foundList = false;
         boolean prevRating = false;
         boolean skipGame = false;
+        boolean prevSame = false;
+
+        String title = "";
+        String year = "";
+        String type = "";
+        String occurrence = "0";
+
+        String prevTitle = "";
+        String prevYear = "";
+        String prevType = "";
+        String prevOccurence = "";
 
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             for (String line; (line = this.readLine()) != null; ) {
                 if (!foundList && line.equals("=========================")) foundList = true;
                 if (foundList && line.startsWith("------------------")) continue;
                 else if (foundList && line.length() > 0) {
-                    String title;
-                    String year;
-                    String type = "";
-                    int occurrence = 0;
-
                     if (line.charAt(0) == 'M') {
-                        if(!skipGame && prevRating) {
+                        if(!skipGame && !prevSame && prevRating) {
                             writer.print(QUOTE + "\n");
                         }
                         skipGame = false;
@@ -42,6 +48,8 @@ public class MpaaParser extends Parser {
 
                         year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                         title = line.substring(0, line.lastIndexOf('(') - 1);
+                        occurrence = "";
+                        type = "";
 
                         if (year.charAt(0) == 'T' || year.charAt(0) == 'V') {
                             type = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
@@ -55,8 +63,20 @@ public class MpaaParser extends Parser {
                         }
 
                         if (year.contains("/")) {
-                            occurrence = RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length()));
+                            occurrence = String.valueOf(RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length())));
                             year = year.substring(0, year.indexOf("/"));
+                        }
+
+                        if(prevTitle.equals(title) && prevYear.equals(year) && prevType.equals(type) && prevOccurence.equals(occurrence)) {
+                            prevSame = true;
+                            continue;
+                        }
+                        else {
+                            prevTitle = title;
+                            prevYear = year;
+                            prevType = type;
+                            prevOccurence = occurrence;
+                            prevSame = false;
                         }
 
                         writer.print(QUOTE + title.replace(QUOTE, DOUBLE_QUOTE) + QUOTE + "," + year + "," + addQuotes(type) + "," + occurrence + ",");
@@ -64,7 +84,7 @@ public class MpaaParser extends Parser {
                     }
                     else if (line.charAt(0) == 'R') {
 
-                        if(skipGame)
+                        if(skipGame || prevSame)
                             continue;
 
                         prevRating = true;

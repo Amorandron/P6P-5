@@ -17,23 +17,19 @@ INSERT INTO public.country (
     WHERE pc.country = c.country
   );
 
-CREATE INDEX country_country_id_idx ON public.country (country_id);
-CREATE INDEX country_country_idx ON public.country (country);
+CREATE INDEX country_country_id_idx
+  ON public.country (country_id);
+CREATE INDEX country_country_idx
+  ON public.country (country);
 
 INSERT INTO public.movie_country (
   movie_id,
   country_id
 )
-
- SELECT ( SELECT m.movie_id
-           FROM movie m
-          WHERE m.title::text = c.title AND (m.release_year::text = c.year OR m.release_year IS NULL AND c.year IS NULL) AND m.type::text = c.type AND m.occurence::text = c.occurence AND m.movie_id IS NOT NULL
-         LIMIT 1) AS movie_id,
-    ( SELECT pc.country_id
-           FROM country pc
-          WHERE c.country = pc.country::text) AS country_id
-   FROM insertion.country c
-  WHERE (( SELECT m.movie_id
-           FROM movie m
-          WHERE m.title::text = c.title AND (m.release_year::text = c.year OR m.release_year IS NULL AND c.year IS NULL) AND m.type::text = c.type AND m.occurence::text = c.occurence AND m.movie_id IS NOT NULL
-         LIMIT 1)) IS NOT NULL;
+  SELECT
+    get_movie(c.title, c.year, c.type, c.occurence) AS movie_id,
+    (SELECT pc.country_id
+     FROM public.country pc
+     WHERE c.country = pc.country :: TEXT) :: INTEGER AS country_id
+  FROM insertion.country c
+  WHERE get_movie(c.title, c.year, c.type, c.occurence) IS NOT NULL;

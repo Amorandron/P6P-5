@@ -23,14 +23,10 @@ INSERT INTO public.movie_genre (
   movie_id,
   genre_id
 )
-SELECT
-  (SELECT m.movie_id
-   FROM public.movie m
-   WHERE m.title :: TEXT = g.title
-         AND m.release_year :: TEXT = g.year
-         AND m.type :: TEXT = g.type
-         AND m.occurence :: TEXT = g.occurence) :: BIGINT AS movie_id,
-  (SELECT pg.genre_id
-   FROM public.genre pg
-   WHERE g.genre :: TEXT = pg.genre) :: INTEGER AS genre_id
-FROM insertion.genre g;
+  SELECT
+    get_movie(g.title, g.year, g.type, g.occurence) AS movie_id,
+    (SELECT pg.genre_id
+     FROM public.genre pg
+     WHERE g.genre = pg.genre :: TEXT) :: INTEGER AS genre_id
+  FROM insertion.genre g
+  WHERE get_movie(g.title, g.year, g.type, g.occurence) IS NOT NULL;

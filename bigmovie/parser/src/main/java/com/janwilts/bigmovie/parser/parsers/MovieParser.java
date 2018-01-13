@@ -27,7 +27,8 @@ public class MovieParser extends Parser {
                 else if (linesBeforeList == 0 && line.length() > 0) {
                     if (line.startsWith("-----------------")) break;
                     if (line.charAt(0) == QUOTE_CHAR) continue;
-                    if (line.contains("{{SUSPENDED}}")) continue;
+                    if (line.contains("{{SUSPENDED}}"))
+                        continue;
                     
                     String year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                     String title = line.substring(0, line.lastIndexOf('(') - 1);
