@@ -177,6 +177,10 @@ CREATE TABLE public.gross (
   REFERENCES country (country_id)
 );
 
+CREATE OR REPLACE VIEW AS
+  SELECT date_trunc('week', transaction_date)
+  FROM public.gross
+
 CREATE OR REPLACE FUNCTION get_movie(
   ext_title TEXT,
   ext_year TEXT,
