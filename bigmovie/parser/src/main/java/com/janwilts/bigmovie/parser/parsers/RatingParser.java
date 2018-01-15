@@ -28,6 +28,7 @@ public class RatingParser extends Parser {
                     line = line.trim();
                     
                     if (line.contains(QUOTE)) continue;
+                    if (line.contains("{{SUSPENDED}}")) continue;
                     
                     if (line.endsWith("}")) line = line.substring(0, line.lastIndexOf("{"));
                     

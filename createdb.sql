@@ -105,7 +105,9 @@ CREATE TABLE public.movie (
   rating_votes     INTEGER,
   budget           NUMERIC(30, 2),
   CONSTRAINT movie_pkey
-  PRIMARY KEY (movie_id)
+  PRIMARY KEY (movie_id),
+  CONSTRAINT movie_uniq
+  UNIQUE (title, release_year, type, occurence)
 );
 
 CREATE SEQUENCE public.actor_id_seq;
@@ -210,3 +212,39 @@ CREATE TABLE public.gross (
   FOREIGN KEY (country_id)
   REFERENCES country (country_id)
 );
+
+CREATE OR REPLACE FUNCTION get_movie(
+  ext_title TEXT,
+  ext_year TEXT,
+  ext_type TEXT,
+  ext_occurence TEXT)
+  RETURNS BIGINT AS $movie_id$
+BEGIN
+  RETURN (SELECT m.movie_id
+  FROM movie m
+  WHERE m.title :: TEXT = ext_title
+    AND (m.release_year :: TEXT = ext_year
+       OR m.release_year IS NULL AND ext_year IS NULL)
+    AND m.type :: TEXT = ext_type
+    AND m.occurence :: TEXT = ext_occurence
+    AND m.movie_id IS NOT NULL
+  LIMIT 1);
+END;
+$movie_id$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION count_nulls(
+  VARIADIC cols TEXT[])
+  RETURNS INTEGER AS $nulls$
+DECLARE
+  col TEXT;
+  no_nulls INTEGER := 0;
+BEGIN
+  FOREACH col IN ARRAY cols
+  LOOP
+    IF col IS NULL THEN
+      no_nulls := no_nulls + 1;
+    END IF;
+  END LOOP;
+  RETURN no_nulls;
+END;
+$nulls$ LANGUAGE plpgsql;

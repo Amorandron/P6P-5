@@ -17,21 +17,19 @@ INSERT INTO public.country (
     WHERE pc.country = c.country
   );
 
-CREATE INDEX country_country_id_idx ON public.country (country_id);
-CREATE INDEX country_country_idx ON public.country (country);
+CREATE INDEX country_country_id_idx
+  ON public.country (country_id);
+CREATE INDEX country_country_idx
+  ON public.country (country);
 
 INSERT INTO public.movie_country (
   movie_id,
   country_id
 )
   SELECT
-    (SELECT m.movie_id
-     FROM public.movie m
-     WHERE m.title :: TEXT = c.title
-           AND (m.release_year :: TEXT = c.year or (m.release_year is null and c.year is null))
-           AND m.type :: TEXT = c.type
-           AND m.occurence :: TEXT = c.occurence) :: BIGINT AS movie_id,
+    get_movie(c.title, c.year, c.type, c.occurence) AS movie_id,
     (SELECT pc.country_id
      FROM public.country pc
-     WHERE c.country :: TEXT = pc.country) :: INTEGER AS country_id
-  FROM insertion.country c;
+     WHERE c.country = pc.country :: TEXT) :: INTEGER AS country_id
+  FROM insertion.country c
+  WHERE get_movie(c.title, c.year, c.type, c.occurence) IS NOT NULL;

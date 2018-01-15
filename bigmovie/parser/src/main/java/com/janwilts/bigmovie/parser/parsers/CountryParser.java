@@ -19,7 +19,7 @@ public class CountryParser extends Parser {
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
             //String pattern = "(.*?)\s\((.{4})|(|(.*?))\)(.*?)\s([a-zA-Z].*)";
-            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|\\/(.*?))\\)(|\\s\\((.*?)\\))\\t(.*)";
+            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|/(.*?))\\)(|\\s\\((.*?)\\))\\t(.*)";
             Pattern p = Pattern.compile(pattern);
             
             // Initialize variables
@@ -58,9 +58,9 @@ public class CountryParser extends Parser {
                         else iteration = Integer.toString(RomanNumeral.convert(m.group(4)));
 
                         if (m.group(6) == null) category = "";
-                        else if (m.group(6).contains("TV")) category = "TV";
-                        else if (m.group(6).contains("V")) category = "V";
-                        else if (m.group(6).contains("VG"))
+                        else if (m.group(6).equals("TV")) category = "TV";
+                        else if (m.group(6).equals("V")) category = "V";
+                        else if (m.group(6).equals("VG"))
                             continue;
                         else {
                             category = "";
