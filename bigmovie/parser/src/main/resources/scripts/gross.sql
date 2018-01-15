@@ -18,6 +18,17 @@ INSERT INTO public.movie (
 
 ALTER SEQUENCE public.gross_id_seq RESTART;
 
+INSERT INTO public.country (
+  country
+)
+  SELECT DISTINCT b.country
+  FROM insertion.business AS b
+  WHERE b.country NOT IN (
+    SELECT country
+    FROM public.country c
+    WHERE b.country = c.country
+  );
+
 INSERT INTO public.gross (
   movie_id,
   country_id,
