@@ -4,6 +4,7 @@ import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.janwilts.bigmovie.chatbot.subroutines.ActorActSubroutine;
 import com.janwilts.bigmovie.chatbot.subroutines.MovieCostSubroutine;
 import com.janwilts.bigmovie.chatbot.subroutines.MovieEarnedSubroutine;
+import com.janwilts.bigmovie.chatbot.subroutines.SoundTrackUsedSubroutine;
 import com.rivescript.Config;
 import com.rivescript.RiveScript;
 
@@ -15,6 +16,7 @@ public class Main {
         bot.setSubroutine("movieEarned", new MovieEarnedSubroutine());
         bot.setSubroutine("movieCost", new MovieCostSubroutine());
         bot.setSubroutine("actorAct", new ActorActSubroutine());
+        bot.setSubroutine("soundtrackUsed", new SoundTrackUsedSubroutine());
 //        String response = bot.reply("user", "hello bot");
 //        System.out.println(response);
 //
