@@ -20,7 +20,7 @@ public class Main {
             dotEnv.get("DATABASE_PASSWORD"));
 
     public static void main(String[] args) {
-        //CommandParser.parse(args);
+        CommandParser.parse(args);
         connection.open();
         Inserter.insertFiles(connection);
     }

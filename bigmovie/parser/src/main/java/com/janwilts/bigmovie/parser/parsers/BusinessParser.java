@@ -154,8 +154,11 @@ public class BusinessParser extends Parser {
         
         String country = values[1].substring(0, values[1].indexOf(')'));
 
-        if(country.toLowerCase().contains("worldwide") || country.toLowerCase().contains("non-usa"))
-            country = "";
+        if(country.equals("worldwide"))
+            country = "Worldwide";
+
+        else if(country.equals("non-USA"))
+            country = "Non-USA";
 
         String date = (values.length > 2 && Character.isDigit(values[2].charAt(0))) ? values[2].substring(0, values[2].indexOf(')')) : "";
         date = fixDate(date);

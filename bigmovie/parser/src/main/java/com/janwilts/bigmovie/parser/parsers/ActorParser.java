@@ -43,7 +43,7 @@ public class ActorParser extends Parser {
                         line = line.substring(line.indexOf(TAB_CHAR));
                     }
                     
-                    if (line.contains(QUOTE)) {
+                    if (line.contains(QUOTE) || line.contains("{{SUSPENDED}}")) {
                         continue;
                     }
                     
@@ -118,7 +118,7 @@ public class ActorParser extends Parser {
 
                     writer.println(String.join(",", addQuotes(currentActorName.replace(QUOTE, DOUBLE_QUOTE)),
                             currentActorOccurance + "", gender, addQuotes(currentFilm.replace(QUOTE, DOUBLE_QUOTE)),
-                            currentYear, yearOccurance + "", addQuotes(videoTvGame), addQuotes(currentRole.replace(QUOTE, DOUBLE_QUOTE))));
+                            currentYear, addQuotes(videoTvGame), yearOccurance + "", addQuotes(currentRole.replace(QUOTE, DOUBLE_QUOTE))));
                 }
             }
         }

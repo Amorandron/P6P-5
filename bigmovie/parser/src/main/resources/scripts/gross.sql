@@ -2,6 +2,33 @@ DROP INDEX IF EXISTS gross_gross_id_idx;
 DROP INDEX IF EXISTS gross_movie_id_idx;
 DROP INDEX IF EXISTS gross_country_id_idx;
 
+INSERT INTO public.movie (
+  title,
+  release_year,
+  type,
+  occurence
+)
+  SELECT b.title :: VARCHAR(511),
+    b.year :: INTEGER,
+    b.type :: VARCHAR(2),
+    b.occurence :: INTEGER
+  FROM insertion.business AS b
+  GROUP BY b.title, b.year, b.type, b.occurence
+  HAVING get_movie(b.title, b.year, b.type, b.occurence) IS NULL;
+
+ALTER SEQUENCE public.gross_id_seq RESTART;
+
+INSERT INTO public.country (
+  country
+)
+  SELECT DISTINCT b.country
+  FROM insertion.business AS b
+  WHERE b.country NOT IN (
+    SELECT country
+    FROM public.country c
+    WHERE b.country = c.country
+  );
+
 INSERT INTO public.gross (
   movie_id,
   country_id,
