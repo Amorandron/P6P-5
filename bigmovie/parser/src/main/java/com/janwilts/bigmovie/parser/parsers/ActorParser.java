@@ -43,7 +43,7 @@ public class ActorParser extends Parser {
                         line = line.substring(line.indexOf(TAB_CHAR));
                     }
                     
-                    if (line.contains(QUOTE)) {
+                    if (line.contains(QUOTE) || line.contains("{{SUSPENDED}}")) {
                         continue;
                     }
                     

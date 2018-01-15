@@ -87,6 +87,19 @@ public class BiographyParser extends Parser {
                         if(m.matches()) {
                             String date = m.group(1);
 
+                            if (date.contains("st") && !date.toLowerCase().contains("august")) {
+                                date = date.replaceAll("st", "");
+                            }
+                            else if (date.contains("nd")) {
+                                date = date.replaceAll("nd", "");
+                            }
+                            else if (date.contains("rd")) {
+                                date = date.replaceAll("st", "");
+                            }
+                            else if (date.contains("th")) {
+                                date = date.replaceAll("th", "");
+                            }
+
                             if (m.group(2) != null) {
                                 if (!m.group(2).equals("")) {
                                     date = date.substring(0, date.lastIndexOf(" ")) + " -" + date.substring(date.lastIndexOf(" ") + 1);

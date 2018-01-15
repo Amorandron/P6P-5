@@ -48,20 +48,20 @@ INSERT INTO public.actor (
       AND a.actor_occurence = b.occurence;
 
 CREATE INDEX actor_full_actor_indx
-  ON public.actor(name, actor_occurence, gender);
+  ON public.actor(name, occurence, gender);
 
-INSERT INTO public.movie_country (
+INSERT INTO public.movie_actor (
   movie_id,
   actor_id,
   role
 )
-  SELECT
+  SELECT DISTINCT
     get_movie(a.title, a.year, a.type, a.occurence) AS movie_id,
     (SELECT pa.actor_id
      FROM public.actor AS pa
      WHERE a.name = pa.name :: TEXT
-        AND a.occurence = pa.occurence :: TEXT
+        AND a.actor_occurence = pa.occurence :: TEXT
         AND a.gender = pa.gender :: TEXT) :: BIGINT AS actor_id,
     a.role :: VARCHAR(255)
   FROM insertion.actor a
-  WHERE get_movie(a.title, a.year, a.type, a.occurence) IS NOT NULL;
+  WHERE get_movie(a.title, a.year, a.type, a.actor_occurence) IS NOT NULL;
