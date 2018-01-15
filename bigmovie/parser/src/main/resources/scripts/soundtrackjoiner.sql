@@ -1,3 +1,6 @@
+-- Author:
+-- Jan
+
 DROP INDEX IF EXISTS soundtrack_movie_id_indx;
 
 ALTER SEQUENCE public.soundtrack_id_seq RESTART;

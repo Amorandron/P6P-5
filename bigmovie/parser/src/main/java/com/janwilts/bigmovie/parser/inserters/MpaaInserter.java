@@ -5,6 +5,9 @@ import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 
 import java.io.File;
 
+/**
+ * @author Jan
+ */
 public class MpaaInserter extends Inserter {
 
     public MpaaInserter(File file, DatabaseConnection connection) {

@@ -1,3 +1,6 @@
+-- Author:
+-- Jan
+
 DROP TABLE IF EXISTS insertion.movie;
 
 CREATE TABLE insertion.movie (

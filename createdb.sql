@@ -1,3 +1,6 @@
+-- Author:
+-- Jan
+
 \c postgres;
 DROP DATABASE IF EXISTS bigmovie;
 REASSIGN OWNED BY bigmovie_admin TO postgres;

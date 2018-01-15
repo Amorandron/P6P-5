@@ -1,3 +1,6 @@
+-- Author:
+-- Jan
+
 DROP TABLE IF EXISTS insertion.genre;
 
 CREATE TABLE insertion.genre (

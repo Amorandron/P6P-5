@@ -1,3 +1,6 @@
+-- Author:
+-- Jan
+
 DROP INDEX IF EXISTS gross_gross_id_idx;
 DROP INDEX IF EXISTS gross_movie_id_idx;
 DROP INDEX IF EXISTS gross_country_id_idx;
