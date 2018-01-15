@@ -15,6 +15,7 @@ public class Main {
         bot.setSubroutine("actorAct", new ActorActSubroutine());
         bot.setSubroutine("actorRole", new ActorRoleSubroutine());
         bot.setSubroutine("soundtrackUsed", new SoundTrackUsedSubroutine());
+        bot.setSubroutine("moviecountryEarned", new MovieCountryEarnedSubroutine());
 //        String response = bot.reply("user", "hello bot");
 //        System.out.println(response);
 //

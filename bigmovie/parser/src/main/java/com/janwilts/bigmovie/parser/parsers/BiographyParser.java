@@ -52,7 +52,7 @@ public class BiographyParser extends Parser {
                         String occurance = result[1];
                         
                         terms = new HashMap<>();
-                        terms.put("NM", currentName);
+                        terms.put("NM", currentName.trim());
                         terms.put("OC", occurance);
                         terms.put("NK", "");
                         terms.put("HT", "");
@@ -78,14 +78,36 @@ public class BiographyParser extends Parser {
                     }
                     else if(term.equals("DB")) {
                         Pattern p = Pattern.compile("(\\d.*\\d{1,4}|\\d{1,4}|[?]{1,4})([B][C])?");
-                        Matcher m = p.matcher(line.substring(term.length() + 1));
+                        if(line.contains(","))
+                            line = line.substring(term.length() + 1, line.indexOf(',')).trim();
+                        else
+                            line = line.substring(term.length() + 1);
+                        Matcher m = p.matcher(line);
 
                         if(m.matches()) {
                             String date = m.group(1);
 
-                            if (!m.group(2).equals("")) {
-                                date = date.substring(0, date.lastIndexOf(" ")) + "-" + date.substring(date.lastIndexOf(" ") + 1);
+                            if (date.contains("st") && !date.toLowerCase().contains("august")) {
+                                date = date.replaceAll("st", "");
                             }
+                            else if (date.contains("nd")) {
+                                date = date.replaceAll("nd", "");
+                            }
+                            else if (date.contains("rd")) {
+                                date = date.replaceAll("st", "");
+                            }
+                            else if (date.contains("th")) {
+                                date = date.replaceAll("th", "");
+                            }
+
+                            if (m.group(2) != null) {
+                                if (!m.group(2).equals("")) {
+                                    date = date.substring(0, date.lastIndexOf(" ")) + " -" + date.substring(date.lastIndexOf(" ") + 1);
+                                }
+                            }
+
+                            if(date.length() <= 5)
+                                date = "1 January " + date;
 
                             terms.put(term, date.trim());
                         }

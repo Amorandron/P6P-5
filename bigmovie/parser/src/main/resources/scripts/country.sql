@@ -7,4 +7,3 @@ CREATE TABLE insertion.country (
   occurence TEXT,
   country   TEXT
 );
-

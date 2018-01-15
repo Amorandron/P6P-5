@@ -13,6 +13,8 @@ import org.jooby.rx.RxJdbc;
 import org.rosuda.JRI.Rengine;
 import rx.Observable;
 
+import java.util.List;
+
 /**
  * @author Yannick Kooistra
  */
@@ -63,7 +65,8 @@ public class App extends Jooby {
         get("/actors", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, "SELECT * FROM actor");
+            Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, "SELECT * " +
+                    "FROM public.actor");
             Actor actor = obs.toBlocking().first();
 
             return actor;
@@ -72,7 +75,8 @@ public class App extends Jooby {
         get("/countries", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT * FROM country");
+            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT * " +
+                    "FROM public.country");
             Country country = obs.toBlocking().first();
 
             return country;
@@ -81,7 +85,8 @@ public class App extends Jooby {
         get("/genres", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Genre> obs = model.query(Model.DbClasses.GENRE, "SELECT * FROM genre");
+            Observable<Genre> obs = model.query(Model.DbClasses.GENRE, "SELECT * " +
+                    "FROM public.genre");
             Genre genre = obs.toBlocking().first();
 
             return genre;
@@ -90,7 +95,8 @@ public class App extends Jooby {
         get("/gross", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Gross> obs = model.query(Model.DbClasses.GROSS, "SELECT * FROM gross");
+            Observable<Gross> obs = model.query(Model.DbClasses.GROSS, "SELECT * " +
+                    "FROM public.gross");
             Gross gross = obs.toBlocking().first();
 
             return gross;
@@ -99,15 +105,32 @@ public class App extends Jooby {
         get("/soundtracks", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Soundtrack> obs = model.query(Model.DbClasses.MOVIE, "SELECT * FROM soundtrack");
+            Observable<Soundtrack> obs = model.query(Model.DbClasses.MOVIE, "SELECT * " +
+                    "FROM public.soundtrack");
             Soundtrack soundtrack = obs.toBlocking().first();
 
             return soundtrack;
+        });
+
+        get("/q/a7", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE,"SELECT * " +
+                    "FROM public.movie " +
+                    "ORDER BY budget DESC");
+            Movie movie = obs.toBlocking().first();
+
+            return movie;
+        });
+
+        get("/q/a7", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<String> result = model.query()
         });
     }
 
   public static void main(final String[] args) {
     run(App::new, args);
   }
-
 }
