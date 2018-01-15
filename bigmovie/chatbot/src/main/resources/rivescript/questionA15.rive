@@ -8,5 +8,7 @@
 * <get type> == actor => <call>actorAct <get type> <star2> <star3></call>
 * <get type> == actress => <call>actorAct <get type> <star2> <star3></call>
 * <get type> == actor/actress => <call>actorAct <get type> <star2> <star3></call>
-* <get type> ==  actor or actress' => <call>actorAct <get type> <star2> <star3></call> //FIXME bugs at 'actor or actress'
+* <get type> == actress/actor => <call>actorAct <get type> <star2> <star3></call>
+* "<get type>" == "actor or actress" => <call>actorAct "<get type>" <star2> <star3></call>
+* "<get type>" == "actress or actor" => <call>actorAct "<get type>" <star2> <star3></call>
 - <bot error>
