@@ -50,6 +50,20 @@ INSERT INTO public.actor (
 CREATE INDEX actor_full_actor_indx
   ON public.actor(name, occurence, gender);
 
+INSERT INTO public.movie (
+  title,
+  release_year,
+  type,
+  occurence
+)
+  SELECT a.title :: VARCHAR(511),
+    a.year :: INTEGER,
+    a.type :: VARCHAR(2),
+    a.occurence :: INTEGER
+  FROM insertion.actor AS a
+  GROUP BY a.title, a.year, a.type, a.occurence
+  HAVING get_movie(a.title, a.year, a.type, a.occurence) IS NULL;
+
 INSERT INTO public.movie_actor (
   movie_id,
   actor_id,
