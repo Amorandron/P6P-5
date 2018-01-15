@@ -1,11 +1,9 @@
 //Question: Which movies does actor x have a role in?
 //In welke films heeft acteur x een rol?
 
-! array movie = movie film
-! array movies =  films movies
-
-+ (which|what) (@movie|@movies) * {weight=20}
-- <set type=<star2>> {@ <star3>}
+//Exists in questionA7
+//+ (which|what) (@movie|@movies) * {weight=20}
+//- <set type=<star2>> {@ <star3>}
 
 + does * have a (role|part) in {weight=18}
 * <get type> == movie => <star1> <star2>
