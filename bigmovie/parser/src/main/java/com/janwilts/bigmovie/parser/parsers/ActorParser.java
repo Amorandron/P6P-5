@@ -51,10 +51,15 @@ public class ActorParser extends Parser {
                     String currentRole = "";
                     String currentYear = "";
                     int yearOccurance = 0;
-                    
-                    if (line.contains("[")) {
-                        currentFilm = line.substring(line.indexOf(TAB), line.indexOf("[")).trim();
-                        currentRole = line.substring(line.indexOf("[") + 1, line.indexOf("]", line.indexOf("["))).trim();
+
+                    int lastIndexOfRoleDelimiter = line.lastIndexOf('[');
+
+                    if (lastIndexOfRoleDelimiter >= 3 && (line.charAt(lastIndexOfRoleDelimiter - 3) == ')' ||
+                            (line.substring(0, lastIndexOfRoleDelimiter).contains("[") &&
+                                    line.indexOf(']', lastIndexOfRoleDelimiter) != -1))) {
+
+                        currentFilm = line.substring(line.indexOf(TAB), lastIndexOfRoleDelimiter).trim();
+                        currentRole = line.substring(lastIndexOfRoleDelimiter + 1, line.indexOf("]", lastIndexOfRoleDelimiter)).trim();
 
                         if(currentRole.startsWith("Undetermined"))
                             currentRole = "";
@@ -94,7 +99,7 @@ public class ActorParser extends Parser {
                         else if (searchLine.contains("(") &&
                                 Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                 (rightCommaInd - leftCommaInd == 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
-                                (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' || searchLine.charAt(rightCommaInd - 1) == 'X') ||
+                                (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && (searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' || searchLine.charAt(rightCommaInd - 1) == 'X')) ||
                                 (rightCommaInd - leftCommaInd <= 5 && searchLine.charAt(rightCommaInd - 1) == '?' && searchLine.charAt(leftCommaInd + 1) == '?')) {
     
                             currentFilm = line.substring(line.indexOf(TAB), line.indexOf("(", line.indexOf(searchLine))).trim();

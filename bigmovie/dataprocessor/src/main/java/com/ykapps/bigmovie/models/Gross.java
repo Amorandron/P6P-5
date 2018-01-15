@@ -13,14 +13,14 @@ public class Gross {
 
     private BigDecimal amount;
 
-    private Date date;
+    private Date transaction_date;
 
-    public Gross(int gross_id, int movie_id, int country_id, BigDecimal amount, Date date) {
+    public Gross(int gross_id, int movie_id, int country_id, BigDecimal amount, Date transaction_date) {
         this.gross_id = gross_id;
         this.movie_id = movie_id;
         this.country_id = country_id;
         this.amount = amount;
-        this.date = date;
+        this.transaction_date = transaction_date;
     }
 
     public int getGross_id() {
@@ -39,7 +39,7 @@ public class Gross {
         return amount;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getTransaction_date() {
+        return transaction_date;
     }
 }

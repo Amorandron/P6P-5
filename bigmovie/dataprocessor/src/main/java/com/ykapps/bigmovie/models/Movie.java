@@ -10,7 +10,7 @@ public class Movie {
 
     private int release_year;
 
-    private int occurance;
+    private int occurence;
 
     private String mpaa_rating;
 
@@ -22,21 +22,18 @@ public class Movie {
 
     private BigDecimal budget;
 
-    private BigDecimal production_costs;
-
-    public Movie(int movie_id, String title, int release_year, int occurance, String mpaa_rating, String mpaa_reason,
-                 int rating, int rating_votes, BigDecimal budget, BigDecimal production_costs) {
+    public Movie(int movie_id, String title, int release_year, int occurence, String mpaa_rating, String mpaa_reason,
+                 int rating, int rating_votes, BigDecimal budget) {
 
         this.movie_id = movie_id;
         this.title = title;
         this.release_year = release_year;
-        this.occurance = occurance;
+        this.occurence = occurence;
         this.mpaa_rating = mpaa_rating;
         this.mpaa_reason = mpaa_reason;
         this.rating = rating;
         this.rating_votes = rating_votes;
         this.budget = budget;
-        this.production_costs = production_costs;
     }
 
     public int getMovie_id() {
@@ -51,8 +48,8 @@ public class Movie {
         return release_year;
     }
 
-    public int getOccurance() {
-        return occurance;
+    public int getOccurence() {
+        return occurence;
     }
 
     public String getMpaa_rating() {
@@ -73,9 +70,5 @@ public class Movie {
 
     public BigDecimal getBudget() {
         return budget;
-    }
-
-    public BigDecimal getProduction_costs() {
-        return production_costs;
     }
 }
