@@ -18,19 +18,19 @@ public class GenreParser extends Parser {
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|\\/(.*?))\\)(|\\s\\((.*?)\\))\\t(.*)";
+            String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|\\/([^)(]*?))\\)(|\\s\\(([^)(?]*?)\\))\\t(.*)";
             Pattern p = Pattern.compile(pattern);
 
             /*
-            regex (series still included!): (.*?)\s\((\d{4}|[?]{4})(|\/(.*?))\)\s(|\((.*?)\))\t(.*)
+            regex (series still included!): (.*?)\s\((\d{4}|[?]{4})(|\/([^)(]*?))\)(|\s\(([^)(?]*?)\))\t(.*)
             (.*?) --> (first group) matches any character (except for line terminators) --> title
             \s --> matches any whitespace character; de space after the title
             \( --> matches the '(' character; first character before the year
             (\d{4}|[?]{4}) --> (second group) matches any digit or '?' character exactly 4 times; --> year
-            (|\/(.*?)) --> (third group) matches null or '/' character and (fourth group) matches any character --> romanNumber
+            (|\/([^)(]*?)) --> (third group) matches null or '/' character and (fourth group) matches any character (except '(' en ')') --> romanNumber
             \) --> matches the ')' character; first character after the year
             \s --> matches the whitespace after the year
-            (|\((.*?)\)) --> (fifth group) matches null or '(' and (sixth group) matches any character till ')' --> type (TV/V/VG)
+            (|\(([^)(?]*?)\)) --> (fifth group) matches null or '(' and (sixth group) matches any character (except '(' ')' '?') till ')' --> type (TV/V/VG)
             \t --> tab after year of type
             (.*) --> (seventh group) matches any character one or more times --> genre (needs trim)
 
