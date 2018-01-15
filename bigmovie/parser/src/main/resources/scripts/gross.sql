@@ -40,7 +40,7 @@ INSERT INTO public.gross (
     (SELECT c.country_id
      FROM public.country c
      WHERE c.country :: TEXT = b.country) :: INTEGER AS country_id,
-    b.gross :: MONEY,
+    b.gross :: NUMERIC(30, 2),
     to_date(b.date, 'DDMMYYYY')
   FROM insertion.business b
   WHERE count_nulls(get_movie(b.title, b.year, b.type, b.occurence) :: TEXT,
