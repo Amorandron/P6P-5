@@ -20,7 +20,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class Inserter {
-    private static final String[] order = new String[] {"movies", "actors", "countries", "genres", "soundtracks"};
+    //private static final String[] order = new String[] {"movies", "countries", "genres", "soundtracks", "actors"};
+    private static final String[] order = new String[] {"movies", "actors"};
 
     protected DatabaseConnection connection;
     protected File csv;

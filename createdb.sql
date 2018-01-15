@@ -1,41 +1,3 @@
--- Remove this line if it's the first time inserting
-\c bigmovie;
-
--- Reset queries;
-DROP TABLE IF EXISTS insertion.movie;
-DROP TABLE IF EXISTS insertion.country;
-DROP TABLE IF EXISTS insertion.mpaa;
-DROP TABLE IF EXISTS insertion.ratings;
-DROP TABLE IF EXISTS insertion.genre;
-DROP TABLE IF EXISTS insertion.business;
-DROP TABLE IF EXISTS insertion.soundtrack;
-DROP TABLE IF EXISTS insertion.biography;
-DROP TABLE IF EXISTS insertion.actor;
-DROP SCHEMA IF EXISTS insertion;
-
-DROP INDEX IF EXISTS movie_movie_id_indx;
-DROP INDEX IF EXISTS movie_full_movie_indx;
-DROP INDEX IF EXISTS genre_genre_id_indx;
-DROP INDEX IF EXISTS genre_genre_indx;
-DROP INDEX IF EXISTS country_country_id_idx;
-DROP INDEX IF EXISTS country_country_idx;
-
-DROP TABLE IF EXISTS public.movie_country;
-DROP TABLE IF EXISTS public.gross;
-DROP SEQUENCE IF EXISTS public.gross_id_seq;
-DROP TABLE IF EXISTS public.country;
-DROP SEQUENCE IF EXISTS public.country_id_seq;
-DROP TABLE IF EXISTS public.movie_genre;
-DROP TABLE IF EXISTS public.genre;
-DROP SEQUENCE IF EXISTS public.genre_id_seq;
-DROP TABLE IF EXISTS public.soundtrack;
-DROP SEQUENCE IF EXISTS public.soundtrack_id_seq;
-DROP TABLE IF EXISTS public.actor_movie;
-DROP TABLE IF EXISTS public.movie;
-DROP SEQUENCE IF EXISTS public.movie_id_seq;
-DROP TABLE IF EXISTS public.actor;
-DROP SEQUENCE IF EXISTS public.actor_id_seq;
-
 \c postgres;
 DROP DATABASE IF EXISTS bigmovie;
 REASSIGN OWNED BY bigmovie_admin TO postgres;
@@ -54,6 +16,8 @@ CREATE DATABASE bigmovie;
 \c bigmovie;
 
 CREATE SCHEMA insertion;
+
+SET transform_null_equals = ON;
 
 -- Revoke all permissions to be reset later
 REVOKE ALL ON DATABASE bigmovie FROM PUBLIC;
@@ -122,10 +86,10 @@ CREATE TABLE public.actor (
   CONSTRAINT actor_pkey
   PRIMARY KEY (actor_id),
   CONSTRAINT actor_uniq
-  UNIQUE (name, occurence)
+  UNIQUE (name, occurence, gender)
 );
 
-CREATE TABLE public.actor_movie (
+CREATE TABLE public.movie_actor (
   movie_id BIGINT NOT NULL,
   actor_id BIGINT NOT NULL,
   role     VARCHAR(255),
