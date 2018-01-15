@@ -17,6 +17,9 @@ public class SoundTrackUsedSubroutine implements Subroutine {
 
         //TODO get data from api
 
+        //arg[0] = order_by
+        //arg[1] = movie
+
         String type = args[0];
         if(type.contains("most")){
             result = "most";
@@ -24,8 +27,10 @@ public class SoundTrackUsedSubroutine implements Subroutine {
         else if(type.contains("least")){
             result = "least";
         }
-        String movie = args[2];
-        result += ", " + movie;
+        if (args.length > 1) {
+            String movie = args[1];
+            result += ", " + movie;
+        }
 
 
         return result;
