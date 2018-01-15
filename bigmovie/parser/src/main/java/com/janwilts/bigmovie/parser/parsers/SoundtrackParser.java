@@ -40,16 +40,17 @@ public class SoundtrackParser extends Parser {
             \6 --> type (TV/V/VG)
              */
 
-            String titleSongPattern = "-\\s\"(.*?)\"";
+            String titleSongPattern = "-\\s\"(.*?)\"(|.*)";
             Pattern sp = Pattern.compile(titleSongPattern);
 
             /*
-            regex sontitleline: \-\s\"(.*?)\"
+            regex sontitleline: \-\s\"(.*?)\"(|.*)
             \- --> matches the character - literally --> first character of the line with song title
             \s --> matches any whitespace character --> space before song title
             \" --> matches the character " literally --> character before song title
             (.*?) --> matches any character --> song title
             \" --> matches the character " literally --> character after song title
+            (|.*) --> matches nothing or any any character
 
             \1 --> song title
              */
