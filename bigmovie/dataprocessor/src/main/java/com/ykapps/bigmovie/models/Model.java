@@ -3,6 +3,8 @@ package com.ykapps.bigmovie.models;
 import com.github.davidmoten.rx.jdbc.Database;
 import rx.Observable;
 
+import java.util.List;
+
 public class Model{
 
     public enum DbClasses{
@@ -20,6 +22,11 @@ public class Model{
 
     public Model(Database db) {
         this.db = db;
+    }
+
+    public Observable<String> query(String sql) {
+        return db.select(sql)
+                .getAs(String.class);
     }
 
     public Observable query(DbClasses dbClass, String sql) {

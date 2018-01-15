@@ -8,7 +8,7 @@ public class Actor {
 
     private String name;
 
-    private int occurance;
+    private int occurence;
 
     private char gender;
 
@@ -17,7 +17,7 @@ public class Actor {
     public Actor(int actor_id, String name, int occurance, char gender, Date birth_date) {
         this.actor_id = actor_id;
         this.name = name;
-        this.occurance = occurance;
+        this.occurence = occurance;
         this.gender = gender;
         this.birth_date = birth_date;
     }
@@ -31,7 +31,7 @@ public class Actor {
     }
 
     public int getOccurance() {
-        return occurance;
+        return occurence;
     }
 
     public char getGender() {

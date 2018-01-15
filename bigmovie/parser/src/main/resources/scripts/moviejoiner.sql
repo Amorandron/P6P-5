@@ -2,12 +2,14 @@ TRUNCATE TABLE
 public.movie,
 public.soundtrack,
 public.gross,
-public.actor_movie,
+public.movie_actor,
 public.movie_country,
 public.movie_genre;
 
 DROP INDEX IF EXISTS movie_movie_id_indx;
 DROP INDEX IF EXISTS movie_full_movie_indx;
+
+ALTER SEQUENCE public.movie_id_seq RESTART;
 
 INSERT INTO public.movie (
   title,
@@ -47,5 +49,7 @@ INSERT INTO public.movie (
          AND m.type = b.type
          AND m.occurence = b.occurence;
 
-CREATE INDEX movie_movie_id_indx ON public.movie (movie_id);
-CREATE INDEX movie_full_movie_indx ON public.movie (title, release_year, type, occurence);
+CREATE INDEX movie_movie_id_indx
+  ON public.movie (movie_id);
+CREATE INDEX movie_full_movie_indx
+  ON public.movie (title, release_year, type, occurence);
