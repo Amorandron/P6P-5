@@ -1,7 +1,7 @@
 //Question: Which movie was the most expensive to record?
 //which movie cost the most money to record?
 
-+ (which|what) (@movie|@actors) * {weight=20}
++ [in] (which|what) (@movie|@actors|@country) * {weight=20}
 - <set type=<star2>> {@ <star3>}
 
 + (was|has been) the (most expensive|least expensive|cheapest) to (record|shoot|film) {weight=18}
