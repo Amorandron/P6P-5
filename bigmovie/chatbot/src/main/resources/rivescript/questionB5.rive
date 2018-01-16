@@ -1,4 +1,9 @@
+// Author: Everdien
+
 //Question: How does the popularity of genres change displayed in time?
 
-+ how does the popularity of (genres|subject|subjects) (change|mutate|alter|vary) [displayed in time|over time]
-- That is a good question
++ how does the popularity of (genres|subject|subjects) (change|mutate|alter|vary|shift) [displayed in time|over time]
+- <call>genrepopularityChange</call>
+
++ show [me] the (change|shift|alter|vary) in popularity of (genres|subject|subjects) [displayed in time|over time]
+- <call>genrepopularityChange</call>

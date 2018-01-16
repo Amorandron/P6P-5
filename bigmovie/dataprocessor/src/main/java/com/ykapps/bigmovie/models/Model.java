@@ -5,7 +5,7 @@ import rx.Observable;
 
 import java.util.List;
 
-public class Model{
+public class Model {
 
     public enum DbClasses{
         MOVIE,
@@ -16,7 +16,7 @@ public class Model{
         COUNTRY,
     }
 
-    public static final String SQL_SELECT_ALL_MOVIES = "SELECT * FROM movie";
+    public static final String SQL_SELECT_MOVIE = "SELECT * FROM movie WHERE movie_id=9";
 
     private Database db;
 
@@ -55,9 +55,25 @@ public class Model{
         }
 
         //noinspection unchecked
-        return db
-            .select(sql)
-            .autoMap(mappingClass);
+        if(mappingClass.equals(Gross.class)) {
+            return db
+                    .select(sql)
+                    .get(rs -> new Gross(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+                            rs.getBigDecimal(4), rs.getDate(5)));
+        }
+        else if(mappingClass.equals(Movie.class)) {
+            return db
+                    .select(sql)
+                    .get(rs -> new Movie(rs.getInt(1), rs.getString(2), rs.getInt(3),
+                            rs.getString(4), rs.getInt(5), rs.getString(6),
+                            rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getBigDecimal(10)));
+        }
+
+        else {
+            return db
+                    .select(sql)
+                    .autoMap(mappingClass);
+        }
     }
 
 }
