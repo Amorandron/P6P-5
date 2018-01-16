@@ -24,6 +24,7 @@ public class ActorInserter extends Inserter {
             Inserter actress = new ActressesInserter(actressFile, connection);
             actress.insert();
             executeSQL("actorjoiner.sql");
+            executeSQL("finish.sql");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -16,7 +16,9 @@ public class ActorRoleSubroutine implements Subroutine {
 
         //TODO get request from api.
 
-        //args[0] = actor_firstname
+        if (args.length == 0) {
+            return result;
+        }
 
         if (args.length == 3) {
             result += args[0] + " " + args[1] + ", " + args[2];

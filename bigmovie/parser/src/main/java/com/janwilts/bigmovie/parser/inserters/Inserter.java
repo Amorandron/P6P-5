@@ -3,11 +3,8 @@ package com.janwilts.bigmovie.parser.inserters;
 import com.janwilts.bigmovie.parser.Main;
 import com.janwilts.bigmovie.parser.Parsable;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;

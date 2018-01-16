@@ -1,0 +1,21 @@
+//Op IMDB staat onder meer een lijst van MPAA-ratings (de Amerikaanse versie van de Nederlandse Kijkwijzer). Maak een model waaruit je kan //afleiden in welke categorie een film valt op grond van de motivatie in de MPAA-ratings lijst. Valideer het model.
+
+//Question: What's the rating of (movie)?
+
++ what is the rating of *
+- <call>movieMpaa <star></call>
+
++ how is the @movie * rated
+- <call>movieMpaa <star></call>
+
++ how is * rated
+- <call>movieMpaa <star></call>
+
++ how would you rate the @movie *
+- <call>movieMpaa <star></call>
+
++ how would you rate *
+- <call>movieMpaa <star><call>
+
++ rating *
+- <call>movieMpaa <star></call>

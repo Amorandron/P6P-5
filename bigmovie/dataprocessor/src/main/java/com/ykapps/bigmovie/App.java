@@ -2,6 +2,7 @@ package com.ykapps.bigmovie;
 
 import com.github.davidmoten.rx.jdbc.Database;
 import com.ykapps.bigmovie.models.*;
+import com.ykapps.bigmovie.util.RRunner;
 import org.jooby.Jooby;
 import org.jooby.Results;
 import org.jooby.apitool.ApiTool;
@@ -13,7 +14,10 @@ import org.jooby.rx.RxJdbc;
 import org.rosuda.JRI.Rengine;
 import rx.Observable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Yannick Kooistra
@@ -23,7 +27,7 @@ public class App extends Jooby {
 
     private Model model;
 
-    private Rengine re;
+    private RRunner runner;
 
     {
         use(new Rx());
@@ -41,11 +45,7 @@ public class App extends Jooby {
         onStart(() -> {
             model = new Model(require(Database.class));
 
-            re = new Rengine();
-            // the engine creates R is a new thread, so we should wait until it's ready
-            if (!re.waitForR()) {
-                throw new Exception("Cannot load R");
-            }
+            runner = new RRunner();
         });
 
 
@@ -56,7 +56,7 @@ public class App extends Jooby {
         get("/movies", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_ALL_MOVIES);
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_MOVIE);
             Movie movie = obs.toBlocking().first();
 
             return movie;
@@ -96,7 +96,7 @@ public class App extends Jooby {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
             Observable<Gross> obs = model.query(Model.DbClasses.GROSS, "SELECT * " +
-                    "FROM public.gross");
+                    "FROM public.gross WHERE gross_id=140");
             Gross gross = obs.toBlocking().first();
 
             return gross;
@@ -105,7 +105,7 @@ public class App extends Jooby {
         get("/soundtracks", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Soundtrack> obs = model.query(Model.DbClasses.MOVIE, "SELECT * " +
+            Observable<Soundtrack> obs = model.query(Model.DbClasses.SOUNDTRACK, "SELECT * " +
                     "FROM public.soundtrack");
             Soundtrack soundtrack = obs.toBlocking().first();
 
@@ -136,7 +136,71 @@ public class App extends Jooby {
         get("/q/a21", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<String> result = model.query()
+            Observable<String> song = model.query("SELECT song" +
+                    "FROM public.soundtrack" +
+                    "GROUP BY song" +
+                    "ORDER BY count(soundtrack_id) DESC" +
+                    "LIMIT 1");
+            Observable<Movie> obsM = model.query(Model.DbClasses.MOVIE,"SELECT *" +
+                    "FROM public.movie" +
+                    "WHERE movie_id IN (" +
+                    "  SELECT movie_id" +
+                    "  FROM public.soundtrack" +
+                    "  WHERE song IN (" +
+                    "    SELECT song" +
+                    "    FROM public.soundtrack" +
+                    "    GROUP BY song" +
+                    "    ORDER BY count(soundtrack_id) DESC" +
+                    "    LIMIT 1" +
+                    "  )" +
+                    ")");
+
+            Map<String, Movie> movies = new HashMap<>();
+
+            obsM.forEach(m -> movies.put(song.toBlocking().first(), m));
+            return movies;
+        });
+
+        get("/q/b4", () -> {
+            //TODO: Implement question B4 here.
+            return "NYI";
+        });
+
+        get("/q/b5", () -> {
+            //TODO: Implement question B5 here.
+            return "NYI";
+        });
+
+        get("/q/c2", () -> {
+            //TODO: Implement question C2 here.
+            return "NYI";
+        });
+
+        get("/q/c4", () -> {
+            //TODO: Implement question C4 here.
+            return "NYI";
+        });
+
+        get("/q/d1", () -> {
+            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
+                    "FROM country" +
+                    "WHERE country_id IN (" +
+                    "  SELECT country_id" +
+                    "  FROM public.gross" +
+                    "  GROUP BY country_id" +
+                    "  HAVING sum(amount) IS NOT NULL" +
+                    "  ORDER BY sum(amount) DESC" +
+                    ")");
+
+            List<Country> countries = new ArrayList<>();
+            obs.forEach(countries::add);
+
+            return countries;
+        });
+
+        get("/q/d2", () -> {
+            //TODO: Implement question D2 here.
+            return "NYI";
         });
     }
 

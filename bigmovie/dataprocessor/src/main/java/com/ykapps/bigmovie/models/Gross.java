@@ -1,21 +1,21 @@
 package com.ykapps.bigmovie.models;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Date;
 
 public class Gross {
 
-    private int gross_id;
+    private Integer gross_id;
 
-    private int movie_id;
+    private Integer movie_id;
 
-    private int country_id;
+    private Integer country_id;
 
     private BigDecimal amount;
 
     private Date transaction_date;
 
-    public Gross(int gross_id, int movie_id, int country_id, BigDecimal amount, Date transaction_date) {
+    public Gross(Integer gross_id, Integer movie_id, Integer country_id, BigDecimal amount, Date transaction_date) {
         this.gross_id = gross_id;
         this.movie_id = movie_id;
         this.country_id = country_id;
@@ -23,15 +23,15 @@ public class Gross {
         this.transaction_date = transaction_date;
     }
 
-    public int getGross_id() {
+    public Integer getGross_id() {
         return gross_id;
     }
 
-    public int getMovie_id() {
+    public Integer getMovie_id() {
         return movie_id;
     }
 
-    public int getCountry_id() {
+    public Integer getCountry_id() {
         return country_id;
     }
 
