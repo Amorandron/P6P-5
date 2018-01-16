@@ -1,3 +1,6 @@
+-- Author:
+-- Jan
+
 DROP TABLE IF EXISTS insertion.actor;
 
 DROP INDEX IF EXISTS insertion_actor_full_indx;

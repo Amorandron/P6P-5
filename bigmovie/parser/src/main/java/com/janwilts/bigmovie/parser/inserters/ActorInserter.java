@@ -5,6 +5,9 @@ import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 
 import java.io.File;
 
+/**
+ * @author Jan
+ */
 public class ActorInserter extends Inserter {
     public ActorInserter(File file, DatabaseConnection connection) {
         super(file, connection);

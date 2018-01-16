@@ -1,3 +1,6 @@
+-- Author:
+-- Yannick & Jan
+
 TRUNCATE TABLE
 public.movie_actor,
 public.actor;

@@ -1,3 +1,6 @@
+-- Author:
+-- Jan
+
 TRUNCATE TABLE
 public.movie,
 public.soundtrack,
