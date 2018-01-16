@@ -2,6 +2,7 @@ package com.ykapps.bigmovie;
 
 import com.github.davidmoten.rx.jdbc.Database;
 import com.ykapps.bigmovie.models.*;
+import com.ykapps.bigmovie.util.RRunner;
 import org.jooby.Jooby;
 import org.jooby.Results;
 import org.jooby.apitool.ApiTool;
@@ -13,7 +14,8 @@ import org.jooby.rx.RxJdbc;
 import org.rosuda.JRI.Rengine;
 import rx.Observable;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Yannick Kooistra
@@ -23,7 +25,7 @@ public class App extends Jooby {
 
     private Model model;
 
-    private Rengine re;
+    private RRunner runner;
 
     {
         use(new Rx());
@@ -41,11 +43,7 @@ public class App extends Jooby {
         onStart(() -> {
             model = new Model(require(Database.class));
 
-            re = new Rengine();
-            // the engine creates R is a new thread, so we should wait until it's ready
-            if (!re.waitForR()) {
-                throw new Exception("Cannot load R");
-            }
+            runner = new RRunner();
         });
 
 
@@ -136,7 +134,29 @@ public class App extends Jooby {
         get("/q/a21", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<String> result = model.query()
+            Observable<String> song = model.query("SELECT song" +
+                    "FROM public.soundtrack" +
+                    "GROUP BY song" +
+                    "ORDER BY count(soundtrack_id) DESC" +
+                    "LIMIT 1");
+            Observable<Movie> obsM = model.query(Model.DbClasses.MOVIE,"SELECT *" +
+                    "FROM public.movie" +
+                    "WHERE movie_id IN (" +
+                    "  SELECT movie_id" +
+                    "  FROM public.soundtrack" +
+                    "  WHERE song IN (" +
+                    "    SELECT song" +
+                    "    FROM public.soundtrack" +
+                    "    GROUP BY song" +
+                    "    ORDER BY count(soundtrack_id) DESC" +
+                    "    LIMIT 1" +
+                    "  )" +
+                    ")");
+
+            Map<String, Movie> movies = new HashMap<>();
+
+            obsM.forEach(m -> movies.put(song.toBlocking().first(), m));
+            return movies;
         });
     }
 

@@ -11,8 +11,8 @@ DROP USER IF EXISTS bigmovie_admin;
 DROP USER IF EXISTS bigmovie_ro;
 
 -- Create superuser and read only user
-CREATE USER bigmovie_admin WITH PASSWORD '***';
-CREATE USER bigmovie_ro WITH PASSWORD '***';
+CREATE USER bigmovie_admin WITH PASSWORD 'groep5ad';
+CREATE USER bigmovie_ro WITH PASSWORD 'groep5ro';
 
 CREATE DATABASE bigmovie;
 

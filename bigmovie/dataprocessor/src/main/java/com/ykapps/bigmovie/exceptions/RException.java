@@ -1,4 +1,7 @@
 package com.ykapps.bigmovie.exceptions;
 
-public RException extends Exception {
+public class RException extends Exception {
+    public RException(String message) {
+        super(message);
+    }
 }
