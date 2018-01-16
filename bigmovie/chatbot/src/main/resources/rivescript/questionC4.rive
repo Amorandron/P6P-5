@@ -1,0 +1,6 @@
+// Author: Everdien
+
+// Question: Is it more difficult for an older actress to get a role?
+
++ is it (more|less) difficult for [an] (older|younger) (@actors) to get a (role|part)
+- <call>getroleDifficult <star3> <star1> <star2></call>
