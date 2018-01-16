@@ -1,28 +1,28 @@
 package com.ykapps.bigmovie.models;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Actor {
 
-    private int actor_id;
+    private Long actor_id;
 
     private String name;
 
-    private int occurence;
+    private Integer occurence;
 
-    private char gender;
+    private String gender;
 
     private Date birth_date;
 
-    public Actor(int actor_id, String name, int occurance, char gender, Date birth_date) {
+    public Actor(Long actor_id, String name, Integer occurence, String gender, Date birth_date) {
         this.actor_id = actor_id;
         this.name = name;
-        this.occurence = occurance;
+        this.occurence = occurence;
         this.gender = gender;
         this.birth_date = birth_date;
     }
 
-    public int getActor_id() {
+    public Long getActor_id() {
         return actor_id;
     }
 
@@ -30,11 +30,11 @@ public class Actor {
         return name;
     }
 
-    public int getOccurance() {
+    public Integer getOccurence() {
         return occurence;
     }
 
-    public char getGender() {
+    public String getGender() {
         return gender;
     }
 
