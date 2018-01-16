@@ -47,23 +47,27 @@ public class ActorParser extends Parser {
                         continue;
                     }
                     
-                    String currentFilm;
+                    String currentFilm = "";
                     String currentRole = "";
                     String currentYear = "";
                     int yearOccurance = 0;
 
                     int lastIndexOfRoleDelimiter = line.lastIndexOf('[');
 
-                    if (lastIndexOfRoleDelimiter >= 3 && (line.charAt(lastIndexOfRoleDelimiter - 3) == ')' ||
-                            (line.substring(0, lastIndexOfRoleDelimiter).contains("[") &&
-                                    line.indexOf(']', lastIndexOfRoleDelimiter) != -1))) {
 
+                    if (lastIndexOfRoleDelimiter >= 3 && (line.charAt(lastIndexOfRoleDelimiter - 3) == ')')) {
                         currentFilm = line.substring(line.indexOf(TAB), lastIndexOfRoleDelimiter).trim();
                         currentRole = line.substring(lastIndexOfRoleDelimiter + 1, line.indexOf("]", lastIndexOfRoleDelimiter)).trim();
-
-                        if(currentRole.startsWith("Undetermined"))
-                            currentRole = "";
                     }
+                    else if (lastIndexOfRoleDelimiter != -1 && line.substring(0, lastIndexOfRoleDelimiter).contains("[") && line.indexOf(']', lastIndexOfRoleDelimiter) != -1) {
+                        currentFilm = line.substring(line.indexOf(TAB), lastIndexOfRoleDelimiter).trim();
+
+                        currentRole = line.substring(line.substring(0, lastIndexOfRoleDelimiter).lastIndexOf('[') + 1, line.lastIndexOf(']')).trim();
+                    }
+
+                    if(currentRole.startsWith("Undetermined"))
+                        currentRole = "";
+
                     else if (line.contains("<")) {
                         currentFilm = line.substring(line.indexOf(TAB), line.indexOf("<")).trim();
                     }

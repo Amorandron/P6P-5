@@ -1,3 +1,6 @@
+-- Author:
+-- Jan
+
 \c postgres;
 DROP DATABASE IF EXISTS bigmovie;
 REASSIGN OWNED BY bigmovie_admin TO postgres;
@@ -165,7 +168,7 @@ CREATE TABLE public.gross (
   gross_id         BIGINT NOT NULL DEFAULT nextval('gross_id_seq'),
   movie_id         BIGINT NOT NULL,
   country_id       INTEGER,
-  amount           MONEY,
+  amount           NUMERIC(30, 2),
   transaction_date DATE,
   CONSTRAINT gross_pkey
   PRIMARY KEY (gross_id),
@@ -176,10 +179,6 @@ CREATE TABLE public.gross (
   FOREIGN KEY (country_id)
   REFERENCES country (country_id)
 );
-
-CREATE OR REPLACE VIEW AS
-  SELECT date_trunc('week', transaction_date)
-  FROM public.gross
 
 CREATE OR REPLACE FUNCTION get_movie(
   ext_title TEXT,

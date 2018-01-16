@@ -123,7 +123,17 @@ public class App extends Jooby {
             return movie;
         });
 
-        get("/q/a7", () -> {
+        get("/q/a8", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<String> result = model.query("SELECT *");
+
+            String string = result.toBlocking().first();
+
+            return string;
+        });
+
+        get("/q/a21", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
             Observable<String> result = model.query()
