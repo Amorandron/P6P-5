@@ -6,8 +6,8 @@
 //- <set type=<star2>> {@ <star3>}
 
 + does * have a (role|part) in {weight=18}
-* <get type> == movie => <star1> <star2>
-* <get type> == film => <star1> <star2>
-* <get type> == movies => <star1> <star2>
-* <get type> == films => <star1> <star2>
+* <get type> == movie => <call>actorRole <star1> <star2></call>
+* <get type> == film => <call>actorRole <star1> <star2></call>
+* <get type> == movies => <call>actorRole <star1> <star2></call>
+* <get type> == films => <call>actorRole <star1> <star2></call>
 - <bot error>
