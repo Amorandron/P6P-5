@@ -59,7 +59,7 @@ public class ActorParser extends Parser {
                         currentFilm = line.substring(line.indexOf(TAB), lastIndexOfRoleDelimiter).trim();
                         currentRole = line.substring(lastIndexOfRoleDelimiter + 1, line.indexOf("]", lastIndexOfRoleDelimiter)).trim();
                     }
-                    else if (line.substring(0, lastIndexOfRoleDelimiter).contains("[") && line.indexOf(']', lastIndexOfRoleDelimiter) != -1) {
+                    else if (lastIndexOfRoleDelimiter != -1 && line.substring(0, lastIndexOfRoleDelimiter).contains("[") && line.indexOf(']', lastIndexOfRoleDelimiter) != -1) {
                         currentFilm = line.substring(line.indexOf(TAB), lastIndexOfRoleDelimiter).trim();
 
                         currentRole = line.substring(line.substring(0, lastIndexOfRoleDelimiter).lastIndexOf('[') + 1, line.lastIndexOf(']')).trim();

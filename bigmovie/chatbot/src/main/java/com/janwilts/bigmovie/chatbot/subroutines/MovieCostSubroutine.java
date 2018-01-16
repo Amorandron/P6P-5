@@ -3,6 +3,9 @@ package com.janwilts.bigmovie.chatbot.subroutines;
 import com.rivescript.RiveScript;
 import com.rivescript.macro.Subroutine;
 
+/**
+ * @author Everdien
+ */
 public class MovieCostSubroutine implements Subroutine {
 
     @Override
