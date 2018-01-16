@@ -56,7 +56,7 @@ public class App extends Jooby {
         get("/movies", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_ALL_MOVIES);
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_MOVIE);
             Movie movie = obs.toBlocking().first();
 
             return movie;
@@ -96,7 +96,7 @@ public class App extends Jooby {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
             Observable<Gross> obs = model.query(Model.DbClasses.GROSS, "SELECT * " +
-                    "FROM public.gross");
+                    "FROM public.gross WHERE gross_id=140");
             Gross gross = obs.toBlocking().first();
 
             return gross;
@@ -105,7 +105,7 @@ public class App extends Jooby {
         get("/soundtracks", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Soundtrack> obs = model.query(Model.DbClasses.MOVIE, "SELECT * " +
+            Observable<Soundtrack> obs = model.query(Model.DbClasses.SOUNDTRACK, "SELECT * " +
                     "FROM public.soundtrack");
             Soundtrack soundtrack = obs.toBlocking().first();
 
@@ -133,11 +133,11 @@ public class App extends Jooby {
             return string;
         });
 
-        get("/q/a21", () -> {
+        /*get("/q/a21", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<String> result = model.query()
-        });
+            Observable<String> result = model.query("");
+        });*/
     }
 
   public static void main(final String[] args) {
