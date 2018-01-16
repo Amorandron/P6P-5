@@ -17,6 +17,7 @@ public class Main {
         bot.setSubroutine("soundtrackUsed", new SoundTrackUsedSubroutine());
         bot.setSubroutine("moviecountryEarned", new MovieCountryEarnedSubroutine());
         bot.setSubroutine("moviecountryCount", new MovieCountryCountSubroutine());
+        bot.setSubroutine("genrepopularityChange", new GenrePopularityChangeSubroutine());
 //        String response = bot.reply("user", "hello bot");
 //        System.out.println(response);
 //
