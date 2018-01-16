@@ -29,6 +29,14 @@ public class Model {
                 .getAs(String.class);
     }
 
+    public Observable queryParameter(DbClasses dbClass, String sql, Object[] para) {
+        query(dbClass, sql);
+
+        return db.select(sql)
+                .parameter(para)
+                .getAs(String.class);
+    }
+
     public Observable query(DbClasses dbClass, String sql) {
 
         Class mappingClass = null;

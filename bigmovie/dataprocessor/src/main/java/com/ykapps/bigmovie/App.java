@@ -198,9 +198,22 @@ public class App extends Jooby {
             return countries;
         });
 
-        get("/q/d2", () -> {
-            //TODO: Implement question D2 here.
-            return "NYI";
+        get("/q/d2", req -> {
+            String name = req.param("lastname").value() + ", " + req.param("firstname").value();
+            Object[] para = new Object[]{name};
+            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, "SELECT *" +
+                    "FROM public.movie" +
+                    "WHERE movie_id IN (" +
+                    "   SELECT movie_id" +
+                    "   FROM public.movie_actor AS ma, public.actor AS a" +
+                    "   WHERE ma.actor_id = a.actor_id" +
+                    "   AND a.name = ?)" +
+                    "ORDER BY release_year", para);
+
+            List<Movie> movies = new ArrayList<>();
+            obs.forEach(movies::add);
+            
+            return movies;
         });
     }
 
