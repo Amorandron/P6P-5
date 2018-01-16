@@ -18,6 +18,7 @@ public class Main {
         bot.setSubroutine("moviecountryEarned", new MovieCountryEarnedSubroutine());
         bot.setSubroutine("moviecountryCount", new MovieCountryCountSubroutine());
         bot.setSubroutine("genrepopularityChange", new GenrePopularityChangeSubroutine());
+        bot.setSubroutine("getroleDifficult", new GetRoleDifficultSubroutine());
 //        String response = bot.reply("user", "hello bot");
 //        System.out.println(response);
 //
