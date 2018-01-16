@@ -1,1 +1,1 @@
-library(rJava).jinit()
+install.packages("odbc");

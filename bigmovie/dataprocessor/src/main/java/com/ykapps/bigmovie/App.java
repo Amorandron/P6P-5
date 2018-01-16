@@ -14,7 +14,9 @@ import org.jooby.rx.RxJdbc;
 import org.rosuda.JRI.Rengine;
 import rx.Observable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -157,6 +159,48 @@ public class App extends Jooby {
 
             obsM.forEach(m -> movies.put(song.toBlocking().first(), m));
             return movies;
+        });
+
+        get("/q/b4", () -> {
+            //TODO: Implement question B4 here.
+            return "NYI";
+        });
+
+        get("/q/b5", () -> {
+            //TODO: Implement question B5 here.
+            return "NYI";
+        });
+
+        get("/q/c2", () -> {
+            //TODO: Implement question C2 here.
+            return "NYI";
+        });
+
+        get("/q/c4", () -> {
+            //TODO: Implement question C4 here.
+            return "NYI";
+        });
+
+        get("/q/d1", () -> {
+            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
+                    "FROM country" +
+                    "WHERE country_id IN (" +
+                    "  SELECT country_id" +
+                    "  FROM public.gross" +
+                    "  GROUP BY country_id" +
+                    "  HAVING sum(amount) IS NOT NULL" +
+                    "  ORDER BY sum(amount) DESC" +
+                    ")");
+
+            List<Country> countries = new ArrayList<>();
+            obs.forEach(countries::add);
+
+            return countries;
+        });
+
+        get("/q/d2", () -> {
+            //TODO: Implement question D2 here.
+            return "NYI";
         });
     }
 
