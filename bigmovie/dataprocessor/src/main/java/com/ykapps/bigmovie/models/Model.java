@@ -21,6 +21,7 @@ public class Model {
     public static final String SQL_A15 = "SELECT * FROM actor WHERE actor_id=(SELECT actor_id FROM actor_rating WHERE rating=1 GROUP BY actor_id ORDER BY COUNT(actor_id) DESC LIMIT 1)";
     public static final String SQL_A21_SOUNDTRACK = "SELECT * FROM soundtrack WHERE song=(SELECT song FROM soundtrack GROUP BY song ORDER BY COUNT(song) DESC LIMIT 1) LIMIT 1";
     public static final String SQL_A21_MOVIE = "SELECT movie.* FROM most_used_song_ids INNER JOIN movie ON most_used_song_ids.movie_id=movie.movie_id";
+    public static final String SQL_B5 = "SELECT x.release_year, y.genre FROM ( SELECT cur.* FROM movie_genre_year AS cur WHERE NOT EXISTS( SELECT high.* FROM movie_genre_year high WHERE cur.release_year = high.release_year AND high.movie_count > cur.movie_count ) ORDER BY release_year ASC ) AS x LEFT JOIN public.genre AS y ON x.genre_id = y.genre_id";
     public static final String SQL_D1 = "SELECT * FROM country WHERE country_id IN ( SELECT country_id FROM public.gross GROUP BY country_id HAVING sum(amount) IS NOT NULL ORDER BY sum(amount) DESC )";
 
     private Database db;
@@ -29,6 +30,13 @@ public class Model {
         this.db = db;
     }
 
+    public Observable queryParameter(DbClasses dbClass, String sql, Object[] para) {
+        query(dbClass, sql);
+
+        return db.select(sql)
+                .parameter(para)
+                .getAs(String.class);
+    }
 
     public Observable query(DbClasses dbClass, String sql) {
 

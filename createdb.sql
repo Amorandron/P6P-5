@@ -86,6 +86,7 @@ CREATE TABLE public.actor (
   gender     CHAR(1)      NOT NULL,
   -- From biographies
   birth_date DATE,
+  death_date DATE,
   CONSTRAINT actor_pkey
   PRIMARY KEY (actor_id),
   CONSTRAINT actor_uniq
@@ -215,3 +216,12 @@ BEGIN
   RETURN no_nulls;
 END;
 $nulls$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE VIEW public.movie_genre_year AS
+  SELECT y.genre_id,
+    x.release_year,
+    count(x.movie_id) AS movie_count
+  FROM movie x
+    LEFT JOIN movie_genre y ON x.movie_id = y.movie_id
+  WHERE x.release_year >= 1800 AND x.release_year <= 2100
+  GROUP BY x.release_year, y.genre_id;

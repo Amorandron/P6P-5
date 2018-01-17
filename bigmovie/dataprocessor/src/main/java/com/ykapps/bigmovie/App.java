@@ -11,13 +11,10 @@ import org.jooby.jdbc.Jdbc;
 import org.jooby.json.Jackson;
 import org.jooby.rx.Rx;
 import org.jooby.rx.RxJdbc;
-import org.rosuda.JRI.Rengine;
 import rx.Observable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Yannick Kooistra
@@ -28,10 +25,11 @@ public class App extends Jooby {
     private Model model;
 
     private RRunner runner;
+    private Jdbc jdbc = new Jdbc("db");
 
     {
         use(new Rx());
-        use(new Jdbc("db"));
+        use(jdbc);
         use(new RxJdbc());
 
         use(new Jackson());
@@ -44,8 +42,8 @@ public class App extends Jooby {
 
         onStart(() -> {
             model = new Model(require(Database.class));
-
             runner = new RRunner();
+            runner.runDb("c2.R");
         });
 
 
@@ -142,8 +140,25 @@ public class App extends Jooby {
             return result;
         });
 
-        get("/q/b4", () -> {
-            //TODO: Implement question B4 here.
+        get("/q/b4", req -> {
+            String country = req.param("country").value();
+            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
+                    "FROM public.country");
+
+            List<Country> countries = new ArrayList<>();
+            obs.forEach(countries::add);
+
+            for(int i = 0; i < countries.size(); i++){
+                String replaceCountry = countries.get(i).getCountry().replace(".", "");
+                replaceCountry = replaceCountry.replace("-", "");
+
+                if(replaceCountry.toLowerCase().equals(country)){
+                    int country_id = countries.get(i).getCountry_id();
+                }
+            }
+
+            //TODO: R script and return data
+
             return "NYI";
         });
 
@@ -168,9 +183,22 @@ public class App extends Jooby {
             return result.toList().toBlocking().single();
         });
 
-        get("/q/d2", () -> {
-            //TODO: Implement question D2 here.
-            return "NYI";
+        get("/q/d2", req -> {
+            String name = req.param("lastname").value() + ", " + req.param("firstname").value();
+            Object[] para = new Object[]{name};
+            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, "SELECT *" +
+                    "FROM public.movie" +
+                    "WHERE movie_id IN (" +
+                    "   SELECT movie_id" +
+                    "   FROM public.movie_actor AS ma, public.actor AS a" +
+                    "   WHERE ma.actor_id = a.actor_id" +
+                    "   AND a.name = ?)" +
+                    "ORDER BY release_year", para);
+
+            List<Movie> movies = new ArrayList<>();
+            obs.forEach(movies::add);
+            
+            return movies;
         });
     }
 
