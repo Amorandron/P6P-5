@@ -161,13 +161,14 @@ public class CurrencyConverter
     {
         if (RATES_TO_USD.containsKey(from) && to.equals("USD")) return in * RATES_TO_USD.get(from);
         
-        String url = String.format("https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=%s" + "&to_currency=%s&apikey=%s", from, to, Main.dotEnv.get("ALPHA_VANTAGE_KEY"));
+        String url = String.format("http://www.apilayer.net/api/live?access_key=%s", Main.dotEnv.get("CURRENCY_LAYER_KEY"));
         
         String response = APIRequester.request(url);
         JsonObject json = new Gson().fromJson(response, JsonObject.class);
-        JsonObject info = json.get("Realtime Currency Exchange Rate").getAsJsonObject();
-        Double rate = info.get("5. Exchange Rate").getAsDouble();
-        if (to.equals("USD")) RATES_TO_USD.put(from, rate); //cache the conversion rates (to USD), so we don't call the API multiple times for the same conversion rates
-        return in * rate;
+        JsonObject info = json.get("quotes").getAsJsonObject();
+
+        info.keySet().forEach(k -> RATES_TO_USD.put(k.substring(3), info.get(k).getAsDouble())); //cache the conversion rates (to USD), so we don't call the API multiple times for the same conversion rates
+
+        return in * RATES_TO_USD.get(from);
     }
 }

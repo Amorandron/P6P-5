@@ -163,7 +163,7 @@ public class BusinessParser extends Parser {
         String date = (values.length > 2 && Character.isDigit(values[2].charAt(0))) ? values[2].substring(0, values[2].indexOf(')')) : "";
         date = fixDate(date);
         
-        if (map.containsKey(country)) map.get(country).put(date, amount);
+        if (map.containsKey(country)) map.get(country).put(date, parsedGross);
         else {
             Map<String, Double> grossPerDate = new HashMap<>();
             grossPerDate.put(date, parsedGross);
