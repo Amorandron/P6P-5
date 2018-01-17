@@ -29,7 +29,6 @@ public class Model {
         this.db = db;
     }
 
-
     public Observable queryParameter(DbClasses dbClass, String sql, Object[] para) {
         query(dbClass, sql);
 

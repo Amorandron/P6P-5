@@ -142,8 +142,25 @@ public class App extends Jooby {
             return result;
         });
 
-        get("/q/b4", () -> {
-            //TODO: Implement question B4 here.
+        get("/q/b4", req -> {
+            String country = req.param("country").value();
+            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
+                    "FROM public.country");
+
+            List<Country> countries = new ArrayList<>();
+            obs.forEach(countries::add);
+
+            for(int i = 0; i < countries.size(); i++){
+                String replaceCountry = countries.get(i).getCountry().replace(".", "");
+                replaceCountry = replaceCountry.replace("-", "");
+
+                if(replaceCountry.toLowerCase().equals(country)){
+                    int country_id = countries.get(i).getCountry_id();
+                }
+            }
+
+            //TODO: R script and return data
+
             return "NYI";
         });
 
