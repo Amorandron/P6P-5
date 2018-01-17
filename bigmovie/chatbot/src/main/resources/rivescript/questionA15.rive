@@ -6,7 +6,7 @@
 //+ (which|what) (@movie|@actors) * {weight=20}
 //- <set type=<star2>> {@ <star3>}
 
-+ (plays|act|acts) the (most|least) in [the] (worst|best) [rated] (@movies) {weight=18}
++ (plays|act|acts) the (most|least) in [the] (worst|best|worstrated) [rated] (@movies) {weight=18}
 * <get type> == actor => <call>actorAct <get type> <star2> <star3></call>
 * <get type> == actress => <call>actorAct <get type> <star2> <star3></call>
 * <get type> == actor/actress => <call>actorAct <get type> <star2> <star3></call>

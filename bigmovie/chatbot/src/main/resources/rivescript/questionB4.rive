@@ -3,14 +3,20 @@
 //Question: Give the number of films made in a country displayed in time.
 
 + [can you] (give|show) [me] the (number|amount) of (@movies) * {weight=20}
-- <set type=<star2>> {@ <star3>}
+- <set type=<star3>> {@ <star4>}
 
-+ (made|filmed) in [a|the] (country|@countries) displayed in time {weight=15}
-* <get type> == movies => <call>moviecountryCount <star2> time</call>
-* <get type> == films => <call>moviecountryCount <star2> time</call>
++ (made|filmed) in [a|the] (country|*) displayed in time {weight=15}
+* <star2> == country => Please tell me the name of the country.
+* <get type> == movies => <call>moviecountryCount "<star2>" time</call>
+* <get type> == films => <call>moviecountryCount "<star2>" time</call>
 - <bot error>
 
-+ (made|filmed) in [a|the] (country|@countries) {weight=10}
-* <get type> == movies => <call>moviecountryCount <star2></call>
-* <get type> == films => <call>moviecountryCount <star2></call>
++ (made|filmed) in [a|the] (country|*) {weight=10}
+* <star2> == country => Please tell me the name of the country.
+* <get type> == movies => <call>moviecountryCount "<star2>"</call>
+* <get type> == films => <call>moviecountryCount "<star2>"</call>
 - <bot error>
+
++ *
+% please tell me the name of the country
+- <call>moviecountryCount "<star>"</call>

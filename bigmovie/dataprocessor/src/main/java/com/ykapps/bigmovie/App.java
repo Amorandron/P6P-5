@@ -141,6 +141,22 @@ public class App extends Jooby {
         });
 
         get("/q/b4", (request, response) -> {
+            String country = request.param("country").value();
+            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
+                    "FROM public.country");
+
+            List<Country> countries = new ArrayList<>();
+            obs.forEach(countries::add);
+
+            for(int i = 0; i < countries.size(); i++){
+                String replaceCountry = countries.get(i).getCountry().replace(".", "");
+                replaceCountry = replaceCountry.replace("-", "");
+
+                if(replaceCountry.toLowerCase().equals(country)){
+                    int country_id = countries.get(i).getCountry_id();
+                }
+            }
+
             String location = getClass().getResource("/R/").getPath() + "plots/b4.png";
             location = location.replaceAll("%20", " ");
             runner.runDb("b4.R", location, "33", "1900", "2100");
