@@ -86,6 +86,7 @@ CREATE TABLE public.actor (
   gender     CHAR(1)      NOT NULL,
   -- From biographies
   birth_date DATE,
+  death_date DATE,
   CONSTRAINT actor_pkey
   PRIMARY KEY (actor_id),
   CONSTRAINT actor_uniq

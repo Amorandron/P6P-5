@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.ykapps.bigmovie.AppTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 2.822 sec <<< FAILURE! - in com.ykapps.bigmovie.AppTest
+unitTest(com.ykapps.bigmovie.AppTest)  Time elapsed: 0.075 sec  <<< ERROR!
+java.lang.ClassCastException: org.jooby.Result cannot be cast to java.base/java.lang.String
+	at com.ykapps.bigmovie.AppTest.unitTest(AppTest.java:26)
+

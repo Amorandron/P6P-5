@@ -76,7 +76,7 @@ public class BiographyParser extends Parser {
                         terms.put("SA", "");
                         terms.put("WN", "");
                     }
-                    else if(term.equals("DB")) {
+                    else if(term.equals("DB") || term.equals("DD")) {
                         Pattern p = Pattern.compile("(\\d.*\\d{1,4}|\\d{1,4}|[?]{1,4})([B][C])?");
                         if(line.contains(","))
                             line = line.substring(term.length() + 1, line.indexOf(',')).trim();

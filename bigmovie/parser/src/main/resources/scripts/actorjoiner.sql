@@ -10,17 +10,20 @@ DROP TABLE IF EXISTS insertion.birth;
 CREATE TABLE insertion.birth (
   name TEXT,
   occurence TEXT,
-  birth_date TEXT
+  birth_date TEXT,
+  death_date TEXT
 );
 
 INSERT INTO insertion.birth (
   name,
   occurence,
-  birth_date
+  birth_date,
+  death_date
 )
-  SELECT b.NM, b.OC, b.DB
+  SELECT b.NM, b.OC, b.DB, b.DD
   FROM insertion.biography AS b
-  WHERE b.DB <> '';
+  WHERE b.DB <> ''
+    OR b.DD <> '';
 
 CREATE INDEX insertion_actor_full_indx
   ON insertion.actor(name, actor_occurence, gender);
@@ -39,12 +42,14 @@ INSERT INTO public.actor (
   name,
   occurence,
   gender,
-  birth_date
+  birth_date,
+  death_date
 )
   SELECT DISTINCT a.name :: VARCHAR(255),
     a.actor_occurence :: INTEGER,
     a.gender :: CHAR(1),
-    b.birth_date :: DATE
+    b.birth_date :: DATE,
+    b.death_date :: DATE
   FROM insertion.actor AS a
   LEFT JOIN insertion.birth AS b
     ON a.name = b.name
