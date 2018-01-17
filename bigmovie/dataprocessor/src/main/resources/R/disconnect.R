@@ -1,0 +1,3 @@
+# Author : Jan
+
+dbDisconnect(connection)

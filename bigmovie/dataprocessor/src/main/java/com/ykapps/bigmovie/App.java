@@ -11,13 +11,10 @@ import org.jooby.jdbc.Jdbc;
 import org.jooby.json.Jackson;
 import org.jooby.rx.Rx;
 import org.jooby.rx.RxJdbc;
-import org.rosuda.JRI.Rengine;
 import rx.Observable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Yannick Kooistra
@@ -28,10 +25,11 @@ public class App extends Jooby {
     private Model model;
 
     private RRunner runner;
+    private Jdbc jdbc = new Jdbc("db");
 
     {
         use(new Rx());
-        use(new Jdbc("db"));
+        use(jdbc);
         use(new RxJdbc());
 
         use(new Jackson());
@@ -44,8 +42,8 @@ public class App extends Jooby {
 
         onStart(() -> {
             model = new Model(require(Database.class));
-
             runner = new RRunner();
+            runner.runDb("c2.R");
         });
 
 
