@@ -17,6 +17,11 @@ public class Model {
     }
 
     public static final String SQL_SELECT_MOVIE = "SELECT * FROM movie WHERE movie_id=9";
+    public static final String SQL_A7 = "SELECT * FROM movie WHERE budget IS NOT NULL ORDER BY budget DESC LIMIT 5";
+    public static final String SQL_A15 = "SELECT * FROM actor WHERE actor_id=(SELECT actor_id FROM actor_rating WHERE rating=1 GROUP BY actor_id ORDER BY COUNT(actor_id) DESC LIMIT 1)";
+    public static final String SQL_A21_SOUNDTRACK = "SELECT * FROM soundtrack WHERE song=(SELECT song FROM soundtrack GROUP BY song ORDER BY COUNT(song) DESC LIMIT 1) LIMIT 1";
+    public static final String SQL_A21_MOVIE = "SELECT movie.* FROM most_used_song_ids INNER JOIN movie ON most_used_song_ids.movie_id=movie.movie_id";
+    public static final String SQL_D1 = "SELECT * FROM country WHERE country_id IN ( SELECT country_id FROM public.gross GROUP BY country_id HAVING sum(amount) IS NOT NULL ORDER BY sum(amount) DESC )";
 
     private Database db;
 
@@ -24,8 +29,12 @@ public class Model {
         this.db = db;
     }
 
-    public Observable<String> query(String sql) {
+
+    public Observable queryParameter(DbClasses dbClass, String sql, Object[] para) {
+        query(dbClass, sql);
+
         return db.select(sql)
+                .parameter(para)
                 .getAs(String.class);
     }
 
@@ -65,10 +74,9 @@ public class Model {
             return db
                     .select(sql)
                     .get(rs -> new Movie(rs.getInt(1), rs.getString(2), rs.getInt(3),
-                            rs.getString(4), rs.getInt(5), rs.getString(6),
-                            rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getBigDecimal(10)));
+                                rs.getString(4), rs.getInt(5), rs.getString(6),
+                                rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getBigDecimal(10)));
         }
-
         else {
             return db
                     .select(sql)

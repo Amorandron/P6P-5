@@ -14,9 +14,7 @@ import org.jooby.rx.RxJdbc;
 import rx.Observable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Yannick Kooistra
@@ -115,50 +113,31 @@ public class App extends Jooby {
         get("/q/a7", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE,"SELECT * " +
-                    "FROM public.movie " +
-                    "ORDER BY budget DESC");
-            Movie movie = obs.toBlocking().first();
+            Observable<String> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7);
 
-            return movie;
+            return result.toList().toBlocking().single();
         });
 
-        get("/q/a8", () -> {
+        get("/q/a15", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<String> result = model.query("SELECT *");
+            Observable<String> result = model.query(Model.DbClasses.ACTOR, Model.SQL_A15);
 
-            String string = result.toBlocking().first();
-
-            return string;
+            return result.toBlocking().first();
         });
 
         get("/q/a21", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<String> song = model.query("SELECT song" +
-                    "FROM public.soundtrack" +
-                    "GROUP BY song" +
-                    "ORDER BY count(soundtrack_id) DESC" +
-                    "LIMIT 1");
-            Observable<Movie> obsM = model.query(Model.DbClasses.MOVIE,"SELECT *" +
-                    "FROM public.movie" +
-                    "WHERE movie_id IN (" +
-                    "  SELECT movie_id" +
-                    "  FROM public.soundtrack" +
-                    "  WHERE song IN (" +
-                    "    SELECT song" +
-                    "    FROM public.soundtrack" +
-                    "    GROUP BY song" +
-                    "    ORDER BY count(soundtrack_id) DESC" +
-                    "    LIMIT 1" +
-                    "  )" +
-                    ")");
+            Observable<Soundtrack>  resultSoundtrack = model.query(Model.DbClasses.SOUNDTRACK, Model.SQL_A21_SOUNDTRACK);
+            Observable<Movie> resultMovie = model.query(Model.DbClasses.MOVIE, Model.SQL_A21_MOVIE);
 
-            Map<String, Movie> movies = new HashMap<>();
+            List<List> result = new ArrayList<>();
 
-            obsM.forEach(m -> movies.put(song.toBlocking().first(), m));
-            return movies;
+            result.add(resultSoundtrack.toList().toBlocking().single());
+            result.add(resultMovie.toList().toBlocking().single());
+
+            return result;
         });
 
         get("/q/b4", () -> {
@@ -182,25 +161,27 @@ public class App extends Jooby {
         });
 
         get("/q/d1", () -> {
-            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
-                    "FROM country" +
-                    "WHERE country_id IN (" +
-                    "  SELECT country_id" +
-                    "  FROM public.gross" +
-                    "  GROUP BY country_id" +
-                    "  HAVING sum(amount) IS NOT NULL" +
-                    "  ORDER BY sum(amount) DESC" +
-                    ")");
+            Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1);
 
-            List<Country> countries = new ArrayList<>();
-            obs.forEach(countries::add);
-
-            return countries;
+            return result.toList().toBlocking().single();
         });
 
-        get("/q/d2", () -> {
-            //TODO: Implement question D2 here.
-            return "NYI";
+        get("/q/d2", req -> {
+            String name = req.param("lastname").value() + ", " + req.param("firstname").value();
+            Object[] para = new Object[]{name};
+            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, "SELECT *" +
+                    "FROM public.movie" +
+                    "WHERE movie_id IN (" +
+                    "   SELECT movie_id" +
+                    "   FROM public.movie_actor AS ma, public.actor AS a" +
+                    "   WHERE ma.actor_id = a.actor_id" +
+                    "   AND a.name = ?)" +
+                    "ORDER BY release_year", para);
+
+            List<Movie> movies = new ArrayList<>();
+            obs.forEach(movies::add);
+            
+            return movies;
         });
     }
 
