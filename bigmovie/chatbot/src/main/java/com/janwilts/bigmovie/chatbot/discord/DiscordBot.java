@@ -13,7 +13,7 @@ public class DiscordBot {
     private RiveScript bot;
     
     public DiscordBot(String token, RiveScript bot) {
-        discordClient = getClient(token, true);
+        discordClient = getClient(token);
         this.bot = bot;
     }
     
@@ -21,16 +21,11 @@ public class DiscordBot {
         discordClient.getDispatcher().registerListener(new MessageListener(bot));
     }
     
-    private IDiscordClient getClient(String token, boolean login) {
+    private IDiscordClient getClient(String token) {
         ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
         clientBuilder.withToken(token); // Adds the login info to the builder
         try {
-            if (login) {
-                return clientBuilder.login(); // Creates the client instance and logs the client in
-            }
-            else {
-                return clientBuilder.build(); // Creates the client instance but it doesn't log the client in yet, you would have to call client.login() yourself
-            }
+            return clientBuilder.login(); // Creates the client instance and logs the client in
         }
         catch (DiscordException e) { // This is thrown if there was a problem building the client
             e.printStackTrace();
