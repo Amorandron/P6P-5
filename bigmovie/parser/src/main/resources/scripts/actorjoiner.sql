@@ -48,8 +48,8 @@ INSERT INTO public.actor (
   SELECT DISTINCT a.name :: VARCHAR(255),
     a.actor_occurence :: INTEGER,
     a.gender :: CHAR(1),
-    b.birth_date :: DATE,
-    b.death_date :: DATE
+    nullif(b.birth_date, '') :: DATE,
+    nullif(b.death_date, '') :: DATE
   FROM insertion.actor AS a
   LEFT JOIN insertion.birth AS b
     ON a.name = b.name

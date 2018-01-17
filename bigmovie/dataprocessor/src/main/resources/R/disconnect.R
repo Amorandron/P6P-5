@@ -1,3 +1,2 @@
-# Author : Jan
-
-dbDisconnect(connection)
+dbDisconnect(connection);
+dbUnloadDriver(driver);

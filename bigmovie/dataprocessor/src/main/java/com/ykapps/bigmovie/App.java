@@ -13,6 +13,7 @@ import org.jooby.rx.Rx;
 import org.jooby.rx.RxJdbc;
 import rx.Observable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,6 @@ public class App extends Jooby {
         onStart(() -> {
             model = new Model(require(Database.class));
             runner = new RRunner();
-            runner.runDb("c2.R");
         });
 
 
@@ -140,9 +140,12 @@ public class App extends Jooby {
             return result;
         });
 
-        get("/q/b4", () -> {
-            //TODO: Implement question B4 here.
-            return "NYI";
+        get("/q/b4", (request, response) -> {
+            String location = getClass().getResource("/R/").getPath() + "plots/b4.png";
+            location = location.replaceAll("%20", " ");
+            runner.runDb("b4.R", location, "33", "1900", "2100");
+
+            response.download(new File(location));
         });
 
         get("/q/b5", () -> {

@@ -10,8 +10,10 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class RRunner {
     private static final String[] rArgs = {"--no-save"};
@@ -50,24 +52,27 @@ public class RRunner {
                 password = line.substring(line.indexOf('\"') + 1, line.lastIndexOf('\"'));
             }
         }
+
+        try {
+            run("libs.R");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public List<REXP> runDb(String script, String... params) throws IOException, ScriptException {
+    public List<REXP> runDb(String script, String... params) throws IOException, ScriptException, InterruptedException {
         List<REXP> connection = run("connection.R");
-        List<REXP> output = new ArrayList<>();
+        List<REXP> output;
         int[] status = connection.get(0).asIntArray();
 
-        if(status[0] == 1) {
-            output = run(script, params);
-        }
+        output = run(script, params);
 
-        run("disconnect.R");
+        //run("disconnect.R");
 
         return output;
     }
 
-    public List<REXP> run(String script, String... params) throws IOException, ScriptException {
-
+    public List<REXP> run(String script, String... params) throws IOException, InterruptedException {
         URL url = this.getClass().getResource("/R/" + script);
         File RFile = null;
         try {
@@ -76,12 +81,24 @@ public class RRunner {
             RFile = new File(Objects.requireNonNull(url).getPath());
         }
         String R = FileUtils.readFileToString(RFile, "UTF-8");
-        String[] lines = R.split("\n");
+        String[] input = R.split(";");
+
+        List<String> lines = Arrays.stream(input).filter(i -> i.length() > 0).collect(Collectors.toList());
 
         int index = 0;
         List<REXP> output = new ArrayList<>();
 
         for(String line : lines) {
+            line = line.replaceAll("\n", "");
+            line = line.replaceAll(" {2,}", " ");
+
+            boolean join = false;
+
+            if(line.contains("{{join}}")) {
+                line = line.replace("{{join}}", "");
+                join = true;
+            }
+
             if(line.contains("{{data}}"))
                 line = line.replace("{{data}}", String.format("\"%s\"", database));
 
@@ -99,18 +116,28 @@ public class RRunner {
 
 
             if(line.contains("{{param}}")) {
-                line = line.replace("{{param}}", params[index]);
-                index++;
-                engine.eval(line);
+                while(line.contains("{{param}}")) {
+                    line = line.replaceFirst("\\{\\{param}}", params[index]);
+                    index++;
+                }
             }
-            else if(line.contains("{{retrieve}}")) {
+
+            if(line.contains("{{retrieve}}")) {
                 line = line.replace("{{retrieve}}", "");
                 output.add(engine.eval(line));
+                if(join)
+                    engine.wait(500);
             }
             else {
-                engine.eval(line);
+                REXP temp = engine.eval(line);
+                if(join)
+                    engine.wait(500);
             }
         }
         return output;
+    }
+
+    public Rengine getEngine() {
+        return engine;
     }
 }

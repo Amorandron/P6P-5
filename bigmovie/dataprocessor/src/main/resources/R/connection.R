@@ -1,9 +1,5 @@
-# Author : Jan
+driver <- dbDriver("PostgreSQL");
 
-library(RPostgreSQL)
+connection <- dbConnect(driver, dbname = {{data}}, host = {{host}}, port = {{port}}, user = {{user}}, password = {{pass}});
 
-driver <- dbDriver("PostgreSQL")
-
-connection <- dbConnect(driver, dbname={{data}}, host={{host}}, port={{port}}, user={{user}}, password={{pass}})
-
-dbExistsTable(connection, "public.movie"){{retrieve}}
+dbExistsTable(connection, "public.movie"){{retrieve}};

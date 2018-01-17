@@ -47,7 +47,7 @@ public class MpaaParser extends Parser {
 
                         year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                         title = line.substring(0, line.lastIndexOf('(') - 1);
-                        occurrence = "";
+                        occurrence = "0";
                         type = "";
 
                         if (year.charAt(0) == 'T' || year.charAt(0) == 'V') {

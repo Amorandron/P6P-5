@@ -1,7 +1,6 @@
 package com.janwilts.bigmovie.parser;
 
 import com.github.shyiko.dotenv.DotEnv;
-import com.janwilts.bigmovie.parser.commands.CommandParser;
 import com.janwilts.bigmovie.parser.inserters.Inserter;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 
@@ -20,7 +19,7 @@ public class Main {
             dotEnv.get("DATABASE_PASSWORD"));
 
     public static void main(String[] args) {
-        CommandParser.parse(args);
+        //CommandParser.parse(args);
         connection.open();
         Inserter.insertFiles(connection);
     }
