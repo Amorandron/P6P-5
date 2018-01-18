@@ -36,8 +36,8 @@ public class App extends Jooby {
         use(new Jackson());
 
         use(new ApiTool()
-                .raml("/api")
-                .filter(route -> !route.pattern().equals("/")));
+            .raml("/api")
+            .filter(route -> !route.pattern().equals("/")));
 
         use(new Banner("Data Processor"));
 
@@ -48,7 +48,7 @@ public class App extends Jooby {
 
 
         get("/", () -> {
-            return Results.redirect("/api");
+           return Results.redirect("/api");
         });
 
         get("/movies", () -> {
@@ -118,6 +118,31 @@ public class App extends Jooby {
             return result.toList().toBlocking().single();
         });
 
+        get("/q/a8", (request) -> {
+            //noinspection unchecked
+
+            String period = request.param("period").value();
+
+            switch(period) {
+                case "week":
+                    break;
+
+                case "month":
+                    break;
+
+                case "year":
+                    break;
+
+                case "ever":
+                    break;
+            }
+
+            @SuppressWarnings("unchecked")
+            Observable<String> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7);
+
+            return result.toList().toBlocking().single();
+        });
+
         get("/q/a15", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
@@ -129,7 +154,7 @@ public class App extends Jooby {
         get("/q/a21", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Soundtrack> resultSoundtrack = model.query(Model.DbClasses.SOUNDTRACK, Model.SQL_A21_SOUNDTRACK);
+            Observable<Soundtrack>  resultSoundtrack = model.query(Model.DbClasses.SOUNDTRACK, Model.SQL_A21_SOUNDTRACK);
             Observable<Movie> resultMovie = model.query(Model.DbClasses.MOVIE, Model.SQL_A21_MOVIE);
 
             List<List> result = new ArrayList<>();
@@ -141,25 +166,10 @@ public class App extends Jooby {
         });
 
         get("/q/b4", (request, response) -> {
-            String country = request.param("country").value();
-            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
-                    "FROM public.country");
-
-            List<Country> countries = new ArrayList<>();
-            obs.forEach(countries::add);
-
-            for (int i = 0; i < countries.size(); i++) {
-                String replaceCountry = countries.get(i).getCountry().replace(".", "");
-                replaceCountry = replaceCountry.replace("-", "");
-
-                if (replaceCountry.toLowerCase().equals(country)) {
-                    int country_id = countries.get(i).getCountry_id();
-                }
-            }
 
             String location = getClass().getResource("/R/").getPath() + "plots/b4.png";
             location = location.replaceAll("%20", " ");
-            runner.runDb("b4.R", location, "33", "1900", "2100");
+            runner.runDb("b4.R", location, "33");
 
             response.download(new File(location));
         });
@@ -199,46 +209,12 @@ public class App extends Jooby {
 
             List<Movie> movies = new ArrayList<>();
             obs.forEach(movies::add);
-
+            
             return movies;
-        });
-
-        get("/q/movie", req -> {
-            String movie = req.param("movie").value();
-            Object[] para = new Object[]{movie};
-            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, para);
-
-            List<Movie> movies = new ArrayList<>();
-            obs.forEach(movies::add);
-
-            return movies;
-        });
-
-        get("/q/actor", req -> {
-            String actor = req.param("actor").value();
-            Object[] para = new Object[]{actor};
-            Observable<Actor> obs = model.queryParameter(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, para);
-
-            List<Actor> actors = new ArrayList<>();
-            obs.forEach(actors::add);
-
-            return actors;
-        });
-
-        //TODO make param optional
-        get("/q/movies-by-country", req -> {
-            String country = req.param("country").value();
-            Object[] para = new Object[]{country};
-            Observable<Country> obs = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, para);
-
-            List<Country> countries = new ArrayList<>();
-            obs.forEach(countries::add);
-
-            return countries;
         });
     }
 
-    public static void main(final String[] args) {
-        run(App::new, args);
-    }
+  public static void main(final String[] args) {
+    run(App::new, args);
+  }
 }

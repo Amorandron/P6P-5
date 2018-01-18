@@ -33,11 +33,11 @@ public class Model {
         this.db = db;
     }
 
-    public Observable queryParameter(DbClasses dbClass, String sql, Object[] para) {
+    public Observable queryParameter(DbClasses dbClass, String sql, Object[] param) {
         query(dbClass, sql);
 
         return db.select(sql)
-                .parameter(para)
+                .parameter(param)
                 .getAs(String.class);
     }
 
