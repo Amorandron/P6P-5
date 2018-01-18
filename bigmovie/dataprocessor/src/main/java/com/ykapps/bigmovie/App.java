@@ -212,6 +212,40 @@ public class App extends Jooby {
             
             return movies;
         });
+
+        get("/q/movie", req -> {
+            String movie = req.param("movie").value();
+            Object[] para = new Object[]{movie};
+            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, para);
+
+            List<Movie> movies = new ArrayList<>();
+            obs.forEach(movies::add);
+
+            return movies;
+        });
+
+        get("/q/actor", req -> {
+            String actor = req.param("actor").value();
+            Object[] para = new Object[]{actor};
+            Observable<Actor> obs = model.queryParameter(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, para);
+
+            List<Actor> actors = new ArrayList<>();
+            obs.forEach(actors::add);
+
+            return actors;
+        });
+
+        //TODO make param optional
+        get("/q/movies-by-country", req -> {
+            String country = req.param("country").value();
+            Object[] para = new Object[]{country};
+            Observable<Country> obs = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, para);
+
+            List<Country> countries = new ArrayList<>();
+            obs.forEach(countries::add);
+
+            return countries;
+        });
     }
 
   public static void main(final String[] args) {
