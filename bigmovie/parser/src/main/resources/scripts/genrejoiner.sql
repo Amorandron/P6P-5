@@ -46,3 +46,5 @@ INSERT INTO public.movie_genre (
      WHERE initcap(g.genre) = pg.genre :: TEXT) :: INTEGER AS genre_id
   FROM insertion.genre AS g
   WHERE get_movie(g.title, g.year, g.type, g.occurence) IS NOT NULL;
+
+REFRESH MATERIALIZED VIEW public.movie_genre_year;
