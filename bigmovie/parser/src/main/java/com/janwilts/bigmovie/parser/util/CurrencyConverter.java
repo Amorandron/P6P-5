@@ -167,7 +167,7 @@ public class CurrencyConverter
         JsonObject json = new Gson().fromJson(response, JsonObject.class);
         JsonObject info = json.get("quotes").getAsJsonObject();
 
-        info.keySet().forEach(k -> RATES_TO_USD.put(k.substring(3), info.get(k).getAsDouble())); //cache the conversion rates (to USD), so we don't call the API multiple times for the same conversion rates
+        info.keySet().forEach(k -> RATES_TO_USD.put(k.substring(3), (1 / info.get(k).getAsDouble()))); //cache the conversion rates (to USD), so we don't call the API multiple times for the same conversion rates
 
         return in * RATES_TO_USD.get(from);
     }
