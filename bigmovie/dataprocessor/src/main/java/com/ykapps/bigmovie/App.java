@@ -118,6 +118,31 @@ public class App extends Jooby {
             return result.toList().toBlocking().single();
         });
 
+        get("/q/a8", (request) -> {
+            //noinspection unchecked
+
+            String period = request.param("period").value();
+
+            switch(period) {
+                case "week":
+                    break;
+
+                case "month":
+                    break;
+
+                case "year":
+                    break;
+
+                case "ever":
+                    break;
+            }
+
+            @SuppressWarnings("unchecked")
+            Observable<String> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7);
+
+            return result.toList().toBlocking().single();
+        });
+
         get("/q/a15", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
