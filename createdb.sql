@@ -239,3 +239,9 @@ CREATE MATERIALIZED VIEW public.movie_country_year AS
   HAVING m.release_year BETWEEN 1800 AND 2100
   ORDER BY c.country_id, m.release_year ASC
 WITH NO DATA;
+
+CREATE OR REPLACE VIEW public.movie_mpaa AS
+  SELECT mpaa_rating, mpaa_reason
+  FROM public.movie
+  WHERE mpaa_rating IS NOT NULL
+      AND mpaa_reason IS NOT NULL

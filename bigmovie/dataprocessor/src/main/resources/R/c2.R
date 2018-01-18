@@ -1,0 +1,25 @@
+file <- "{{param}}";
+
+mpaa <- dbFetch(result, n = -1);
+
+mpaaCorpus <- Corpus(VectorSource(mpaa$mpaa_reason));
+
+mpaaCorpus <- tm_map(mpaaCorpus, tolower);
+mpaaCorpus <- tm_map(mpaaCorpus, removePunctuation);
+mpaaCorpus <- tm_map(mpaaCorpus, removeWords, stopwords("en"));
+mpaaCorpus <- tm_map(mpaaCorpus, stemDocument);
+
+mpaaFrequencies <- DocumentTermMatrix(mpaaCorpus);
+
+mpaa <- data.frame(rating = mpaa$mpaa_rating, as.matrix(removeSparseTerms(mpaaFrequencies, 0.995)));
+
+mpaaSplit <- sample.split(mpaa$rating, SplitRatio = 0.8);
+mpaaTrain <- subset(mpaa, mpaaSplit == TRUE);
+mpaaTest <- subset(mpaa, mpaaSplit == FALSE);
+
+mpaaCART <- rpart(rating ~ ., data = mpaaTrain, control = rpart.control(cp = 0.01), method = "class");
+png(file);
+prp(mpaaCART, main = "CART Model");
+dev.off();
+
+baseTable <- table(mpaa$rating);

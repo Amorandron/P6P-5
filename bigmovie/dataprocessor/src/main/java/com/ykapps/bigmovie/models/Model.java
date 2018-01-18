@@ -44,6 +44,9 @@ public class Model {
             "FROM most_used_song_ids " +
             "INNER JOIN movie " +
             "ON most_used_song_ids.movie_id=movie.movie_id";
+    public static final String SQL_B4 = "SELECT * " +
+            "FROM public.country " +
+            "WHERE lower(country) LIKE '%?%'";
     public static final String SQL_B5 = "SELECT x.release_year, y.genre " +
             "FROM (SELECT cur.* " +
                 "FROM movie_genre_year AS cur " +
@@ -94,16 +97,40 @@ public class Model {
         this.db = db;
     }
 
-    public Observable queryParameter(DbClasses dbClass, String sql, Object[] param) {
-        query(dbClass, sql);
+    public Observable queryParameter(DbClasses dbClass, String sql, String param) {
+        Class mappingClass = classMapper(dbClass);
 
         return db.select(sql)
                 .parameter(param)
-                .getAs(String.class);
+                .autoMap(mappingClass);
     }
 
     public Observable query(DbClasses dbClass, String sql) {
 
+        Class mappingClass = classMapper(dbClass);
+
+        //noinspection unchecked
+        if(mappingClass.equals(Gross.class)) {
+            return db
+                    .select(sql)
+                    .get(rs -> new Gross(rs.getInt(1), rs.getInt(2), rs.getInt(3),
+                            rs.getBigDecimal(4), rs.getDate(5)));
+        }
+        else if(mappingClass.equals(Movie.class)) {
+            return db
+                    .select(sql)
+                    .get(rs -> new Movie(rs.getInt(1), rs.getString(2), rs.getInt(3),
+                                rs.getString(4), rs.getInt(5), rs.getString(6),
+                                rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getBigDecimal(10)));
+        }
+        else {
+            return db
+                    .select(sql)
+                    .autoMap(mappingClass);
+        }
+    }
+
+    private Class classMapper(DbClasses dbClass) {
         Class mappingClass = null;
 
         switch(dbClass) {
@@ -127,25 +154,6 @@ public class Model {
                 break;
         }
 
-        //noinspection unchecked
-        if(mappingClass.equals(Gross.class)) {
-            return db
-                    .select(sql)
-                    .get(rs -> new Gross(rs.getInt(1), rs.getInt(2), rs.getInt(3),
-                            rs.getBigDecimal(4), rs.getDate(5)));
-        }
-        else if(mappingClass.equals(Movie.class)) {
-            return db
-                    .select(sql)
-                    .get(rs -> new Movie(rs.getInt(1), rs.getString(2), rs.getInt(3),
-                                rs.getString(4), rs.getInt(5), rs.getString(6),
-                                rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getBigDecimal(10)));
-        }
-        else {
-            return db
-                    .select(sql)
-                    .autoMap(mappingClass);
-        }
+        return mappingClass;
     }
-
 }

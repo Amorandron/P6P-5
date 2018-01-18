@@ -15,6 +15,7 @@ import rx.Observable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -166,10 +167,23 @@ public class App extends Jooby {
         });
 
         get("/q/b4", (request, response) -> {
+            String country = request.param("country").value();
+
+            Observable<Country> result = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_B4, country.trim().toLowerCase());
+
+            List<Country> countries = result
+                    .toList()
+                    .toBlocking()
+                    .single();
+
+            Country output = countries
+                    .stream()
+                    .min(Comparator.comparing(c -> c.getCountry().length()))
+                    .get();
 
             String location = getClass().getResource("/R/").getPath() + "plots/b4.png";
             location = location.replaceAll("%20", " ");
-            runner.runDb("b4.R", location, "33");
+            runner.runDb("b4.R", location, output.getCountry_id().toString());
 
             response.download(new File(location));
         });
@@ -197,7 +211,6 @@ public class App extends Jooby {
 
         get("/q/d2", req -> {
             String name = req.param("lastname").value() + ", " + req.param("firstname").value();
-            Object[] para = new Object[]{name};
             Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, "SELECT *" +
                     "FROM public.movie" +
                     "WHERE movie_id IN (" +
@@ -205,7 +218,7 @@ public class App extends Jooby {
                     "   FROM public.movie_actor AS ma, public.actor AS a" +
                     "   WHERE ma.actor_id = a.actor_id" +
                     "   AND a.name = ?)" +
-                    "ORDER BY release_year", para);
+                    "ORDER BY release_year", name);
 
             List<Movie> movies = new ArrayList<>();
             obs.forEach(movies::add);
@@ -215,8 +228,7 @@ public class App extends Jooby {
 
         get("/q/movie", req -> {
             String movie = req.param("movie").value();
-            Object[] para = new Object[]{movie};
-            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, para);
+            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, movie);
 
             List<Movie> movies = new ArrayList<>();
             obs.forEach(movies::add);
@@ -226,8 +238,7 @@ public class App extends Jooby {
 
         get("/q/actor", req -> {
             String actor = req.param("actor").value();
-            Object[] para = new Object[]{actor};
-            Observable<Actor> obs = model.queryParameter(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, para);
+            Observable<Actor> obs = model.queryParameter(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, actor);
 
             List<Actor> actors = new ArrayList<>();
             obs.forEach(actors::add);
@@ -238,8 +249,7 @@ public class App extends Jooby {
         //TODO make param optional
         get("/q/movies-by-country", req -> {
             String country = req.param("country").value();
-            Object[] para = new Object[]{country};
-            Observable<Country> obs = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, para);
+            Observable<Country> obs = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, country);
 
             List<Country> countries = new ArrayList<>();
             obs.forEach(countries::add);
