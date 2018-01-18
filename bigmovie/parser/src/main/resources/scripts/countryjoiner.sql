@@ -47,3 +47,10 @@ INSERT INTO public.movie_country (
      WHERE c.country = pc.country :: TEXT) :: INTEGER AS country_id
   FROM insertion.country c
   WHERE get_movie(c.title, c.year, c.type, c.occurence) IS NOT NULL;
+
+DROP INDEX IF EXISTS movie_country_year_country_id_idx;
+
+REFRESH MATERIALIZED VIEW public.movie_country_year;
+
+CREATE INDEX movie_country_year_country_id_idx
+  ON public.movie_country_year (country_id);

@@ -217,11 +217,25 @@ BEGIN
 END;
 $nulls$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE VIEW public.movie_genre_year AS
-  SELECT y.genre_id,
-    x.release_year,
-    count(x.movie_id) AS movie_count
-  FROM movie x
-    LEFT JOIN movie_genre y ON x.movie_id = y.movie_id
-  WHERE x.release_year >= 1800 AND x.release_year <= 2100
-  GROUP BY x.release_year, y.genre_id;
+CREATE MATERIALIZED VIEW public.movie_genre_year AS
+  SELECT g.genre_id,
+    m.release_year,
+    count(m.movie_id) AS movie_count
+  FROM movie AS m
+    LEFT JOIN movie_genre AS g ON m.movie_id = g.movie_id
+  GROUP BY m.release_year, g.genre_id
+  HAVING m.release_year BETWEEN 1800 AND 2100
+  ORDER BY m.release_year ASC
+WITH NO DATA;
+
+CREATE MATERIALIZED VIEW public.movie_country_year AS
+  SELECT count(m.movie_id) AS total,
+    c.country_id,
+    m.release_year
+  FROM public.movie AS m
+    LEFT JOIN public.movie_country AS c
+      ON c.movie_id = m.movie_id
+  GROUP BY c.country_id, m.release_year
+  HAVING m.release_year BETWEEN 1800 AND 2100
+  ORDER BY c.country_id, m.release_year ASC
+WITH NO DATA;
