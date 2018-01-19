@@ -93,4 +93,4 @@ DROP INDEX IF EXISTS movie_actor_age_gender_indx;
 REFRESH MATERIALIZED VIEW public.movie_actor_age;
 
 CREATE INDEX movie_actor_age_gender_indx
-  ON public.movie_acotr_age (gender);
+  ON public.movie_actor_age (gender);
