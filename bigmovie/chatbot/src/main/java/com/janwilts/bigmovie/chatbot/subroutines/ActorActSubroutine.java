@@ -12,8 +12,6 @@ public class ActorActSubroutine implements Subroutine {
     public String call(RiveScript rs, String[] args) {
         String result = "...";
 
-        //TODO get request from api.
-
         String type = args[0];
         String quantum = args[1];
         String rating = args[2];

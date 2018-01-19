@@ -26,7 +26,8 @@ run {
 }
 
 dependencies {
-    compile "com.rivescript:rivescript-core:0.10.0"
-    compile "com.github.austinv11:Discord4J:2.9.3"
+    compile group: 'com.rivescript', name: 'rivescript-core', version:'0.10.0'
+    compile group: 'com.github.austinv11', name: 'Discord4J', version: '2.9.3'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.3'
 }
 

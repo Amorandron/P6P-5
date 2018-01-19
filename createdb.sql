@@ -241,10 +241,22 @@ CREATE MATERIALIZED VIEW public.movie_country_year AS
 WITH NO DATA;
 
 CREATE MATERIALIZED VIEW public.movie_actor_age AS
-  SELECT count(a.actor_id),
+  WITH gender_nums AS (
+      SELECT count(a.actor_id) AS total, a.gender AS gender
+      FROM public.actor AS a
+      GROUP BY a.gender
+  )
+  SELECT
+    (SELECT (count(a.actor_id) :: DECIMAL / (
+      SELECT gn.total
+      FROM gender_nums gn
+      WHERE gn.gender = a.gender
+    ) :: DECIMAL)) :: DOUBLE PRECISION  * 100 AS percentage,
     a.gender,
-    (SELECT release_year - extract(YEAR FROM a.birth_date)) :: INTEGER AS age
-  FROM movie_actor AS ma
+    (SELECT m.release_year - extract(YEAR FROM a.birth_date)
+     WHERE (SELECT m.release_year - extract(YEAR FROM a.birth_date)) BETWEEN 0 AND 130
+    ) :: INTEGER AS age
+  FROM public.movie_actor AS ma
     LEFT JOIN public.movie AS m
       ON ma.movie_id = m.movie_id
     LEFT JOIN public.actor AS a
@@ -252,6 +264,7 @@ CREATE MATERIALIZED VIEW public.movie_actor_age AS
   WHERE a.birth_date IS NOT NULL
         AND m.release_year IS NOT NULL
   GROUP BY a.gender, age
+  ORDER BY a.gender, age ASC
 WITH NO DATA;
 
 CREATE OR REPLACE VIEW public.movie_mpaa AS

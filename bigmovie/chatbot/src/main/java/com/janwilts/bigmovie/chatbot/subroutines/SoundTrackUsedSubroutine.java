@@ -1,20 +1,14 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
-import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.rivescript.RiveScript;
 import com.rivescript.macro.Subroutine;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class SoundTrackUsedSubroutine implements Subroutine {
 
     @Override
     public String call(RiveScript rs, String[] args) {
-        String result = APIRequester.getFromAPI("soundtracks");
 
+        String result = "";
         //TODO get data from api
 
         //arg[0] = order_by
