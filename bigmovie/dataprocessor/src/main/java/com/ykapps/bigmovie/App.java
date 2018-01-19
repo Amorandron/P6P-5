@@ -11,6 +11,7 @@ import org.jooby.jdbc.Jdbc;
 import org.jooby.json.Jackson;
 import org.jooby.rx.Rx;
 import org.jooby.rx.RxJdbc;
+import org.rosuda.JRI.REXP;
 import rx.Observable;
 
 import java.io.File;
@@ -28,6 +29,8 @@ public class App extends Jooby {
 
     private RRunner runner;
     private Jdbc jdbc = new Jdbc("db");
+
+    private List<REXP> c2Output;
 
     {
         use(new Rx());
@@ -193,9 +196,23 @@ public class App extends Jooby {
             return "NYI";
         });
 
-        get("/q/c2", () -> {
-            //TODO: Implement question C2 here.
-            return "NYI";
+        get("/q/c2", (request, response) -> {
+            String location = getClass().getResource("/R/").getPath() + "plots/c2.png";
+            location = location.replaceAll("%20", " ");
+            c2Output = runner.runDb("c2.R", location);
+
+            response.download(new File(location));
+        });
+
+        get("q/c2/val", () -> {
+            if(c2Output == null)
+                return "No model found";
+            else {
+                return new Object[] {
+                    c2Output.get(0).asDoubleMatrix(),
+                    c2Output.get(1).asDouble()
+                };
+            }
         });
 
         get("/q/c4", () -> {
