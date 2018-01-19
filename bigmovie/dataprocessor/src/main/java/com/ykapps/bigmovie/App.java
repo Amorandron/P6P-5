@@ -3,7 +3,6 @@ package com.ykapps.bigmovie;
 import com.github.davidmoten.rx.jdbc.Database;
 import com.ykapps.bigmovie.models.*;
 import com.ykapps.bigmovie.util.RRunner;
-import javafx.beans.binding.ObjectBinding;
 import org.jooby.Jooby;
 import org.jooby.Results;
 import org.jooby.apitool.ApiTool;
@@ -12,11 +11,12 @@ import org.jooby.jdbc.Jdbc;
 import org.jooby.json.Jackson;
 import org.jooby.rx.Rx;
 import org.jooby.rx.RxJdbc;
+import org.rosuda.JRI.REXP;
 import rx.Observable;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -29,6 +29,8 @@ public class App extends Jooby {
 
     private RRunner runner;
     private Jdbc jdbc = new Jdbc("db");
+
+    private List<REXP> c2Output;
 
     {
         use(new Rx());
@@ -172,24 +174,22 @@ public class App extends Jooby {
 
         get("/q/b4", (request, response) -> {
             String country = request.param("country").value();
-            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
-                    "FROM public.country");
 
-            List<Country> countries = new ArrayList<>();
-            obs.forEach(countries::add);
+            Observable<Country> result = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_B4, country.trim().toLowerCase());
 
-            for(int i = 0; i < countries.size(); i++){
-                String replaceCountry = countries.get(i).getCountry().replace(".", "");
-                replaceCountry = replaceCountry.replace("-", "");
+            List<Country> countries = result
+                    .toList()
+                    .toBlocking()
+                    .single();
 
-                if(replaceCountry.toLowerCase().equals(country)){
-                    int country_id = countries.get(i).getCountry_id();
-                }
-            }
+            Country output = countries
+                    .stream()
+                    .min(Comparator.comparing(c -> c.getCountry().length()))
+                    .get();
 
             String location = getClass().getResource("/R/").getPath() + "plots/b4.png";
             location = location.replaceAll("%20", " ");
-            runner.runDb("b4.R", location, "33", "1900", "2100");
+            runner.runDb("b4.R", location, output.getCountry_id().toString());
 
             response.download(new File(location));
         });
@@ -199,9 +199,23 @@ public class App extends Jooby {
             return "NYI";
         });
 
-        get("/q/c2", () -> {
-            //TODO: Implement question C2 here.
-            return "NYI";
+        get("/q/c2", (request, response) -> {
+            String location = getClass().getResource("/R/").getPath() + "plots/c2.png";
+            location = location.replaceAll("%20", " ");
+            c2Output = runner.runDb("c2.R", location);
+
+            response.download(new File(location));
+        });
+
+        get("q/c2/val", () -> {
+            if(c2Output == null)
+                return "No model found";
+            else {
+                return new Object[] {
+                    c2Output.get(0).asDoubleMatrix(),
+                    c2Output.get(1).asDouble()
+                };
+            }
         });
 
         get("/q/c4", () -> {
@@ -217,19 +231,50 @@ public class App extends Jooby {
 
         get("/q/d2", req -> {
             String name = req.param("lastname").value() + ", " + req.param("firstname").value();
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, "SELECT *" +
+            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, "SELECT *" +
                     "FROM public.movie" +
                     "WHERE movie_id IN (" +
                     "   SELECT movie_id" +
                     "   FROM public.movie_actor AS ma, public.actor AS a" +
                     "   WHERE ma.actor_id = a.actor_id" +
                     "   AND a.name = ?)" +
-                    "ORDER BY release_year");
+                    "ORDER BY release_year", name);
 
             List<Movie> movies = new ArrayList<>();
             obs.forEach(movies::add);
-            
+
             return movies;
+        });
+
+        get("/q/movie", req -> {
+            String movie = req.param("movie").value();
+            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, movie);
+
+            List<Movie> movies = new ArrayList<>();
+            obs.forEach(movies::add);
+
+            return movies;
+        });
+
+        get("/q/actor", req -> {
+            String actor = req.param("actor").value();
+            Observable<Actor> obs = model.queryParameter(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, actor);
+
+            List<Actor> actors = new ArrayList<>();
+            obs.forEach(actors::add);
+
+            return actors;
+        });
+
+        //TODO make param optional
+        get("/q/movies-by-country", req -> {
+            String country = req.param("country").value();
+            Observable<Country> obs = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, country);
+
+            List<Country> countries = new ArrayList<>();
+            obs.forEach(countries::add);
+
+            return countries;
         });
     }
 

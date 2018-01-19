@@ -239,3 +239,23 @@ CREATE MATERIALIZED VIEW public.movie_country_year AS
   HAVING m.release_year BETWEEN 1800 AND 2100
   ORDER BY c.country_id, m.release_year ASC
 WITH NO DATA;
+
+CREATE MATERIALIZED VIEW public.movie_actor_age AS
+  SELECT count(a.actor_id),
+    a.gender,
+    (SELECT release_year - extract(YEAR FROM a.birth_date)) :: INTEGER AS age
+  FROM movie_actor AS ma
+    LEFT JOIN public.movie AS m
+      ON ma.movie_id = m.movie_id
+    LEFT JOIN public.actor AS a
+      ON ma.actor_id = a.actor_id
+  WHERE a.birth_date IS NOT NULL
+        AND m.release_year IS NOT NULL
+  GROUP BY a.gender, age
+WITH NO DATA;
+
+CREATE OR REPLACE VIEW public.movie_mpaa AS
+  SELECT mpaa_rating, mpaa_reason
+  FROM public.movie
+  WHERE mpaa_rating IS NOT NULL
+      AND mpaa_reason IS NOT NULL

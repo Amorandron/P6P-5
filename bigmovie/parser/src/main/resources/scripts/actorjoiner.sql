@@ -87,3 +87,10 @@ INSERT INTO public.movie_actor (
     a.role :: VARCHAR(255)
   FROM insertion.actor a
   WHERE get_movie(a.title, a.year, a.type, a.actor_occurence) IS NOT NULL;
+
+DROP INDEX IF EXISTS movie_actor_age_gender_indx;
+
+REFRESH MATERIALIZED VIEW public.movie_actor_age;
+
+CREATE INDEX movie_actor_age_gender_indx
+  ON public.movie_actor_age (gender);

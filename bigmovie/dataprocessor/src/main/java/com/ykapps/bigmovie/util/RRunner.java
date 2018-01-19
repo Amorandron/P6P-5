@@ -92,13 +92,6 @@ public class RRunner {
             line = line.replaceAll("\n", "");
             line = line.replaceAll(" {2,}", " ");
 
-            boolean join = false;
-
-            if(line.contains("{{join}}")) {
-                line = line.replace("{{join}}", "");
-                join = true;
-            }
-
             if(line.contains("{{data}}"))
                 line = line.replace("{{data}}", String.format("\"%s\"", database));
 
@@ -125,13 +118,9 @@ public class RRunner {
             if(line.contains("{{retrieve}}")) {
                 line = line.replace("{{retrieve}}", "");
                 output.add(engine.eval(line));
-                if(join)
-                    engine.wait(500);
             }
             else {
                 REXP temp = engine.eval(line);
-                if(join)
-                    engine.wait(500);
             }
         }
         return output;
