@@ -13,7 +13,6 @@ public class Model {
         GROSS,
         COUNTRY,
     }
-
     public static final String SQL_SELECT_MOVIE = "SELECT * FROM movie WHERE movie_id=9";
     public static final String SQL_A7 = "SELECT * FROM movie WHERE budget IS NOT NULL ORDER BY budget DESC LIMIT 5";
     public static final String SQL_A8_EVER = "SELECT cur.* FROM gross cur WHERE NOT EXISTS (SELECT * FROM gross high WHERE high.movie_id = cur.movie_id AND high.country_id = cur.country_id AND high.amount > cur.amount) AND cur.amount IS NOT NULL AND cur.country_id = (select country_id from country where country = ? limit 1) ORDER BY cur.amount DESC LIMIT 20";
@@ -42,10 +41,12 @@ public class Model {
                 "ON b.country_id = c.country_id " +
                 "LEFT JOIN public.genre AS g " +
                 "ON b.genre_id = g.genre_id";
+
     public static final String SQL_Search_Actor = "SELECT * " +
             "FROM public.actor AS a " +
             "WHERE name LIKE '%?%' " +
             "ORDER BY name ASC";
+
     public static final String SQL_Movies_by_Country = "SELECT a.count, b.country " +
             "FROM (SELECT COUNT(movie_id), country_id " +
                 "FROM public.movie_country " +

@@ -175,7 +175,9 @@ public class App extends Jooby {
         get("/q/b4", (request, response) -> {
             String country = request.param("country").value();
 
-            Observable<Country> result = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_B4, country.trim().toLowerCase());
+            Object[] params = {country.trim().toLowerCase()};
+
+            Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_B4, params);
 
             List<Country> countries = result
                     .toList()
@@ -231,50 +233,50 @@ public class App extends Jooby {
 
         get("/q/d2", req -> {
             String name = req.param("lastname").value() + ", " + req.param("firstname").value();
-            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, "SELECT *" +
+
+            Object[] params = {name};
+
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, "SELECT *" +
                     "FROM public.movie" +
                     "WHERE movie_id IN (" +
                     "   SELECT movie_id" +
                     "   FROM public.movie_actor AS ma, public.actor AS a" +
                     "   WHERE ma.actor_id = a.actor_id" +
                     "   AND a.name = ?)" +
-                    "ORDER BY release_year", name);
+                    "ORDER BY release_year", params);
 
-            List<Movie> movies = new ArrayList<>();
-            obs.forEach(movies::add);
-
-            return movies;
+            return obs.toList().toBlocking().single();
         });
 
         get("/q/movie", req -> {
             String movie = req.param("movie").value();
-            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, movie);
 
-            List<Movie> movies = new ArrayList<>();
-            obs.forEach(movies::add);
+            Object[] params = {movie};
 
-            return movies;
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, params);
+
+            return obs.toList().toBlocking().single();
         });
 
         get("/q/actor", req -> {
             String actor = req.param("actor").value();
-            Observable<Actor> obs = model.queryParameter(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, actor);
 
-            List<Actor> actors = new ArrayList<>();
-            obs.forEach(actors::add);
+            Object[] params = {actor};
 
-            return actors;
+            Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, params);
+
+            return obs.toList().toBlocking().single();
         });
 
         //TODO make param optional
         get("/q/movies-by-country", req -> {
             String country = req.param("country").value();
-            Observable<Country> obs = model.queryParameter(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, country);
 
-            List<Country> countries = new ArrayList<>();
-            obs.forEach(countries::add);
+            Object[] params = {country};
 
-            return countries;
+            Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, params);
+
+            return obs.toList().toBlocking().single();
         });
     }
 
