@@ -1,8 +1,6 @@
 package com.janwilts.bigmovie.chatbot;
 
 import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
-import com.janwilts.bigmovie.chatbot.subroutines.*;
-import com.rivescript.Config;
 import com.rivescript.RiveScript;
 
 public class Main {

@@ -117,7 +117,7 @@ public class App extends Jooby {
         get("/q/a7", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<String> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7);
+            Observable<Movie> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7);
 
             return result.toList().toBlocking().single();
         });

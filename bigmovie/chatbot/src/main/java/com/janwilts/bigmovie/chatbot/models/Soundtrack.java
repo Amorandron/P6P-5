@@ -1,6 +1,6 @@
-package com.ykapps.bigmovie.models;
+package com.janwilts.bigmovie.chatbot.models;
 
-public class Soundtrack {
+public class Soundtrack implements Model{
 
     private Integer soundtrack_id;
 
@@ -18,11 +18,23 @@ public class Soundtrack {
         return soundtrack_id;
     }
 
+    public void setSoundtrack_id(Integer soundtrack_id) {
+        this.soundtrack_id = soundtrack_id;
+    }
+
     public Integer getMovie_id() {
         return movie_id;
     }
 
+    public void setMovie_id(Integer movie_id) {
+        this.movie_id = movie_id;
+    }
+
     public String getSong() {
         return song;
+    }
+
+    public void setSong(String song) {
+        this.song = song;
     }
 }

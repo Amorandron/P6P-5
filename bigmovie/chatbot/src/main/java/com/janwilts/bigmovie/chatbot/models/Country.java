@@ -1,6 +1,6 @@
-package com.ykapps.bigmovie.models;
+package com.janwilts.bigmovie.chatbot.models;
 
-public class Country {
+public class Country implements Model{
 
     private Integer country_id;
 
@@ -15,7 +15,15 @@ public class Country {
         return country_id;
     }
 
+    public void setCountry_id(Integer country_id) {
+        this.country_id = country_id;
+    }
+
     public String getCountry() {
         return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
