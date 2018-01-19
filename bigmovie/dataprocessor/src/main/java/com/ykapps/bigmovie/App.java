@@ -3,6 +3,7 @@ package com.ykapps.bigmovie;
 import com.github.davidmoten.rx.jdbc.Database;
 import com.ykapps.bigmovie.models.*;
 import com.ykapps.bigmovie.util.RRunner;
+import javafx.beans.binding.ObjectBinding;
 import org.jooby.Jooby;
 import org.jooby.Results;
 import org.jooby.apitool.ApiTool;
@@ -15,6 +16,7 @@ import rx.Observable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -122,25 +124,28 @@ public class App extends Jooby {
             //noinspection unchecked
 
             String period = request.param("period").value();
+            String country = request.param("country").value();
 
-            switch(period) {
-                case "week":
-                    break;
+            Object[] params = {country};
 
-                case "month":
-                    break;
+            if (period.equals("ever")) {
 
-                case "year":
-                    break;
+                Observable<Gross> resultObs = model.query(Model.DbClasses.GROSS, Model.SQL_A8_EVER, params);
 
-                case "ever":
-                    break;
+                return resultObs.toList().toBlocking().single();
             }
+            else {
+                try {
+                    Integer.parseInt(period);
+                }
+                catch (NumberFormatException e) {
+                    return "Error";
+                }
 
-            @SuppressWarnings("unchecked")
-            Observable<String> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7);
+                Observable<Gross> resultObs =  model.query(Model.DbClasses.GROSS, Model.SQL_A8_DAYS_P1 + period + Model.SQL_A8_DAYS_P2, params);
 
-            return result.toList().toBlocking().single();
+                return resultObs.toList().toBlocking().single();
+            }
         });
 
         get("/q/a15", () -> {
@@ -212,15 +217,14 @@ public class App extends Jooby {
 
         get("/q/d2", req -> {
             String name = req.param("lastname").value() + ", " + req.param("firstname").value();
-            Object[] para = new Object[]{name};
-            Observable<Movie> obs = model.queryParameter(Model.DbClasses.MOVIE, "SELECT *" +
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, "SELECT *" +
                     "FROM public.movie" +
                     "WHERE movie_id IN (" +
                     "   SELECT movie_id" +
                     "   FROM public.movie_actor AS ma, public.actor AS a" +
                     "   WHERE ma.actor_id = a.actor_id" +
                     "   AND a.name = ?)" +
-                    "ORDER BY release_year", para);
+                    "ORDER BY release_year");
 
             List<Movie> movies = new ArrayList<>();
             obs.forEach(movies::add);
