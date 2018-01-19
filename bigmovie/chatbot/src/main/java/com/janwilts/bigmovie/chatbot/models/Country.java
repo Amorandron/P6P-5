@@ -6,6 +6,9 @@ public class Country implements Model{
 
     private String country;
 
+    public Country() {
+    }
+
     public Country(Integer country_id, String country) {
         this.country_id = country_id;
         this.country = country;

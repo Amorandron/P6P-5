@@ -14,6 +14,9 @@ public class Actor implements Model {
 
     private Date birth_date;
 
+    public Actor() {
+    }
+
     public Actor(Long actor_id, String name, Integer occurence, String gender, Date birth_date) {
         this.actor_id = actor_id;
         this.name = name;

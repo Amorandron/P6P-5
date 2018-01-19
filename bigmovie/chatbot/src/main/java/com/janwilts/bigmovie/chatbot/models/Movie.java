@@ -24,6 +24,9 @@ public class Movie implements Model {
 
     private BigDecimal budget;
 
+    public Movie() {
+    }
+
     public Movie(Integer movie_id, String title, Integer release_year, String type, Integer occurence, String mpaa_rating,
                  String mpaa_reason, Integer rating, Integer rating_votes, BigDecimal budget) {
 

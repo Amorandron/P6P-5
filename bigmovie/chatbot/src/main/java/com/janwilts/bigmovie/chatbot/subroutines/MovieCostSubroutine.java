@@ -5,7 +5,7 @@ import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.rivescript.RiveScript;
 import com.rivescript.macro.Subroutine;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Everdien
@@ -14,24 +14,29 @@ public class MovieCostSubroutine implements Subroutine {
 
     @Override
     public String call(RiveScript rs, String[] args) {
-        String result = "...";
+        StringBuilder result = new StringBuilder();
 
-        Movie api = null;
+        List<Movie> api = null;
 
         APIRequester requester = new APIRequester(Movie.class);
         try {
-            api = (Movie) requester.getFromAPI("/q/a21/");
-        } catch (IOException e) {
+            api = requester.getArrayFromAPI("/q/a7/");
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         String type = args[0];
         if(type.contains("most")){
-            result = String.format("%s (%d)", api.getTitle(), api.getRelease_year());
+            int index = 1;
+
+            for(Movie m : api) {
+                result.append(String.format("```%d. %s (%d)```", index, m.getTitle(), m.getRelease_year()));
+                index++;
+            }
         }else if(type.contains("least") || type.equals("cheapest")){
-            result = "least";
+            result = new StringBuilder("least");
         }
 
-        return result;
+        return result.toString();
     }
 }

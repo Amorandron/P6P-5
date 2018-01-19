@@ -8,6 +8,9 @@ public class Soundtrack implements Model{
 
     private String song;
 
+    public Soundtrack() {
+    }
+
     public Soundtrack(Integer soundtrack_id, Integer movie_id, String song) {
         this.soundtrack_id = soundtrack_id;
         this.movie_id = movie_id;

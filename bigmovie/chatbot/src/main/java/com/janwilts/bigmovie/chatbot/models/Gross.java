@@ -15,6 +15,9 @@ public class Gross implements Model{
 
     private Date transaction_date;
 
+    public Gross() {
+    }
+
     public Gross(Integer gross_id, Integer movie_id, Integer country_id, BigDecimal amount, Date transaction_date) {
         this.gross_id = gross_id;
         this.movie_id = movie_id;

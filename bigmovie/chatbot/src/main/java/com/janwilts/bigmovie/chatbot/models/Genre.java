@@ -6,6 +6,9 @@ public class Genre implements Model{
 
     private String genre;
 
+    public Genre() {
+    }
+
     public Genre(Integer genre_id, String genre) {
         this.genre_id = genre_id;
         this.genre = genre;
