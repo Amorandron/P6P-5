@@ -14,7 +14,8 @@ public class Model {
         COUNTRY,
     }
     public static final String SQL_SELECT_MOVIE = "SELECT * FROM movie WHERE movie_id=9";
-    public static final String SQL_A7 = "SELECT * FROM movie WHERE budget IS NOT NULL ORDER BY budget DESC LIMIT 5";
+    public static final String SQL_A7_MOST = "SELECT * FROM movie WHERE budget IS NOT NULL ORDER BY budget DESC LIMIT 5";
+    public static final String SQL_A7_LEAST = "SELECT * FROM movie WHERE budget IS NOT NULL ORDER BY budget ASC LIMIT 5";
     public static final String SQL_A8_EVER = "SELECT cur.* FROM gross cur WHERE NOT EXISTS (SELECT * FROM gross high WHERE high.movie_id = cur.movie_id AND high.country_id = cur.country_id AND high.amount > cur.amount) AND cur.amount IS NOT NULL AND cur.country_id = (select country_id from country where country = ? limit 1) ORDER BY cur.amount DESC LIMIT 20";
     public static final String SQL_A8_DAYS_P1 = "SELECT * FROM gross WHERE gross_id IN (SELECT gross_id FROM gross_by_period WHERE country_id = (SELECT country_id FROM country WHERE country = ? LIMIT 1) AND transaction_date_delta = ";
     public static final String SQL_A8_DAYS_P2 = " ) ORDER BY amount DESC LIMIT 20";

@@ -20,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * @author Yannick Kooistra
+ * @author Yannick, Everdien & Jan
  */
 @SuppressWarnings("unchecked")
 public class App extends Jooby {
@@ -114,10 +114,18 @@ public class App extends Jooby {
             return soundtrack;
         });
 
-        get("/q/a7", () -> {
+        get("/q/a7/most", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<Movie> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7);
+            Observable<Movie> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7_MOST);
+
+            return result.toList().toBlocking().single();
+        });
+
+        get("/q/a7/least", () -> {
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Movie> result = model.query(Model.DbClasses.MOVIE, Model.SQL_A7_LEAST);
 
             return result.toList().toBlocking().single();
         });

@@ -13,6 +13,7 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
     
     @Override
     public void handle(MessageReceivedEvent event) {
+        bot.setUservar(event.getAuthor().getName(),"name", event.getAuthor().getName());
         String input = event.getMessage().getContent();
         if (event.getMessage().getContent().startsWith(DiscordBot.CLIENT_ID)) {
             

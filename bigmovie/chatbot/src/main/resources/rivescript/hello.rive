@@ -13,9 +13,6 @@
 + how are you
 - I am <bot mood>, how are you?
 
-+ my name is *
-- <set name=<star>>It's nice to meet you, <get name>.
-
 + what is my name
 - Your name is <get name>, silly!
 
@@ -30,6 +27,18 @@
 
 + i have a question
 - Tell me your question, maybe i can answer it.
+
++ open the pod bay doors
+- I'm sorry <get name>, I'm afraid I can't do that
+
++ tell me the tragedy of darth plagueis the wise
+- It’s not a story the Jedi would tell you. It’s a Sith legend. Darth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life… He had such a knowledge of the dark side that he could even keep the ones he cared about from dying. The dark side of the Force is a pathway to many abilities some consider to be unnatural. He became so powerful… the only thing he was afraid of was losing his power, which eventually, of course, he did. Unfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep. Ironic. He could save others from death, but not himself.
+
++ you are late
+- A wizard is never late, <get name>, nor is he early, he arrives precisely when he means to.
+
++ ping
+- Pong!
 
 + google *
 - Google search: <a href=\"http://www.google.com/search?q="<star>"\">Click Here!</a>
