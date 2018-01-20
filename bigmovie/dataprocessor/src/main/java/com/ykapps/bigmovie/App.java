@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Calendar;
 
 /**
  * @author Yannick, Everdien & Jan
@@ -204,9 +205,13 @@ public class App extends Jooby {
             response.download(new File(location));
         });
 
-        get("/q/b5", () -> {
-            //TODO: Implement question B5 here.
-            return "NYI";
+        get("/q/b5", (request, response) -> {
+            //TODO: Check if it works
+            String location = getClass().getResource("/R/").getPath() + "plots/b5.png";
+            location = location.replaceAll("%20", " ");
+            runner.runDb("b5.R", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+
+            response.download(new File(location));
         });
 
         get("/q/c2", (request, response) -> {
