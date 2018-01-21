@@ -233,9 +233,12 @@ public class App extends Jooby {
             }
         });
 
-        get("/q/c4", () -> {
-            //TODO: Implement question C4 here.
-            return "NYI";
+        get("/q/c4", (request, response) -> {
+            String location = getClass().getResource("/R/").getPath() + "plots/c4.png";
+            location = location.replaceAll("%20", " ");
+            runner.runDb("c4.R", location);
+
+            response.download(new File(location));
         });
 
         get("/q/d1", () -> {
