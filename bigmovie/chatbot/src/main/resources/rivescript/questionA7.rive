@@ -15,3 +15,6 @@
 * <get type> == movie => <call>movieCost <star1></call>
 * <get type> == film => <call>movieCost <star1></call>
 - <bot error>
+
++ [give|can you give] [me] [more] (information|info|details) (about|over) (@movie) #
+- <call>moreInfo movie <star4></call>

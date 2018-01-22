@@ -1,6 +1,7 @@
 package com.ykapps.bigmovie;
 
 import com.github.davidmoten.rx.jdbc.Database;
+import com.sun.tools.javah.Gen;
 import com.ykapps.bigmovie.models.*;
 import com.ykapps.bigmovie.util.RRunner;
 import org.jooby.Jooby;
@@ -75,7 +76,18 @@ public class App extends Jooby {
             return actor;
         });
 
-        get("/countries", () -> {
+        get("/countries", (request) -> {
+            if(request.param("movie_id").isSet()){
+                int movie_id = request.param("movie_id").intValue();
+                Object[] params = {movie_id};
+                Observable<Country> countries = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
+                        "FROM public.country" +
+                        "WHERE country_id IN (SELECT country_id" +
+                        "                    FROM movie_country" +
+                        "                    WHERE movie_id = ?)", params);
+                return countries.toList().toBlocking().single();
+            }
+
             //noinspection unchecked
             @SuppressWarnings("unchecked")
             Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, "SELECT * " +
@@ -85,7 +97,18 @@ public class App extends Jooby {
             return country;
         });
 
-        get("/genres", () -> {
+        get("/genres", (request) -> {
+            if(request.param("movie_id").isSet()){
+                int movie_id = request.param("movie_id").intValue();
+                Object[] params = {movie_id};
+                Observable<Genre> genres = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
+                        "FROM public.genre" +
+                        "WHERE genre_id IN (SELECT genre_id" +
+                        "                    FROM movie_genre" +
+                        "                    WHERE movie_id = ?)", params);
+                return genres.toList().toBlocking().single();
+            }
+
             //noinspection unchecked
             @SuppressWarnings("unchecked")
             Observable<Genre> obs = model.query(Model.DbClasses.GENRE, "SELECT * " +

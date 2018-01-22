@@ -21,6 +21,7 @@ public class RivescriptBot {
         bot.setSubroutine("moviecountryCount", new MovieCountryCountSubroutine());
         bot.setSubroutine("genrepopularityChange", new GenrePopularityChangeSubroutine());
         bot.setSubroutine("getroleDifficult", new GetRoleDifficultSubroutine());
+        bot.setSubroutine("moreInfo", new moreInfoSubroutine());
         
         return bot;
     }
