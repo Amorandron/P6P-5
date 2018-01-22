@@ -1,0 +1,15 @@
++ how many movies did [the] * make
+- <call>movieByCountry <star></call>
+
++ movies made by [the] *
+- <call>movieByCountry <star></call>
+
++ what amount of movies did [the] * make
+- <call>movieByCountry <star></call>
+
++ what does * do in his daily life
+- <call>actorInfo <star></call>
+
++ show me some info about *
+//find out type: movie/actor/country
+//show the right info

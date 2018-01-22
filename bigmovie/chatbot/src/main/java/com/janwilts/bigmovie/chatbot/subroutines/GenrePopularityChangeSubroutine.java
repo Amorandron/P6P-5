@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * @author Everdien
+ * @author Jan
  */
 public class GenrePopularityChangeSubroutine extends Routine {
 

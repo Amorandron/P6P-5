@@ -6,7 +6,6 @@ import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.janwilts.bigmovie.chatbot.util.PrintUtils;
 import com.rivescript.RiveScript;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +33,6 @@ public class MovieCostSubroutine extends Routine {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            List<Movie> currentMovies = new ArrayList<>();
             for(int i = 1; i < api.size(); i++) {
                 focusedMovies.put(i, api.get(i));
             }

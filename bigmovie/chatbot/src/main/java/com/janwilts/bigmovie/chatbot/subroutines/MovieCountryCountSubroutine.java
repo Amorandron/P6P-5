@@ -1,10 +1,14 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
 import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
+import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.rivescript.RiveScript;
 
+import java.io.File;
+import java.io.IOException;
+
 /**
- * @author Everdien
+ * @author Jan
  */
 public class MovieCountryCountSubroutine extends Routine {
 
@@ -14,17 +18,18 @@ public class MovieCountryCountSubroutine extends Routine {
 
     @Override
     public String call(RiveScript rs, String[] args) {
-        String result = "...";
-
         String country = args[0];
-        result = country;
 
-        if(args.length > 1){
-            if(args[1].equals("time")){
-                result += ", displayed in time";
-            }
+        File image = null;
+
+        APIRequester requester = new APIRequester(String.class);
+        try {
+            requester.getFromAPI("/q/b5");
+            image = requester.getImageFromAPI(String.format("/plots/b5.png?country=%s", country), "b5.png");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return result;
+        return fileOutput(image);
     }
 }
