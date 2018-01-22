@@ -1,12 +1,15 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
+import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.rivescript.RiveScript;
-import com.rivescript.macro.Subroutine;
 
 /**
  * @author Everdien
  */
-public class ActorActSubroutine implements Subroutine {
+public class ActorActSubroutine extends Routine {
+    public ActorActSubroutine(DiscordBot bot) {
+        super(bot);
+    }
 
     @Override
     public String call(RiveScript rs, String[] args) {

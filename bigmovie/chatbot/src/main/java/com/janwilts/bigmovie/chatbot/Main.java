@@ -5,10 +5,10 @@ import com.rivescript.RiveScript;
 
 public class Main {
     public static void main(String[] args) {
-        RiveScript bot = RivescriptBot.init();
-
         String token = args[0];
-        DiscordBot discordBot = new DiscordBot(token, bot);
+        DiscordBot discordBot = new DiscordBot(token);
+        RiveScript bot = RivescriptBot.init(discordBot);
+        discordBot.setRivescript(bot);
         discordBot.initialize();
     }
 }
