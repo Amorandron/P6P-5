@@ -1,15 +1,13 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
-import com.janwilts.bigmovie.chatbot.util.APIRequester;
+import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.rivescript.RiveScript;
-import com.rivescript.macro.Subroutine;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+public class ActorRoleSubroutine extends Routine {
+    public ActorRoleSubroutine(DiscordBot bot) {
+        super(bot);
+    }
 
-public class ActorRoleSubroutine implements Subroutine {
     @Override
     public String call(RiveScript rs, String[] args) {
         String result = "";

@@ -15,17 +15,17 @@ import org.jooby.rx.RxJdbc;
 import org.rosuda.JRI.REXP;
 import rx.Observable;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Calendar;
 
 /**
  * @author Yannick, Everdien & Jan
  */
 @SuppressWarnings("unchecked")
 public class App extends Jooby {
+    private static final String plotLocation = "public/plots/";
 
     private Model model;
 
@@ -51,6 +51,8 @@ public class App extends Jooby {
             model = new Model(require(Database.class));
             runner = new RRunner();
         });
+
+        assets("/plots/**");
 
 
         get("/", () -> {
@@ -204,7 +206,7 @@ public class App extends Jooby {
             return result;
         });
 
-        get("/q/b4", (request, response) -> {
+        get("/q/b4", (request) -> {
             String country = request.param("country").value();
 
             Object[] params = {country.trim().toLowerCase()};
@@ -221,28 +223,25 @@ public class App extends Jooby {
                     .min(Comparator.comparing(c -> c.getCountry().length()))
                     .get();
 
-            String location = getClass().getResource("/R/").getPath() + "plots/b4.png";
-            location = location.replaceAll("%20", " ");
+            String location = plotLocation + "b4.png";
             runner.runDb("b4.R", location, output.getCountry_id().toString());
 
-            response.download(new File(location));
+            return "Done processing image";
         });
 
-        get("/q/b5", (request, response) -> {
+        get("/q/b5", () -> {
             //TODO: Check if it works
-            String location = getClass().getResource("/R/").getPath() + "plots/b5.png";
-            location = location.replaceAll("%20", " ");
-            runner.runDb("b5.R", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            String location = plotLocation + "b5.png";
+            runner.runDb("b5.R", location, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
-            response.download(new File(location));
+            return "Done processing image";
         });
 
-        get("/q/c2", (request, response) -> {
-            String location = getClass().getResource("/R/").getPath() + "plots/c2.png";
-            location = location.replaceAll("%20", " ");
+        get("/q/c2", () -> {
+            String location = plotLocation + "c2.png";
             c2Output = runner.runDb("c2.R", location);
 
-            response.download(new File(location));
+            return "Done processing image";
         });
 
         get("q/c2/val", () -> {
@@ -256,12 +255,11 @@ public class App extends Jooby {
             }
         });
 
-        get("/q/c4", (request, response) -> {
-            String location = getClass().getResource("/R/").getPath() + "plots/c4.png";
-            location = location.replaceAll("%20", " ");
+        get("/q/c4", () -> {
+            String location = plotLocation + "c4.png";
             runner.runDb("c4.R", location);
 
-            response.download(new File(location));
+            return "Done processing image";
         });
 
         get("/q/d1", () -> {

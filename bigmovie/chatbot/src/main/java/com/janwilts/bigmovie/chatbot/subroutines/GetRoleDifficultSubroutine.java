@@ -1,54 +1,33 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
+import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
+import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.rivescript.RiveScript;
-import com.rivescript.macro.Subroutine;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Everdien
  */
-public class GetRoleDifficultSubroutine implements Subroutine {
+public class GetRoleDifficultSubroutine extends Routine {
+
+    public GetRoleDifficultSubroutine(DiscordBot bot) {
+        super(bot);
+    }
 
     @Override
     public String call(RiveScript rs, String[] args) {
-        String result = "...";
+        File image = null;
 
-        //TODO get request from api.
-
-        String type = args[0];
-        String difficulty = args[1];
-        String age = args[2];
-        Boolean possible = true;
-        if(type.contains("actor") && type.contains("actress")){
-            type = "both";
-            possible = false;
-        }else if(type.contains("actor")){
-            type = "male";
-            possible = false;
-        }else if(type.contains("actress")){
-            type = "female";
-        }else{
-            return "error";
+        APIRequester requester = new APIRequester(String.class);
+        try {
+            requester.getFromAPI("/q/c4");
+            image = requester.getImageFromAPI("/plots/c4.png", "c4.png");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        if(difficulty.contains("most")){
-            difficulty = "most";
-        }else if(difficulty.contains("least")){
-            difficulty = "least";
-        }
-
-        if(age.contains("younger")){
-            age = "younger";
-        }else if(age.contains("older")){
-            age = "older";
-        }
-
-        if(possible){
-            result = type + ", " + difficulty + ", " + age;
-        }else{
-            result = "I can only answer this question for actresses at the time.";
-        }
-
-
-        return result;
+        return fileOutput(image);
     }
 }

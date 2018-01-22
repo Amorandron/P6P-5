@@ -4,6 +4,9 @@ import com.rivescript.RiveScript;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class MessageListener implements IListener<MessageReceivedEvent> {
     private RiveScript bot;
     
@@ -24,7 +27,19 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
             }
             else {
                 String response = bot.reply(event.getAuthor().getDisplayName(event.getGuild()), message);
-                event.getChannel().sendMessage(response);
+                String[] messages = response.split("\\|\\|");
+                for(String mess : messages) {
+                    if(mess.startsWith("{{file}}")) {
+                        try {
+                            event.getChannel().sendFile(new File(mess.substring(8)));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        event.getChannel().sendMessage(mess);
+                    }
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
+import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.janwilts.bigmovie.chatbot.models.Country;
 import com.janwilts.bigmovie.chatbot.models.Genre;
 import com.janwilts.bigmovie.chatbot.models.Movie;
@@ -12,7 +13,11 @@ import java.util.List;
 /**
  * @author Everdien
  */
-public class moreInfoSubroutine extends Routine implements Subroutine {
+public class MoreInfoSubroutine extends Routine {
+
+    public MoreInfoSubroutine(DiscordBot bot) {
+        super(bot);
+    }
 
     @Override
     public String call(RiveScript rs, String[] args) {

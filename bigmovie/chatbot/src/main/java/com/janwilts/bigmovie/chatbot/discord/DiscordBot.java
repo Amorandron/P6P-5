@@ -12,11 +12,14 @@ public class DiscordBot {
     private IDiscordClient discordClient;
     private RiveScript bot;
     
-    public DiscordBot(String token, RiveScript bot) {
+    public DiscordBot(String token) {
         discordClient = getClient(token);
+    }
+
+    public void setRivescript(RiveScript bot) {
         this.bot = bot;
     }
-    
+
     public void initialize() {
         discordClient.getDispatcher().registerListener(new MessageListener(bot));
     }

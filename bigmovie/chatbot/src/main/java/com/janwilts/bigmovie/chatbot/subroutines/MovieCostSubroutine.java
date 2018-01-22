@@ -1,10 +1,10 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
+import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.janwilts.bigmovie.chatbot.models.Movie;
 import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.janwilts.bigmovie.chatbot.util.PrintUtils;
 import com.rivescript.RiveScript;
-import com.rivescript.macro.Subroutine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,11 @@ import java.util.List;
 /**
  * @author Everdien & Jan
  */
-public class MovieCostSubroutine extends Routine implements Subroutine {
+public class MovieCostSubroutine extends Routine {
+
+    public MovieCostSubroutine(DiscordBot bot) {
+        super(bot);
+    }
 
     @Override
     public String call(RiveScript rs, String[] args) {

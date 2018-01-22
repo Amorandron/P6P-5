@@ -1,19 +1,33 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
+import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
+import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.rivescript.RiveScript;
-import com.rivescript.macro.Subroutine;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author Everdien
  */
-public class GenrePopularityChangeSubroutine implements Subroutine {
+public class GenrePopularityChangeSubroutine extends Routine {
+
+    public GenrePopularityChangeSubroutine(DiscordBot bot) {
+        super(bot);
+    }
 
     @Override
     public String call(RiveScript rs, String[] args) {
-        String result = "It changes.";
+        File image = null;
 
-        //TODO get request from api.
+        APIRequester requester = new APIRequester(String.class);
+        try {
+            requester.getFromAPI("/q/b5");
+            image = requester.getImageFromAPI("/plots/b5.png", "b5.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        return result;
+        return fileOutput(image);
     }
 }

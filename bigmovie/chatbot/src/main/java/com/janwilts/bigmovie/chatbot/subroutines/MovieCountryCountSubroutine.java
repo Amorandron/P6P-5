@@ -1,12 +1,16 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
+import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.rivescript.RiveScript;
-import com.rivescript.macro.Subroutine;
 
 /**
  * @author Everdien
  */
-public class MovieCountryCountSubroutine implements Subroutine {
+public class MovieCountryCountSubroutine extends Routine {
+
+    public MovieCountryCountSubroutine(DiscordBot bot) {
+        super(bot);
+    }
 
     @Override
     public String call(RiveScript rs, String[] args) {
