@@ -1,5 +1,6 @@
 package com.janwilts.bigmovie.chatbot.util;
 
+import com.janwilts.bigmovie.chatbot.models.Country;
 import com.janwilts.bigmovie.chatbot.models.Movie;
 
 import java.util.HashMap;
@@ -27,6 +28,17 @@ public class PrintUtils {
             else {
                 blockprint(String.format("%d. %s (%d)", set.getKey(), currentMovie.getTitle(), currentMovie.getRelease_year()));
             }
+        }
+        return getBlock();
+    }
+
+    public static String countryListPrint(HashMap<Integer, Country> countries) {
+        for(Map.Entry<Integer, Country> set : countries.entrySet()) {
+            Country currentCountry = set.getValue();
+            if(currentCountry.getCountry() == null) {
+                continue;
+            }
+            blockprint(String.format("%d. %s", set.getKey(), currentCountry.getCountry()));
         }
         return getBlock();
     }

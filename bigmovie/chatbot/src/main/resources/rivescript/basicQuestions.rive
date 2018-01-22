@@ -1,0 +1,8 @@
++ how many movies did [the] * make
+- <call>movieByCountry <star></call>
+
++ movies made by [the] *
+- <call>movieByCountry <star></call>
+
++ what amount of movies did [the] * make
+- <call>movieByCountry <star></call>
