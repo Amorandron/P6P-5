@@ -209,7 +209,7 @@ public class App extends Jooby {
         get("/q/b5", () -> {
             //TODO: Check if it works
             String location = plotLocation + "b5.png";
-            runner.runDb("b5.R", String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            runner.runDb("b5.R", location, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
             return "Done processing image";
         });

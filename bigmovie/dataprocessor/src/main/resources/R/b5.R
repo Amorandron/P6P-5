@@ -18,7 +18,7 @@ result <- dbSendQuery(connection, "WITH genre_nums AS (
                                   LEFT JOIN public.genre AS g
                                   ON mgy.genre_id = g.genre_id
                                   WHERE genre IS NOT NULL
-                                  AND release_year BETWEEN 1884 AND {{PARAM}}
+                                  AND release_year BETWEEN 1884 AND {{param}}
                                   GROUP BY mgy.release_year, g.genre
                                   ORDER BY mgy.release_year, g.genre ASC");
 
