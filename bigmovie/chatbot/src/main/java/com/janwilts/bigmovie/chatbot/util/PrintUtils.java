@@ -40,6 +40,7 @@ public class PrintUtils {
             }
             blockprint(String.format("%d. %s. %t. %s. %s", set.getKey(), currentActor.getName(), currentActor.getBirth_date(), currentActor.getGender(), currentActor.getOccurence()));
         }
+        return getBlock();
     }
 
     public static String countryListPrint(HashMap<Integer, Country> countries) {
