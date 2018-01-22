@@ -2,7 +2,6 @@ package com.janwilts.bigmovie.parser;
 
 import com.github.shyiko.dotenv.DotEnv;
 import com.janwilts.bigmovie.parser.commands.CommandParser;
-import com.janwilts.bigmovie.parser.inserters.Inserter;
 import com.janwilts.bigmovie.parser.util.DatabaseConnection;
 
 import java.util.Map;
@@ -21,7 +20,5 @@ public class Main {
 
     public static void main(String[] args) {
         CommandParser.parse(args);
-        connection.open();
-        Inserter.insertFiles(connection);
     }
 }
