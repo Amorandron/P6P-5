@@ -13,7 +13,7 @@ public class Model {
         GROSS,
         COUNTRY,
     }
-    public static final String SQL_SELECT_MOVIE = "SELECT * FROM movie WHERE movie_id=9";
+    public static final String SQL_SELECT_MOVIE = "SELECT * FROM movie WHERE movie_id=?";
     public static final String SQL_A7_MOST = "SELECT * FROM movie WHERE budget IS NOT NULL ORDER BY budget DESC LIMIT 5";
     public static final String SQL_A7_LEAST = "SELECT * FROM movie WHERE budget IS NOT NULL ORDER BY budget ASC LIMIT 5";
     public static final String SQL_A8_EVER = "SELECT cur.* FROM gross cur WHERE NOT EXISTS (SELECT * FROM gross high WHERE high.movie_id = cur.movie_id AND high.country_id = cur.country_id AND high.amount > cur.amount) AND cur.amount IS NOT NULL AND cur.country_id = (select country_id from country where country = ? limit 1) ORDER BY cur.amount DESC LIMIT 20";
@@ -26,8 +26,8 @@ public class Model {
     public static final String SQL_D1 = "SELECT * FROM country WHERE country_id IN ( SELECT country_id FROM public.gross GROUP BY country_id HAVING sum(amount) IS NOT NULL ORDER BY sum(amount) DESC )";
     public static final String SQL_B4 = "SELECT * " +
             "FROM public.country " +
-            "WHERE lower(country) LIKE '%?%'";
-    public static final String SQL_Search_Movie = "SELECT b.title, b.release_year, b.occurence, b.type, b.budget, b.mpaa_rating, b.rating, b.rating_votes, c.country, g.genre " +
+            "WHERE lower(country) LIKE ?";
+    public static final String SQL_Search_Movie = "SELECT b.*" +
             "FROM (SELECT * " +
                 "FROM (SELECT x.*, y.country_id, z.genre_id " +
                     "FROM public.movie AS x " +
@@ -36,7 +36,7 @@ public class Model {
                     "LEFT JOIN public.movie_genre AS z " +
                     "ON x.movie_id = z.movie_id " +
                     "AND z.movie_id = y.movie_id ) AS a " +
-                "WHERE LOWER( title ) LIKE '%?%' " +
+                "WHERE LOWER( title ) LIKE ?" +
                 "ORDER BY title ASC LIMIT 30 ) AS b " +
                 "LEFT JOIN public.country AS c " +
                 "ON b.country_id = c.country_id " +
@@ -45,7 +45,7 @@ public class Model {
 
     public static final String SQL_Search_Actor = "SELECT * " +
             "FROM public.actor AS a " +
-            "WHERE name LIKE '%?%' " +
+            "WHERE name LIKE ? " +
             "ORDER BY name ASC";
 
     public static final String SQL_Movies_by_Country = "SELECT a.count, b.country " +
@@ -55,7 +55,7 @@ public class Model {
                 "ORDER BY count DESC ) AS a " +
             "LEFT JOIN public.country AS b " +
             "ON b.country_id = a.country_id " +
-            "WHERE country = '%?%'";
+            "WHERE country = ?";
 
     private Database db;
 

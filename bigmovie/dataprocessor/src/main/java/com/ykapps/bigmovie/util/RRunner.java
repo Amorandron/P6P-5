@@ -73,14 +73,16 @@ public class RRunner {
     }
 
     public List<REXP> run(String script, String... params) throws IOException, InterruptedException {
-        URL url = this.getClass().getResource("/R/" + script);
-        File RFile = null;
-        try {
-            RFile = new File(Objects.requireNonNull(url).toURI());
-        } catch (URISyntaxException e) {
-            RFile = new File(Objects.requireNonNull(url).getPath());
+        InputStream in = getClass().getClassLoader().getResourceAsStream("R/" + script);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+        String bufferLine;
+        String R = "";
+
+        while ((bufferLine = reader.readLine()) != null) {
+            R += bufferLine;
         }
-        String R = FileUtils.readFileToString(RFile, "UTF-8");
+
         String[] input = R.split(";");
 
         List<String> lines = Arrays.stream(input).filter(i -> i.length() > 0).collect(Collectors.toList());
