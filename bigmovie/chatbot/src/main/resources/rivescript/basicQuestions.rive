@@ -10,6 +10,29 @@
 + what does * do in his daily life
 - <call>actorInfo <star></call>
 
-+ show me some info about *
-//find out type: movie/actor/country
-//show the right info
++ show me (some|more) [info] about *
+- <set search=<star2>>Are you looking for a movie or an actor or a country?
+
++ [*] (movie|actor|country) [*]
+% are you looking for a movie or an actor or a country
+* <star> == movie => <call>movieInfo <get search></call>
+* <star> == actor => <call>actorInfo <get search></call>
+* <star> == country => <call>countryInfo <get search></call>
+- Please choose from a movie or an actor or a country
+
++ *
+% are you looking for a movie or an actor or a country
+- Choose from a movie or an actor or a country
+
++ [*] (movie|actor|country) [*]
+% choose from a movie or an actor or a country
+* <star> == movie => <call>movieInfo <get search></call>
+* <star> == actor => <call>actorInfo <get search></call>
+* <star> == country => <call>countryInfo <get search></call>
+- Please choose from a movie or an actor or a country
+
++ *
+% choose from a movie or an actor or a country
+- Choose from a movie or an actor or a country
+
+
