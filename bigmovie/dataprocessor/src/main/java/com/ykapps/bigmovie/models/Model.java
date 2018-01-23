@@ -19,11 +19,13 @@ public class Model {
     public static final String SQL_A8_EVER = "SELECT cur.* FROM gross cur WHERE NOT EXISTS (SELECT * FROM gross high WHERE high.movie_id = cur.movie_id AND high.country_id = cur.country_id AND high.amount > cur.amount) AND cur.amount IS NOT NULL AND cur.country_id = (SELECT country_id FROM country WHERE LOWER(country) = ? LIMIT 1) ORDER BY cur.amount DESC LIMIT 20";
     public static final String SQL_A8_DAYS_P1 = "SELECT * FROM gross WHERE gross_id IN (SELECT gross_id FROM gross_by_period WHERE country_id = (SELECT country_id FROM country WHERE LOWER(country) = ? LIMIT 1) AND transaction_date_delta = ";
     public static final String SQL_A8_DAYS_P2 = " ) ORDER BY amount DESC LIMIT 20";
-    public static final String SQL_A15 = "SELECT * FROM actor WHERE actor_id=(SELECT actor_id FROM actor_rating WHERE rating=1 GROUP BY actor_id ORDER BY COUNT(actor_id) DESC LIMIT 1)";
+    public static final String SQL_A15_MOST = "SELECT * FROM actor WHERE actor_id=(SELECT ar.actor_id FROM actor_rating AS ar, actor AS a WHERE rating=? AND ar.actor_id = a.actor_id AND a.gender LIKE ? GROUP BY ar.actor_id ORDER BY COUNT(ar.actor_id) DESC LIMIT 1)";
+    public static final String SQL_A15_LEAST = "SELECT * FROM actor WHERE actor_id=(SELECT ar.actor_id FROM actor_rating AS ar, actor AS a WHERE rating=? AND ar.actor_id = a.actor_id AND a.gender LIKE ? GROUP BY ar.actor_id ORDER BY COUNT(ar.actor_id) ASC LIMIT 1)";
     public static final String SQL_A21_SOUNDTRACK = "SELECT * FROM soundtrack WHERE song=(SELECT song FROM soundtrack GROUP BY song ORDER BY COUNT(song) DESC LIMIT 1) LIMIT 1";
     public static final String SQL_A21_MOVIE = "SELECT movie.* FROM most_used_song_ids INNER JOIN movie ON most_used_song_ids.movie_id=movie.movie_id";
     public static final String SQL_B5 = "SELECT x.release_year, y.genre FROM ( SELECT cur.* FROM movie_genre_year AS cur WHERE NOT EXISTS( SELECT high.* FROM movie_genre_year high WHERE cur.release_year = high.release_year AND high.movie_count > cur.movie_count ) ORDER BY release_year ASC ) AS x LEFT JOIN public.genre AS y ON x.genre_id = y.genre_id";
-    public static final String SQL_D1 = "SELECT * FROM public.gross GROUP BY country_id HAVING sum(amount) IS NOT NULL ORDER BY sum(amount) DESC";
+    public static final String SQL_D1 = "SELECT * FROM country WHERE country_id IN ( SELECT country_id FROM public.gross GROUP BY country_id HAVING sum(amount) IS NOT NULL ORDER BY sum(amount) DESC )";
+    public static final String SQL_D2 = "SELECT * FROM public.movie WHERE movie_id IN (SELECT movie_id FROM public.movie_actor AS ma, public.actor AS a WHERE ma.actor_id = a.actor_id AND a.name = ?) ORDER BY release_year";
     public static final String SQL_B4 = "SELECT * " +
             "FROM public.country " +
             "WHERE lower(country) LIKE ?";

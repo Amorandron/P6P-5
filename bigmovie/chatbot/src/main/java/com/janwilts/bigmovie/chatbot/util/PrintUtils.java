@@ -33,12 +33,23 @@ public class PrintUtils {
     }
 
     public static String actorListPrint(HashMap<Integer, Actor> actors) {
-        for (Map.Entry<Integer, Actor> set : actors.entrySet()) {
-            Actor currentActor = set.getValue();
-            if (currentActor.getName() == null) {
-                continue;
+        for (Map.Entry<Integer, Actor> entry : actors.entrySet()) {
+            Actor currentActor = entry.getValue();
+            if(currentActor.getBirth_date() == null && currentActor.getDeath_date() == null){
+                blockprint(String.format("%d. %s %s %s %s", entry.getKey(), currentActor.getName(), currentActor.getGender(), "-", "-"));
+            }else if(currentActor.getBirth_date() == null) {
+                blockprint(String.format("%d. %s %s %s %tF", entry.getKey(), currentActor.getName(), currentActor.getGender(), "-", currentActor.getDeath_date()));
+            }else if(currentActor.getDeath_date() == null) {
+                blockprint(String.format("%d. %s %s %tF %s", entry.getKey(), currentActor.getName(), currentActor.getGender(), currentActor.getBirth_date(), "-"));
+            }else {
+                blockprint(String.format("%d. %s %s %tF %tF", entry.getKey(), currentActor.getName(), currentActor.getGender(), currentActor.getBirth_date(), currentActor.getDeath_date()));
             }
-            blockprint(String.format("%d. %s. %t. %s. %s", set.getKey(), currentActor.getName(), currentActor.getBirth_date(), currentActor.getGender(), currentActor.getOccurence()));
+//        for (Map.Entry<Integer, Actor> set : actors.entrySet()) {
+//            Actor currentActor = set.getValue();
+//            if (currentActor.getName() == null) {
+//                continue;
+//            }
+//            blockprint(String.format("%d. %s. %t. %s. %s", set.getKey(), currentActor.getName(), currentActor.getBirth_date(), currentActor.getGender(), currentActor.getOccurence()));
         }
         return getBlock();
     }
