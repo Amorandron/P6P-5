@@ -2,10 +2,12 @@ package com.janwilts.bigmovie.chatbot.subroutines;
 
 import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.janwilts.bigmovie.chatbot.models.Country;
+import com.janwilts.bigmovie.chatbot.models.Gross;
 import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.janwilts.bigmovie.chatbot.util.PrintUtils;
 import com.rivescript.RiveScript;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,12 +21,14 @@ public class MovieCountryEarnedSubroutine extends Routine {
 
     @Override
     public String call(RiveScript rs, String[] args) {
+        //TODO: test if it works correctly
         focusedCountries.clear();
         StringBuilder result = new StringBuilder();
 
-        List<Country> apiCountry = null;
-
         APIRequester requester = new APIRequester(Country.class);
+
+        List<Country> apiCountry = new ArrayList<>();
+        List<Gross> apiGross;
 
         String url = "/q/d1";
 
@@ -40,18 +44,32 @@ public class MovieCountryEarnedSubroutine extends Routine {
             String period = args[1];
 
             if(period.equals("year")){
-                url += "?period=year";
+                url += "?period=365";
             }else if(period.equals("month")){
-                url += "?period=month";
+                url += "?period=30";
             }else if(period.equals("week")){
-                url += "?period=week";
+                url += "?period=7";
             }
-        }
 
-        try {
-            apiCountry = requester.getArrayFromAPI(url);
-        }catch (Exception e) {
-            e.printStackTrace();
+            try {
+                requester = new APIRequester(Gross.class);
+                apiGross = requester.getArrayFromAPI(url);
+
+                requester = new APIRequester(Country.class);
+
+                for (Gross g : apiGross) {
+                    apiCountry.add((Country) requester.getFromAPI("/countries?country_id=" + g.getCountry_id()));
+                }
+
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            try {
+                apiCountry = requester.getArrayFromAPI(url);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         for(int i = 0; i < apiCountry.size(); i++) {
