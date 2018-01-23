@@ -66,10 +66,14 @@ public class MovieEarnedSubroutine extends Routine {
             List<Gross> grossResult = apiRequester.getArrayFromAPI("/q/a8?period=" + period + "&country=" + country);
 
             apiRequester = new APIRequester(Movie.class);
-            List<Object> movieResult = new ArrayList<>();
+            List<Movie> movieResult = new ArrayList<>();
 
             for(Gross g : grossResult) {
-                movieResult.add(apiRequester.getFromAPI("/movie?id=" + g.getMovie_id()));
+                Movie movie = (Movie)(apiRequester.getFromAPI("/movie?id=" + g.getMovie_id()));
+
+                if(movieResult.stream().noneMatch(m -> m.getMovie_id().equals(movie.getMovie_id()))) {
+                    movieResult.add(movie);
+                }
             }
 
 
