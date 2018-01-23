@@ -10,16 +10,21 @@ import java.io.File;
 public class CommandParser {
     public static void parse(String[] args) {
         Command command = null;
+        Command insertCommand = null;
 
         if (args.length == 0)
             CommandUtils.error("No sources directory set.");
         else if (args.length == 1)
-            CommandUtils.error("No option set.", "parser <path> <-a | -f > [file]");
+            CommandUtils.error("No option set.", "parser <path> <-a | -f | -i > [file]");
         else if (args.length == 2)
             if (args[1].equals("-f") || args[1].equals("-m"))
-                CommandUtils.error("Please specify a file.", "parser <path> <-f | -m> <file>");
+                CommandUtils.error("Please specify a file.", "parser <path> <-a | -f | -i> [file]");
             else if (args[1].equals("-a"))
                 command = new FullCommand(args[0]);
+            else if (args[1].equals("-ai") || args[1].equals("-ia")) {
+                command = new FullCommand(args[0]);
+                insertCommand = new InsertionCommand();
+            }
             else
                 CommandUtils.error("Option does not exist");
         else if (args.length == 3)
@@ -41,8 +46,11 @@ public class CommandParser {
                 command = null;
         }
 
-        if(command != null)
+        if(command != null) {
             command.execute();
+            if(insertCommand != null)
+                insertCommand.execute();
+        }
         else
             System.exit(0);
     }

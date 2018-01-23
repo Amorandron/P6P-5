@@ -22,8 +22,12 @@ public class RivescriptBot {
         bot.setSubroutine("moviecountryCount", new MovieCountryCountSubroutine(discordBot));
         bot.setSubroutine("genrepopularityChange", new GenrePopularityChangeSubroutine(discordBot));
         bot.setSubroutine("getroleDifficult", new GetRoleDifficultSubroutine(discordBot));
+        bot.setSubroutine("movieByCountry", new MovieByCountrySubroutine(discordBot));
         bot.setSubroutine("moreInfo", new MoreInfoSubroutine(discordBot));
-        
+        bot.setSubroutine("actorInfo", new ActorInfoSubroutine(discordBot));
+        bot.setSubroutine("movieInfo", new MovieInfoSubroutine(discordBot));
+
+
         return bot;
     }
 }

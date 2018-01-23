@@ -1,6 +1,7 @@
 package com.janwilts.bigmovie.chatbot.util;
 
 import com.janwilts.bigmovie.chatbot.models.Actor;
+import com.janwilts.bigmovie.chatbot.models.Country;
 import com.janwilts.bigmovie.chatbot.models.Movie;
 
 import java.util.HashMap;
@@ -20,12 +21,11 @@ public class PrintUtils {
     }
 
     public static String movieListPrint(HashMap<Integer, Movie> movies) {
-        for(Map.Entry<Integer, Movie> set : movies.entrySet()) {
+        for (Map.Entry<Integer, Movie> set : movies.entrySet()) {
             Movie currentMovie = set.getValue();
-            if(currentMovie.getTitle() == null) {
+            if (currentMovie.getTitle() == null) {
                 blockprint(String.format("%d. %s", set.getKey(), currentMovie.getTitle()));
-            }
-            else {
+            } else {
                 blockprint(String.format("%d. %s (%d)", set.getKey(), currentMovie.getTitle(), currentMovie.getRelease_year()));
             }
         }
@@ -44,6 +44,23 @@ public class PrintUtils {
             }else {
                 blockprint(String.format("%d. %s %s %tF %tF", entry.getKey(), currentActor.getName(), currentActor.getGender(), currentActor.getBirth_date(), currentActor.getDeath_date()));
             }
+//        for (Map.Entry<Integer, Actor> set : actors.entrySet()) {
+//            Actor currentActor = set.getValue();
+//            if (currentActor.getName() == null) {
+//                continue;
+//            }
+//            blockprint(String.format("%d. %s. %t. %s. %s", set.getKey(), currentActor.getName(), currentActor.getBirth_date(), currentActor.getGender(), currentActor.getOccurence()));
+        }
+        return getBlock();
+    }
+
+    public static String countryListPrint(HashMap<Integer, Country> countries) {
+        for (Map.Entry<Integer, Country> set : countries.entrySet()) {
+            Country currentCountry = set.getValue();
+            if (currentCountry.getCountry() == null) {
+                continue;
+            }
+            blockprint(String.format("%d. %s", set.getKey(), currentCountry.getCountry()));
         }
         return getBlock();
     }

@@ -235,7 +235,7 @@ public class App extends Jooby {
         get("/q/b4", (request) -> {
             String country = request.param("country").value();
 
-            Object[] params = {country.trim().toLowerCase()};
+            Object[] params = {"%" + country.trim().toLowerCase() + "%"};
 
             Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_B4, params);
 
@@ -314,7 +314,7 @@ public class App extends Jooby {
         get("/q/movie", req -> {
             String movie = req.param("movie").value();
 
-            Object[] params = {movie};
+            Object[] params = {"%" + movie.toLowerCase() + "%"};
 
             Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, params);
 
@@ -324,7 +324,7 @@ public class App extends Jooby {
         get("/q/actor", req -> {
             String actor = req.param("actor").value();
 
-            Object[] params = {actor};
+            Object[] params = {"%" + actor + "%"};
 
             Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, params);
 
@@ -335,7 +335,7 @@ public class App extends Jooby {
         get("/q/movies-by-country", req -> {
             String country = req.param("country").value();
 
-            Object[] params = {country};
+            Object[] params = {"%" + country + "%"};
 
             Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, params);
 
