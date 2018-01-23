@@ -288,7 +288,19 @@ public class App extends Jooby {
             return "Done processing image";
         });
 
-        get("/q/d1", () -> {
+        get("/q/d1/most", (request) -> {
+            if(request.param("period").isSet()){
+                String period = request.param("period").value();
+            }
+            Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1);
+
+            return result.toList().toBlocking().single();
+        });
+
+        get("/q/d1/least", (request) -> {
+            if(request.param("period").isSet()){
+                String period = request.param("period").value();
+            }
             Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1);
 
             return result.toList().toBlocking().single();
