@@ -184,10 +184,36 @@ public class App extends Jooby {
             }
         });
 
-        get("/q/a15", () -> {
+        get("/q/a15/most", (request) -> {
+            //TODO: check if it works correctly
+            int rating = request.param("rating").intValue();
+            Object[] params = {rating, '_'};
+
+            if(request.param("gender").isSet()) {
+                String gender = request.param("gender").value();
+                params = new Object[] {rating, gender};
+            }
+
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<String> result = model.query(Model.DbClasses.ACTOR, Model.SQL_A15);
+            Observable<Actor> result = model.query(Model.DbClasses.ACTOR, Model.SQL_A15_MOST, params);
+
+            return result.toBlocking().first();
+        });
+
+        get("/q/a15/least", (request) -> {
+            //TODO: check if it works correctly
+            int rating = request.param("rating").intValue();
+            Object[] params = {rating, '_'};
+
+            if(request.param("gender").isSet()) {
+                String gender = request.param("gender").value();
+                params = new Object[] {rating, gender};
+            }
+
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Actor> result = model.query(Model.DbClasses.ACTOR, Model.SQL_A15_LEAST, params);
 
             return result.toBlocking().first();
         });

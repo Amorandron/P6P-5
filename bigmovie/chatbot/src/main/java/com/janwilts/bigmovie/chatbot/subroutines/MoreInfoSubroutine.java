@@ -41,7 +41,7 @@ public class MoreInfoSubroutine extends Routine {
                 e.printStackTrace();
             }
 
-            for(int i = 1; i < apiGenre.size(); i++) {
+            for(int i = 0; i < apiGenre.size(); i++) {
                 genre.add(apiGenre.get(i).getGenre());
             }
 
@@ -53,7 +53,7 @@ public class MoreInfoSubroutine extends Routine {
                 e.printStackTrace();
             }
 
-            for(int i = 1; i < apiCountry.size(); i++) {
+            for(int i = 0; i < apiCountry.size(); i++) {
                 country.add(apiCountry.get(i).getCountry());
             }
 
