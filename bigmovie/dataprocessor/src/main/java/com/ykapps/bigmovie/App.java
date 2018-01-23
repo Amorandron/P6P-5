@@ -59,10 +59,13 @@ public class App extends Jooby {
            return Results.redirect("/api");
         });
 
-        get("/movies", () -> {
+        get("/movie", (request) -> {
             //noinspection unchecked
+
+            Object[] params = {request.param("id").intValue()};
+
             @SuppressWarnings("unchecked")
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_MOVIE);
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_MOVIE, params);
             Movie movie = obs.toBlocking().first();
 
             return movie;
@@ -160,7 +163,7 @@ public class App extends Jooby {
             //noinspection unchecked
 
             String period = request.param("period").value();
-            String country = request.param("country").value();
+            String country = request.param("country").value().toLowerCase();
 
             Object[] params = {country};
 
