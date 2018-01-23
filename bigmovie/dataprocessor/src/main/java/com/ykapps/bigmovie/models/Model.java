@@ -25,6 +25,7 @@ public class Model {
     public static final String SQL_A21_MOVIE = "SELECT movie.* FROM most_used_song_ids INNER JOIN movie ON most_used_song_ids.movie_id=movie.movie_id";
     public static final String SQL_B5 = "SELECT x.release_year, y.genre FROM ( SELECT cur.* FROM movie_genre_year AS cur WHERE NOT EXISTS( SELECT high.* FROM movie_genre_year high WHERE cur.release_year = high.release_year AND high.movie_count > cur.movie_count ) ORDER BY release_year ASC ) AS x LEFT JOIN public.genre AS y ON x.genre_id = y.genre_id";
     public static final String SQL_D1 = "SELECT * FROM country WHERE country_id IN ( SELECT country_id FROM public.gross GROUP BY country_id HAVING sum(amount) IS NOT NULL ORDER BY sum(amount) DESC )";
+    public static final String SQL_D2 = "SELECT * FROM public.movie WHERE movie_id IN (SELECT movie_id FROM public.movie_actor AS ma, public.actor AS a WHERE ma.actor_id = a.actor_id AND a.name = ?) ORDER BY release_year";
     public static final String SQL_B4 = "SELECT * " +
             "FROM public.country " +
             "WHERE lower(country) LIKE ?";

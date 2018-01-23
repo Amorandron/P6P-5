@@ -299,14 +299,7 @@ public class App extends Jooby {
 
             Object[] params = {name};
 
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, "SELECT *" +
-                    "FROM public.movie" +
-                    "WHERE movie_id IN (" +
-                    "   SELECT movie_id" +
-                    "   FROM public.movie_actor AS ma, public.actor AS a" +
-                    "   WHERE ma.actor_id = a.actor_id" +
-                    "   AND a.name = ?)" +
-                    "ORDER BY release_year", params);
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_D2, params);
 
             return obs.toList().toBlocking().single();
         });
