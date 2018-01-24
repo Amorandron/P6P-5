@@ -5,13 +5,13 @@
 + what is the rating of *
 - <call>movieMpaa <star></call>
 
-+ how is the @movie * rated
++ how is the (@movie) * rated
 - <call>movieMpaa <star></call>
 
 + how is * rated
 - <call>movieMpaa <star></call>
 
-+ how would you rate the @movie *
++ how would you rate the (@movie) *
 - <call>movieMpaa <star></call>
 
 + how would you rate *

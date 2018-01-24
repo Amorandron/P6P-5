@@ -8,7 +8,7 @@ import com.rivescript.RiveScript;
 public class RivescriptBot {
     
     public static RiveScript init(DiscordBot discordBot) {
-        RiveScript bot = new RiveScript(Config.utf8());
+        RiveScript bot = new RiveScript(Config.Builder.utf8().unicodePunctuation("[,!?;:]").build());
         
         bot.loadDirectory("/home/yannick/Documents/Projects/P6P-5/bigmovie/chatbot/src/main/resources/rivescript");
         bot.sortReplies();
