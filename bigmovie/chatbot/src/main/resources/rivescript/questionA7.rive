@@ -16,5 +16,8 @@
 * <get type> == film => <call>movieCost <star1></call>
 - <bot error>
 
-+ [give|can you give] [me] [more] (information|info|details) (about|over) (@movie) #
-- <call>moreInfo movie <star4></call>
++ [give|can you give] [me] [more] (information|info|details) (about|over) (@movie) # {weight=20}
+- <call>moreMovieInfo movie <star4></call>
+
++ [-]#[.] {weight=25}
+- <call>moreInfo <star></call>

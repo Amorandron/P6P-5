@@ -50,7 +50,7 @@ public class APIRequester {
         URL url = new URL(API_LOCATION + input);
 
         URL fileLocation = this.getClass().getResource("/images/");
-        File file = new File(fileLocation.getPath() + fileName);
+        File file = new File(fileLocation.getPath().replace("%20", " ") + fileName);
 
         FileUtils.copyURLToFile(url, file);
 

@@ -2,6 +2,7 @@ package com.janwilts.bigmovie.chatbot.models;
 
 import java.math.BigDecimal;
 
+@Focusable
 public class Movie implements Model {
 
     private Integer movie_id;

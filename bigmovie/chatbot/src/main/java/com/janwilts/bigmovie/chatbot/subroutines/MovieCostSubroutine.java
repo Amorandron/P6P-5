@@ -49,6 +49,8 @@ public class MovieCostSubroutine extends Routine {
             result.append(PrintUtils.movieListPrint(focusedMovies));
         }
 
+        setMainFocus(focusedMovies);
+
         return result.toString();
     }
 }

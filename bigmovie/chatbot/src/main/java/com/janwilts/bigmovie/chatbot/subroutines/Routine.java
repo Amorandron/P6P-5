@@ -4,15 +4,18 @@ import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.janwilts.bigmovie.chatbot.models.Actor;
 import com.janwilts.bigmovie.chatbot.models.Country;
 import com.janwilts.bigmovie.chatbot.models.Movie;
+import com.rivescript.RiveScript;
 import com.rivescript.macro.Subroutine;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Routine implements Subroutine {
     protected static HashMap<Integer, Movie> focusedMovies = new HashMap<>();
     protected static HashMap<Integer, Actor> focusedActors = new HashMap<>();
     protected static HashMap<Integer, Country> focusedCountries = new HashMap<>();
+    protected static Map<Integer, ?> mainFocus = new HashMap<>();
 
     protected DiscordBot bot;
 
@@ -34,5 +37,15 @@ public abstract class Routine implements Subroutine {
         }
 
         return builder.toString();
+    }
+
+    protected void setMainFocus(Map<Integer, ?> map) {
+        mainFocus = map;
+    }
+
+    @Override
+    public String call(RiveScript rs, String[] args) {
+        mainFocus = new HashMap<>();
+        return "";
     }
 }

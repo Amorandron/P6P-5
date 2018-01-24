@@ -35,21 +35,15 @@ public class PrintUtils {
     public static String actorListPrint(HashMap<Integer, Actor> actors) {
         for (Map.Entry<Integer, Actor> entry : actors.entrySet()) {
             Actor currentActor = entry.getValue();
-            if(currentActor.getBirth_date() == null && currentActor.getDeath_date() == null){
-                blockprint(String.format("%d. %s %s %s %s", entry.getKey(), currentActor.getName(), currentActor.getGender(), "-", "-"));
-            }else if(currentActor.getBirth_date() == null) {
-                blockprint(String.format("%d. %s %s %s %tF", entry.getKey(), currentActor.getName(), currentActor.getGender(), "-", currentActor.getDeath_date()));
-            }else if(currentActor.getDeath_date() == null) {
-                blockprint(String.format("%d. %s %s %tF %s", entry.getKey(), currentActor.getName(), currentActor.getGender(), currentActor.getBirth_date(), "-"));
-            }else {
-                blockprint(String.format("%d. %s %s %tF %tF", entry.getKey(), currentActor.getName(), currentActor.getGender(), currentActor.getBirth_date(), currentActor.getDeath_date()));
+            String death_date = "-";
+            String birth_date = "-";
+            if(currentActor.getBirth_date() != null) {
+                birth_date = currentActor.getBirth_date().toString();
             }
-//        for (Map.Entry<Integer, Actor> set : actors.entrySet()) {
-//            Actor currentActor = set.getValue();
-//            if (currentActor.getName() == null) {
-//                continue;
-//            }
-//            blockprint(String.format("%d. %s. %t. %s. %s", set.getKey(), currentActor.getName(), currentActor.getBirth_date(), currentActor.getGender(), currentActor.getOccurence()));
+            if(currentActor.getDeath_date() != null) {
+                death_date = currentActor.getDeath_date().toString();
+            }
+            blockprint(String.format("%d. %s %s %s %s", entry.getKey(), currentActor.getName(), currentActor.getGender(), birth_date, death_date));
         }
         return getBlock();
     }

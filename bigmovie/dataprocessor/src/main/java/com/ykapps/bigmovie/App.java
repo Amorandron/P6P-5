@@ -1,7 +1,6 @@
 package com.ykapps.bigmovie;
 
 import com.github.davidmoten.rx.jdbc.Database;
-import com.sun.tools.javah.Gen;
 import com.ykapps.bigmovie.models.*;
 import com.ykapps.bigmovie.util.RRunner;
 import org.jooby.Jooby;
@@ -82,14 +81,25 @@ public class App extends Jooby {
         });
 
         get("/countries", (request) -> {
+            Object[] params;
+            int id;
+            Observable<Country> countries;
+
             if(request.param("movie_id").isSet()){
-                int movie_id = request.param("movie_id").intValue();
-                Object[] params = {movie_id};
-                Observable<Country> countries = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
-                        "FROM public.country" +
-                        "WHERE country_id IN (SELECT country_id" +
-                        "                    FROM movie_country" +
+                id = request.param("movie_id").intValue();
+                params = new Object[] {id};
+                countries = model.query(Model.DbClasses.COUNTRY, "SELECT * " +
+                        "FROM public.country " +
+                        "WHERE country_id IN (SELECT country_id " +
+                        "                    FROM movie_country " +
                         "                    WHERE movie_id = ?)", params);
+                return countries.toList().toBlocking().single();
+            }else if(request.param("country_id").isSet()) {
+                id = request.param("country_id").intValue();
+                params = new Object[] {id};
+                countries = model.query(Model.DbClasses.COUNTRY, "SELECT * " +
+                        "FROM public.country " +
+                        "WHERE country_id = ?)", params);
                 return countries.toList().toBlocking().single();
             }
 
@@ -106,9 +116,9 @@ public class App extends Jooby {
             if(request.param("movie_id").isSet()){
                 int movie_id = request.param("movie_id").intValue();
                 Object[] params = {movie_id};
-                Observable<Genre> genres = model.query(Model.DbClasses.COUNTRY, "SELECT *" +
-                        "FROM public.genre" +
-                        "WHERE genre_id IN (SELECT genre_id" +
+                Observable<Genre> genres = model.query(Model.DbClasses.GENRE, "SELECT * " +
+                        "FROM public.genre " +
+                        "WHERE genre_id IN (SELECT genre_id " +
                         "                    FROM movie_genre" +
                         "                    WHERE movie_id = ?)", params);
                 return genres.toList().toBlocking().single();
@@ -291,8 +301,28 @@ public class App extends Jooby {
             return "Done processing image";
         });
 
-        get("/q/d1", () -> {
-            Observable<Gross> result = model.query(Model.DbClasses.GROSS, Model.SQL_D1);
+        get("/q/d1/most", (request) -> {
+            if(request.param("period").isSet()){
+                int period = request.param("period").intValue();
+                Object[] params = {period};
+                Observable<Gross> result = model.query(Model.DbClasses.GROSS, Model.SQL_D1_MOST_DAYS, params);
+                return result.toList().toBlocking().single();
+            }
+
+            Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1_MOST);
+
+            return result.toList().toBlocking().single();
+        });
+
+        get("/q/d1/least", (request) -> {
+            if(request.param("period").isSet()){
+                int period = request.param("period").intValue();
+                Object[] params = {period};
+                Observable<Gross> result = model.query(Model.DbClasses.GROSS, Model.SQL_D1_LEAST_DAYS, params);
+                return result.toList().toBlocking().single();
+            }
+
+            Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1_LEAST);
 
             return result.toList().toBlocking().single();
         });
