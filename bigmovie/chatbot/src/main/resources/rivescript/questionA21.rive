@@ -4,6 +4,5 @@
 + (which|what) song is (most|least) used in the soundtrack of [any] [a] movie {weight=20}
 - <call>soundtrackUsed <star></call>
 
-+ all
-% <call>soundtrackused <star></call>
++ show me all movies this song was used in
 - <call>soundtrackUsed all</call>

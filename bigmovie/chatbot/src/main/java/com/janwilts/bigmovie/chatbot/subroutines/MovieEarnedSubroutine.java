@@ -23,6 +23,8 @@ public class MovieEarnedSubroutine extends Routine {
         String country = "";
         String period = "";
 
+        focusedMovies.clear();
+
         if(args[0].equals("ever")) {
             period = "ever";
 

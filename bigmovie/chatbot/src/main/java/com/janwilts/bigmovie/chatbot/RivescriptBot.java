@@ -10,7 +10,7 @@ public class RivescriptBot {
     public static RiveScript init(DiscordBot discordBot) {
         RiveScript bot = new RiveScript(Config.utf8());
         
-        bot.loadDirectory("src/main/resources/rivescript");
+        bot.loadDirectory("/home/yannick/Documents/Projects/P6P-5/bigmovie/chatbot/src/main/resources/rivescript");
         bot.sortReplies();
         bot.setSubroutine("movieEarned", new MovieEarnedSubroutine(discordBot));
         bot.setSubroutine("movieCost", new MovieCostSubroutine(discordBot));
