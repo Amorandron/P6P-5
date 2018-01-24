@@ -1,6 +1,6 @@
 // Author: Everdien
 
-//Question: Give the number of films made in a country displayed in time.
+//Question:  dis
 
 + [can you] (give|show) [me] the (number|amount) of (@movies) * {weight=20}
 - <set type=<star3>> {@ <star4>}

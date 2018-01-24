@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     compile group: 'com.jfoenix', name: 'jfoenix', version: '9.0.0'
+    compile group: 'de.jensd', name: 'fontawesomefx-materialicons', version: '2.2.0-9.1.2'
 }
 
 task wrapper(type: Wrapper) {
