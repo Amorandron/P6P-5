@@ -21,7 +21,7 @@ public class ActorActSubroutine extends Routine {
         focusedActors.clear();
         StringBuilder result = new StringBuilder();
 
-        List<Actor> apiActor = null;
+        Actor apiActor = null;
 
         APIRequester requester = new APIRequester(Actor.class);
 
@@ -45,29 +45,24 @@ public class ActorActSubroutine extends Routine {
 
         if(type.contains("actor") && type.contains("actress")){
             try {
-                apiActor = requester.getArrayFromAPI(url);
+                apiActor = (Actor)requester.getFromAPI(url);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else if(type.contains("actor")){
             try {
-                apiActor = requester.getArrayFromAPI(url + "&gender=M");
+                apiActor = (Actor)requester.getFromAPI(url + "&gender=M");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else if(type.contains("actress")){
             try {
-                apiActor = requester.getArrayFromAPI(url + "&gender=F");
+                apiActor = (Actor)requester.getFromAPI(url + "&gender=F");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        for(int i = 0; i < apiActor.size(); i++) {
-            focusedActors.put(i + 1, apiActor.get(i));
-        }
-        result.append(PrintUtils.actorListPrint(focusedActors));
-
-        return result.toString();
+        return apiActor.getName();
     }
 }

@@ -24,8 +24,8 @@ public class MovieCountryCountSubroutine extends Routine {
 
         APIRequester requester = new APIRequester(String.class);
         try {
-            requester.getFromAPI("/q/b5");
-            image = requester.getImageFromAPI(String.format("/plots/b5.png?country=%s", country), "b5.png");
+            requester.getFromAPI(String.format("/q/b4?country=%s", country));
+            image = requester.getImageFromAPI("/plots/b4.png", "b4.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
