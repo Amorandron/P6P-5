@@ -51,7 +51,10 @@ public class RatingParser extends Parser {
                     if (values[2].lastIndexOf('(') != -1) yearString = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].length() - 1);
                     
                     try {
-                        if (yearString.contains("/")) occurance = RomanNumeral.convert(values[2].substring(values[2].lastIndexOf('/') + 1, values[2].lastIndexOf(')')));
+                        if (yearString.contains("/")) {
+                            occurance = RomanNumeral.convert(values[2].substring(values[2].lastIndexOf('/') + 1, values[2].lastIndexOf(')')));
+                            year = yearString.substring(0, yearString.indexOf("/"));
+                        }
                         else if (!yearString.equals("????")) year = yearString;
                     }
                     catch (IndexOutOfBoundsException e) {

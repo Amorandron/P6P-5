@@ -1,11 +1,9 @@
 //Question: Welke song is het vaakst gebruikt in de soundtrack van een film? Geef een lijstje van de films.
 //Which song is most used in a soundtrack of a movie?
 
-+ (which|what) song * {weight=20}
-- {@ <star2>}
-
-+ is (most|least) [often] used in the soundtrack of [any] [a] movie {weight=18}
++ (which|what) song is (most|least) used in the soundtrack of [any] [a] movie {weight=20}
 - <call>soundtrackUsed <star></call>
 
-+ is (most|least) used in the soundtrack of * {weight=15}
-- <call>soundtrackUsed <star1> <star2></call>
++ all
+% <call>soundtrackused <star></call>
+- <call>soundtrackUsed all</call>
