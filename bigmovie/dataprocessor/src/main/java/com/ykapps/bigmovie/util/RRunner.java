@@ -1,18 +1,14 @@
 package com.ykapps.bigmovie.util;
 
 import com.ykapps.bigmovie.exceptions.RException;
-import org.apache.commons.io.FileUtils;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
 import javax.script.ScriptException;
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class RRunner {
@@ -72,7 +68,7 @@ public class RRunner {
         return output;
     }
 
-    public List<REXP> run(String script, String... params) throws IOException, InterruptedException {
+    public List<REXP> run(String script, String... params) throws IOException {
         InputStream in = getClass().getClassLoader().getResourceAsStream("R/" + script);
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
@@ -112,8 +108,14 @@ public class RRunner {
 
             if(line.contains("{{param}}")) {
                 while(line.contains("{{param}}")) {
-                    line = line.replaceFirst("\\{\\{param}}", params[index]);
-                    index++;
+                    if(params.length < index) {
+                        line = line.replaceFirst("\\{\\{param}}", params[index]);
+                        index++;
+                    }
+                    else {
+                        line = line.replaceFirst("\\{\\{param}}", "");
+                    }
+
                 }
             }
 

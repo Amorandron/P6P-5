@@ -24,9 +24,9 @@ public class PrintUtils {
         for (Map.Entry<Integer, Movie> set : movies.entrySet()) {
             Movie currentMovie = set.getValue();
             if (currentMovie.getTitle() == null) {
-                blockprint(String.format("%d. %s", set.getKey(), currentMovie.getTitle()));
+                blockprint(String.format("%d.\t %s", set.getKey(), currentMovie.getTitle()));
             } else {
-                blockprint(String.format("%d. %s (%d)", set.getKey(), currentMovie.getTitle(), currentMovie.getRelease_year()));
+                blockprint(String.format("%d.\t %s (%d)", set.getKey(), currentMovie.getTitle(), currentMovie.getRelease_year()));
             }
         }
         return getBlock();
@@ -43,7 +43,7 @@ public class PrintUtils {
             if(currentActor.getDeath_date() != null) {
                 death_date = currentActor.getDeath_date().toString();
             }
-            blockprint(String.format("%d. %s %s %s %s", entry.getKey(), currentActor.getName(), currentActor.getGender(), birth_date, death_date));
+            blockprint(String.format("%d.\t %s %s %s %s", entry.getKey(), currentActor.getName(), currentActor.getGender(), birth_date, death_date));
         }
         return getBlock();
     }
@@ -54,7 +54,7 @@ public class PrintUtils {
             if (currentCountry.getCountry() == null) {
                 continue;
             }
-            blockprint(String.format("%d. %s", set.getKey(), currentCountry.getCountry()));
+            blockprint(String.format("%d.\t %s", set.getKey(), currentCountry.getCountry()));
         }
         return getBlock();
     }

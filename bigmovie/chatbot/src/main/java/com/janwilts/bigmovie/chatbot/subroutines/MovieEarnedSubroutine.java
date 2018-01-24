@@ -76,11 +76,13 @@ public class MovieEarnedSubroutine extends Routine {
                 }
             }
 
-
             HashMap<Integer, Movie> printMap = new HashMap<>();
             for(int i = 0; i < movieResult.size(); i++) {
                 printMap.put(i+1, movieResult.get(i));
             }
+
+            focusedMovies = printMap;
+            setMainFocus(focusedMovies);
 
             return PrintUtils.movieListPrint(printMap);
         }

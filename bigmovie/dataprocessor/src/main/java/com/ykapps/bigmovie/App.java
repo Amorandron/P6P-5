@@ -14,10 +14,7 @@ import org.jooby.rx.RxJdbc;
 import org.rosuda.JRI.REXP;
 import rx.Observable;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Yannick, Everdien & Jan
@@ -276,15 +273,21 @@ public class App extends Jooby {
             return "Done processing image";
         });
 
-        get("/q/c2", () -> {
+        get("/q/c2", (request) -> {
+            Optional<String> id = request.param("movie_id").toOptional();
             String location = plotLocation + "c2.png";
-            runner.runDb("c2.R", location);
+
+            if(id.isPresent()) {
+                c2Output = runner.runDb("c2.R", location, id.get());
+                return c2Output.get(3).asDouble();
+            }
+            else
+                c2Output = runner.runDb("c2.R", location);
 
             return "Done processing image";
         });
 
         get("q/c2/validation", () -> {
-            c2Output = runner.run("c2validation.R");
             if(c2Output == null)
                 return "No model found";
             else {
@@ -293,13 +296,6 @@ public class App extends Jooby {
                     c2Output.get(1).asDouble()
                 };
             }
-        });
-
-        get("q/c2/input", (request) -> {
-            Integer movieId = request.param("movie_id").intValue();
-            List<REXP> output = runner.run("c2input.R", movieId.toString());
-
-            return output.get(0).asString();
         });
 
         get("/q/c4", () -> {

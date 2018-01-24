@@ -3,19 +3,22 @@
 //Question: What's the rating of (movie)?
 
 + what is the rating of *
-- <call>movieMpaa <star></call>
+- <call>movieMpaa rated <star></call>
 
 + how is the @movie * rated
-- <call>movieMpaa <star></call>
+- <call>movieMpaa rated <star></call>
 
 + how is * rated
-- <call>movieMpaa <star></call>
+- <call>movieMpaa rated <star></call>
 
 + how would you rate the @movie *
-- <call>movieMpaa <star></call>
+- <call>movieMpaa prediction <star></call>
 
 + how would you rate *
-- <call>movieMpaa <star><call>
+- <call>movieMpaa prediction <star><call>
 
 + rating *
-- <call>movieMpaa <star></call>
+- <call>movieMpaa rated <star></call>
+
++ [show|view|get] [me|us] [the|a] (model|cart|tree|cart-tree|cart tree|regression|regression model|tree model)
+- <call>movieMpaa model</call>
