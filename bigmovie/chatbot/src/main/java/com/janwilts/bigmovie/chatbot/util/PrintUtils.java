@@ -44,12 +44,6 @@ public class PrintUtils {
             }else {
                 blockprint(String.format("%d. %s %s %tF %tF", entry.getKey(), currentActor.getName(), currentActor.getGender(), currentActor.getBirth_date(), currentActor.getDeath_date()));
             }
-//        for (Map.Entry<Integer, Actor> set : actors.entrySet()) {
-//            Actor currentActor = set.getValue();
-//            if (currentActor.getName() == null) {
-//                continue;
-//            }
-//            blockprint(String.format("%d. %s. %t. %s. %s", set.getKey(), currentActor.getName(), currentActor.getBirth_date(), currentActor.getGender(), currentActor.getOccurence()));
         }
         return getBlock();
     }

@@ -39,50 +39,54 @@ public class MoreMovieInfoSubroutine extends Routine {
         List<Genre> apiGenre = null;
         List<Country> apiCountry = null;
 
-        String type = args[0];
-        int position = Integer.parseInt(args[1]);
-        if(type.equals("movie")){
-            Movie movie = null;
-            if(source != null)
-                movie = (Movie) source.get(position);
-            else
-                movie = focusedMovies.get(position);
+        int position = Integer.parseInt(args[0]);
+        Movie movie = null;
+        if (source != null)
+            movie = (Movie) source.get(position);
+        else
+            movie = focusedMovies.get(position);
 
-            APIRequester requester = new APIRequester(Genre.class);
+        APIRequester requester = new APIRequester(Genre.class);
 
-            try {
-                apiGenre = requester.getArrayFromAPI("/genres?movie_id=" + movie.getMovie_id());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            for(Genre g : apiGenre)
-                genre.add(g.getGenre());
-
-            requester = new APIRequester(Country.class);
-
-            try {
-                apiCountry = requester.getArrayFromAPI("/countries?movie_id=" + movie.getMovie_id());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            for(Country c : apiCountry)
-                country.add(c.getCountry());
-
-            PrintUtils.blockprint(String.format("Title: %s", movie.getTitle()));
-            PrintUtils.blockprint("----------------");
-            if(movie.getRelease_year() != null || movie.getRelease_year() != 0)
-                PrintUtils.blockprint(String.format("Year: %d", movie.getRelease_year()));
-            if(!Strings.isNullOrEmpty(movie.getMpaa_rating()))
-                PrintUtils.blockprint(String.format("Mpaa-rating: %s", movie.getMpaa_rating()));
-            if(movie.getBudget() != null || !movie.getBudget().equals(new BigDecimal(0)))
-                PrintUtils.blockprint(String.format("Budget: %s", movie.getBudget()));
-            if(country.size() > 0)
-                PrintUtils.blockprint(String.format("\nCountries: %s", String.join(", ", country)));
-            if(genre.size() > 0)
-                PrintUtils.blockprint(String.format("\nGenres: %s", String.join(", ", genre)));
+        try {
+            apiGenre = requester.getArrayFromAPI("/genres?movie_id=" + movie.getMovie_id());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        for (Genre g : apiGenre)
+            genre.add(g.getGenre());
+
+        requester = new APIRequester(Country.class);
+
+        try {
+            apiCountry = requester.getArrayFromAPI("/countries?movie_id=" + movie.getMovie_id());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        for (Country c : apiCountry)
+            country.add(c.getCountry());
+
+        String budget = movie.getBudget().toString();
+
+        if (budget.endsWith(".00")) {
+            budget = budget.substring(0, budget.length() - 3) + ".-";
+        }
+
+        PrintUtils.blockprint(String.format("Title: %s", movie.getTitle()));
+        PrintUtils.blockprint("----------------");
+        if (movie.getRelease_year() != null || movie.getRelease_year() != 0)
+            PrintUtils.blockprint(String.format("Year: %d", movie.getRelease_year()));
+        if (!Strings.isNullOrEmpty(movie.getMpaa_rating()))
+            PrintUtils.blockprint(String.format("Mpaa-rating: %s", movie.getMpaa_rating()));
+        if (movie.getBudget() != null || !movie.getBudget().equals(new BigDecimal(0)))
+            PrintUtils.blockprint(String.format("Budget: $%s", budget));
+        if (country.size() > 0)
+            PrintUtils.blockprint(String.format("\nCountries: %s", String.join(", ", country)));
+        if (genre.size() > 0)
+            PrintUtils.blockprint(String.format("\nGenres: %s", String.join(", ", genre)));
+
 
         return PrintUtils.getBlock();
     }
