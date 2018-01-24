@@ -2,11 +2,11 @@
 
 // Question: Is it more difficult for an older actress to get a role?
 
-+ is it more difficult for [an|a] (older|younger) (actor[s]|actress[es]) to get a (role|part)
++ is it more difficult for [an|a] (older|younger) (@actors) to get a (role|part)
 - <call>getroleDifficult</call>
 + [at] what age is getting [a] (role|part) [the] (best|most profitable)
 - <call>getroleDifficult</call>
-+ do (older|younger) (male[s]|female[s]|people|human[s]|actor[s]|actress[es]) have more (role[s]|part[s])
++ do (older|younger) (@gender|people|human|humans|@actors) have more (role|part|roles|parts)
 - <call>getroleDifficult</call>
-+ [are|is a] (young[er]|old[er]) (men|man|woman|women|boy[s]|girl[s]) (more likely|have a higher chance) to have [a] (role|part)
++ [are|is a] (young|old|younger|older) (@gender) (more likely|have a higher chance) to have [a] (role|part)
 - <call>getroleDifficult</call>

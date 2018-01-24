@@ -9,7 +9,6 @@ import com.rivescript.RiveScript;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MovieEarnedSubroutine extends Routine {
@@ -22,6 +21,8 @@ public class MovieEarnedSubroutine extends Routine {
     public String call(RiveScript rs, String[] args) {
         String country = "";
         String period = "";
+
+        focusedMovies.clear();
 
         if(args[0].equals("ever")) {
             period = "ever";
@@ -76,15 +77,12 @@ public class MovieEarnedSubroutine extends Routine {
                 }
             }
 
-            HashMap<Integer, Movie> printMap = new HashMap<>();
             for(int i = 0; i < movieResult.size(); i++) {
-                printMap.put(i+1, movieResult.get(i));
+                focusedMovies.put(i+1, movieResult.get(i));
             }
 
-            focusedMovies = printMap;
-            setMainFocus(focusedMovies);
 
-            return PrintUtils.movieListPrint(printMap);
+            return PrintUtils.movieListPrint(focusedMovies);
         }
         catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();

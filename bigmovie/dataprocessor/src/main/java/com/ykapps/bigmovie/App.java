@@ -234,10 +234,8 @@ public class App extends Jooby {
             Observable<Soundtrack>  resultSoundtrack = model.query(Model.DbClasses.SOUNDTRACK, Model.SQL_A21_SOUNDTRACK);
             Observable<Movie> resultMovie = model.query(Model.DbClasses.MOVIE, Model.SQL_A21_MOVIE);
 
-            List<List> result = new ArrayList<>();
-
-            result.add(resultSoundtrack.toList().toBlocking().single());
-            result.add(resultMovie.toList().toBlocking().single());
+            SoundtrackMovies result = new SoundtrackMovies(resultSoundtrack.toBlocking().first(),
+                    resultMovie.toList().toBlocking().single());
 
             return result;
         });

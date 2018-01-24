@@ -3,6 +3,8 @@ package com.janwilts.bigmovie.chatbot.discord;
 import com.rivescript.RiveScript;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
+import sx.blah.discord.util.RateLimitException;
+import sx.blah.discord.util.RequestBuffer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,7 +39,15 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
                         }
                     }
                     else {
-                        event.getChannel().sendMessage(mess);
+                        RequestBuffer.request(() -> {
+                            try {
+                                event.getChannel().sendMessage(mess);
+                            }
+                            catch (RateLimitException e) {
+                                System.out.println("Rate limit reached, retrying..");
+                                throw e;
+                            }
+                        }).get();
                     }
                 }
             }
