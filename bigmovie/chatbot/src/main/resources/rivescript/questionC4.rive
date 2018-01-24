@@ -8,5 +8,5 @@
 - <call>getroleDifficult</call>
 + do (older|younger) (@gender|people|human|humans|@actors) have more (role|part|roles|parts)
 - <call>getroleDifficult</call>
-+ [are|is a] (young|old|younger|older) (@gender) (more likely|have a higher chance) to have [a] (role|part)
++ [are|is a] (young|old|younger|older) (@gender|@actors) (more likely|have a higher chance) to have [a] (role|part)
 - <call>getroleDifficult</call>
