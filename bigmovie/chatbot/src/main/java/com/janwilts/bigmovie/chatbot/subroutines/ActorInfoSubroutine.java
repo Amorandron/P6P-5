@@ -27,7 +27,7 @@ public class ActorInfoSubroutine extends Routine {
 
         String search = args[0];
         try {
-            api = requester.getArrayFromAPI("/1q/actor/?actor=" + search);
+            api = requester.getArrayFromAPI("/q/actor/?actor=" + search);
         } catch (Exception e) {
             e.printStackTrace();
         }

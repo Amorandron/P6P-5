@@ -337,6 +337,15 @@ public class App extends Jooby {
             return obs.toList().toBlocking().single();
         });
 
+        get("/q/d2-reverse", req -> {
+            String movie = req.param("movie").value();
+            Object[] params = {movie};
+
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_D2_REVERSE, params);
+
+            return obs.toList().toBlocking().single();
+        });
+
         get("/q/movie", req -> {
             String movie = req.param("movie").value();
 
