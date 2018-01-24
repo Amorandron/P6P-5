@@ -15,6 +15,7 @@ public class MovieInfoSubroutine extends Routine {
     @Override
     public String call(RiveScript rs, String[] args) {
         StringBuilder result = new StringBuilder();
+        focusedMovies.clear();
 
         if (args.length <= 0) {
             return "";

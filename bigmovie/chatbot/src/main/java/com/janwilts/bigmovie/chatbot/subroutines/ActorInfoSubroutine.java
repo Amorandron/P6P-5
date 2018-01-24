@@ -16,6 +16,7 @@ public class ActorInfoSubroutine extends Routine {
     public String call(RiveScript rs, String[] args) {
         super.call(rs, args);
         StringBuilder result = new StringBuilder();
+        focusedActors.clear();
 
         if (args.length <= 0) {
             return "";
