@@ -3,16 +3,17 @@ package com.janwilts.bigmovie.chatbot.subroutines;
 import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.janwilts.bigmovie.chatbot.models.Movie;
 import com.janwilts.bigmovie.chatbot.models.Soundtrack;
+import com.janwilts.bigmovie.chatbot.models.SoundtrackMovies;
 import com.janwilts.bigmovie.chatbot.util.APIRequester;
 import com.janwilts.bigmovie.chatbot.util.PrintUtils;
 import com.rivescript.RiveScript;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
-/**
- * @author SvenMark & Everdien
- */
 public class SoundTrackUsedSubroutine extends Routine {
 
     public SoundTrackUsedSubroutine(DiscordBot bot) {
@@ -21,50 +22,46 @@ public class SoundTrackUsedSubroutine extends Routine {
 
     @Override
     public String call(RiveScript rs, String[] args) {
-        //TODO: test if it works correctly
-        String type = args[0];
 
-        if(type.equals("all")){
-            return PrintUtils.movieListPrint(focusedMovies);
-        }
-
-        focusedCountries.clear();
+        APIRequester apiRequester = new APIRequester(SoundtrackMovies.class);
         StringBuilder result = new StringBuilder();
+        LinkedHashMap<Integer, Movie> printMap = new LinkedHashMap<>();
 
-        APIRequester requester = new APIRequester();
-
-        List<List> api = null;
-        List<Soundtrack> soundtrack = new ArrayList<>();
-        List<Movie> movies = new ArrayList<>();
-
-        if(type.contains("least")){
-            return "You really don't want to know!";
-        }
 
         try {
-            api = requester.getArrayFromAPI("/q/a21");
+            SoundtrackMovies soundtrackMovies = (SoundtrackMovies)apiRequester.getFromAPI("/q/a21");
 
-            soundtrack = api.get(0);
-            movies = api.get(1);
+            PrintUtils.blockprint(soundtrackMovies.getSoundtrack().getSong());
 
-        }catch(Exception e) {
+            int i = 0;
+
+            result.append("Song:\n");
+            result.append(PrintUtils.getBlock());
+            result.append("\n");
+
+            result.append("Movies:\n");
+
+            while (i < soundtrackMovies.getMovies().size()){
+                focusedMovies.put(i+1, soundtrackMovies.getMovies().get(i));
+                printMap.put(i+1, soundtrackMovies.getMovies().get(i));
+
+                if(i % 59 == 0 && i != 0) {
+                    result.append(PrintUtils.movieListPrint(printMap));
+                    result.append("||");
+
+                    printMap.clear();
+                }
+
+                i++;
+            }
+
+            setMainFocus(focusedMovies);
+
+            return result.toString();
+        }
+        catch(IOException e) {
             e.printStackTrace();
+            return "";
         }
-
-        for(int i = 0; i < movies.size(); i++) {
-            focusedMovies.put(i + 1, movies.get(i));
-        }
-
-        HashMap<Integer, Movie> top = new HashMap<>();
-        for(int i = 1; i <= 10; i++) {
-            top.put(i, focusedMovies.get(i));
-        }
-
-        PrintUtils.blockprint(String.format("Song: %s", soundtrack.get(0).getSong()));
-        PrintUtils.blockprint(String.format("There are %s movies, to see them all type: all", focusedMovies.size()));
-        result.append(PrintUtils.getBlock());
-        result.append(PrintUtils.movieListPrint(top));
-
-        return result.toString();
     }
 }
