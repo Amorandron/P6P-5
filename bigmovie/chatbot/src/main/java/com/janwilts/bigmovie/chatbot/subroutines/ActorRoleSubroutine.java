@@ -48,15 +48,15 @@ public class ActorRoleSubroutine extends Routine {
                 result.append(firstname);
             }
 
-//            try {
-//                api = requester.getArrayFromAPI(String.format("/q/d2/?lastname=%s&firstname=%s", lastname, firstname));
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            for(int i = 0; i < api.size(); i++) {
-//                focusedMovies.put(i + 1, api.get(i));
-//            }
-//            result.append(PrintUtils.movieListPrint(focusedMovies));
+            try {
+                api = requester.getArrayFromAPI(String.format("/q/d2/?lastname=%s&firstname=%s", lastname, firstname));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for(int i = 0; i < api.size(); i++) {
+                focusedMovies.put(i + 1, api.get(i));
+            }
+            result.append(PrintUtils.movieListPrint(focusedMovies));
         }
         else if (args[0].contains("movie") && (args.length > 1)) {
             // Give actors who play in movie x
