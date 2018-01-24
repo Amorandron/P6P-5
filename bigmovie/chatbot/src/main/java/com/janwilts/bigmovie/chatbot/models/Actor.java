@@ -2,6 +2,7 @@ package com.janwilts.bigmovie.chatbot.models;
 
 import java.sql.Date;
 
+@Focusable
 public class Actor implements Model {
 
     private Long actor_id;

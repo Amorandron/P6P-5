@@ -42,6 +42,7 @@ public class MovieByCountrySubroutine extends Routine {
         }
 
         result.append(PrintUtils.countryListPrint(focusedCountries));
+        setMainFocus(focusedCountries);
 
         return result.toString();
     }

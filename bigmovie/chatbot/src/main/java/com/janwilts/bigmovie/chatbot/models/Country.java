@@ -1,5 +1,6 @@
 package com.janwilts.bigmovie.chatbot.models;
 
+@Focusable
 public class Country implements Model{
 
     private Integer country_id;

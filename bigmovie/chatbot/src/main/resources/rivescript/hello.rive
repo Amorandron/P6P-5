@@ -23,13 +23,6 @@
 + cya
 @ bye
 
-
-+ [*] name is *
-- <set name=<formal>>It's nice to meet you, <get name>.
-
-+ they call me *
-- <set name=<formal>>It's nice to meet you, <get name>.
-
 + how are you
 - I am <bot mood>, how are you?
 
@@ -59,6 +52,9 @@
 
 + fly
 - you fools!
+
++ rush b
+- Сука Блять
 
 + ping
 - Pong!

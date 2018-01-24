@@ -14,6 +14,7 @@ public class ActorInfoSubroutine extends Routine {
 
     @Override
     public String call(RiveScript rs, String[] args) {
+        super.call(rs, args);
         StringBuilder result = new StringBuilder();
 
         if (args.length <= 0) {
@@ -34,6 +35,7 @@ public class ActorInfoSubroutine extends Routine {
             focusedActors.put(i + 1, api.get(i));
         }
         result.append(PrintUtils.actorListPrint(focusedActors));
+        setMainFocus(focusedActors);
 
         return result.toString();
     }
