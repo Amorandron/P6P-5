@@ -4,7 +4,7 @@
 + (which|what) song * {weight=20}
 - {@ <star2>}
 
-+ is (most|least) used in the soundtrack of [any] [a] movie {weight=18}
++ is (most|least) [often] used in the soundtrack of [any] [a] movie {weight=18}
 - <call>soundtrackUsed <star></call>
 
 + is (most|least) used in the soundtrack of * {weight=15}

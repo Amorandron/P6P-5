@@ -53,14 +53,9 @@ public class Model {
             "WHERE name LIKE ? " +
             "ORDER BY name ASC";
 
-    public static final String SQL_Movies_by_Country = "SELECT a.count, b.country " +
-            "FROM (SELECT COUNT(movie_id), country_id " +
-                "FROM public.movie_country " +
-                "GROUP BY country_id " +
-                "ORDER BY count DESC ) AS a " +
-            "LEFT JOIN public.country AS b " +
-            "ON b.country_id = a.country_id " +
-            "WHERE country = ?";
+    public static final String SQL_Movies_by_Country = "SELECT * FROM movie WHERE movie_id IN (" +
+            "SELECT DISTINCT movie_id FROM movie_country WHERE country_id=(" +
+                "SELECT country_id FROM country WHERE LOWER(country) = ?))";
 
     private Database db;
 
