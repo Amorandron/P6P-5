@@ -14,7 +14,7 @@ public class RivescriptBot {
         bot.sortReplies();
         bot.setSubroutine("movieEarned", new MovieEarnedSubroutine(discordBot));
         bot.setSubroutine("movieCost", new MovieCostSubroutine(discordBot));
-        bot.setSubroutine("movieMpaa", new MovieRatingMpaaSubroutine(discordBot));
+        bot.setSubroutine("movieMpaa", new MovieMpaaSubroutine(discordBot));
         bot.setSubroutine("actorAct", new ActorActSubroutine(discordBot));
         bot.setSubroutine("actorRole", new ActorRoleSubroutine(discordBot));
         bot.setSubroutine("soundtrackUsed", new SoundTrackUsedSubroutine(discordBot));

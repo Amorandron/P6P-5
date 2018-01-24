@@ -69,10 +69,27 @@ public class MoreMovieInfoSubroutine extends Routine {
             country.add(c.getCountry());
 
         String budget = movie.getBudget().toString();
+        String decimal = budget.substring(budget.indexOf("."));
+        String whole = budget.substring(0, budget.indexOf(".") - 1);
+        StringBuilder newWhole = new StringBuilder();
 
-        if (budget.endsWith(".00")) {
-            budget = budget.substring(0, budget.length() - 3) + ".-";
+        int counter = 0;
+
+        for(int i = whole.length() - 1; i >= 0; i--) {
+            if(counter == 3) {
+                newWhole.append(",");
+                counter = 0;
+            }
+            newWhole.append(whole.charAt(i));
+            counter++;
         }
+
+        newWhole.reverse();
+
+        if(decimal.equals(".00"))
+            decimal = ".-";
+
+        budget = newWhole.toString() + decimal;
 
         PrintUtils.blockprint(String.format("Title: %s", movie.getTitle()));
         PrintUtils.blockprint("----------------");

@@ -21,6 +21,7 @@ public class ActorRoleSubroutine extends Routine {
         StringBuilder lastname = new StringBuilder();
         StringBuilder search = new StringBuilder();
         focusedMovies.clear();
+        focusedActors.clear();
         if (args.length <= 0) {
             return "Send args";
         }
@@ -42,10 +43,8 @@ public class ActorRoleSubroutine extends Routine {
                 firstname.append(args[1]);
                 firstname.append(" ");
                 lastname.append(args[args.length - 1]);
-
-                result.append(lastname);
-                result.append(", ");
-                result.append(firstname);
+            } else {
+                return "You need to specify a first- and lastname";
             }
 
             try {

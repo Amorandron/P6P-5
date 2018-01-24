@@ -1,5 +1,5 @@
 // Bot variables
-! var name = The IMDB Bot
+! var name = Rambot
 ! var age  = 0
 ! var mood = fine
 ! var error = Sorry, I don't understand...
