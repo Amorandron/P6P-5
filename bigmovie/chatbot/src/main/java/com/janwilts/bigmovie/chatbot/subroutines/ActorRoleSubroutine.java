@@ -79,8 +79,6 @@ public class ActorRoleSubroutine extends Routine {
             result.append("I didn't understand");
         }
 
-
-
         return result.toString();
     }
 }

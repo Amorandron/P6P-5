@@ -9,13 +9,14 @@ import com.rivescript.macro.Subroutine;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class Routine implements Subroutine {
-    protected static HashMap<Integer, Movie> focusedMovies = new HashMap<>();
-    protected static HashMap<Integer, Actor> focusedActors = new HashMap<>();
-    protected static HashMap<Integer, Country> focusedCountries = new HashMap<>();
-    protected static Map<Integer, ?> mainFocus = new HashMap<>();
+    protected static LinkedHashMap<Integer, Movie> focusedMovies = new LinkedHashMap<>();
+    protected static LinkedHashMap<Integer, Actor> focusedActors = new LinkedHashMap<>();
+    protected static LinkedHashMap<Integer, Country> focusedCountries = new LinkedHashMap<>();
+    protected static Map<Integer, ?> mainFocus = new LinkedHashMap<>();
 
     protected DiscordBot bot;
 
