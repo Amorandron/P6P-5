@@ -10,13 +10,12 @@ import com.rivescript.macro.Subroutine;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class Routine implements Subroutine {
     protected static HashMap<Integer, Movie> focusedMovies = new HashMap<>();
     protected static HashMap<Integer, Actor> focusedActors = new HashMap<>();
     protected static HashMap<Integer, Country> focusedCountries = new HashMap<>();
-    protected static Map<Object, Object> mainFocus = new HashMap<>();
+    protected static Map<Integer, ?> mainFocus = new HashMap<>();
 
     protected DiscordBot bot;
 
@@ -41,9 +40,7 @@ public abstract class Routine implements Subroutine {
     }
 
     protected void setMainFocus(Map<Integer, ?> map) {
-        mainFocus = map.entrySet()
-                .stream()
-                .collect(Collectors.toMap(i -> i, v -> v));
+        mainFocus = map;
     }
 
     @Override

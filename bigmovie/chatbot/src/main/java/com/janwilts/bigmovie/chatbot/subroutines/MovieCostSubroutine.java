@@ -33,8 +33,8 @@ public class MovieCostSubroutine extends Routine {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            for(int i = 1; i < api.size(); i++) {
-                focusedMovies.put(i, api.get(i));
+            for(int i = 0; i < api.size(); i++) {
+                focusedMovies.put(i + 1, api.get(i));
             }
             result.append(PrintUtils.movieListPrint(focusedMovies));
         }else if(type.contains("least") || type.equals("cheapest")){

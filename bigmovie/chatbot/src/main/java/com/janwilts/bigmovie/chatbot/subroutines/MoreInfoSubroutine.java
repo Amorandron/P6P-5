@@ -1,7 +1,6 @@
 package com.janwilts.bigmovie.chatbot.subroutines;
 
 import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
-import com.janwilts.bigmovie.chatbot.models.Focusable;
 import com.janwilts.bigmovie.chatbot.models.Movie;
 import com.rivescript.RiveScript;
 
@@ -12,17 +11,16 @@ public class MoreInfoSubroutine extends Routine {
 
     @Override
     public String call(RiveScript rs, String[] args) {
+        String response = "";
+
         Integer position = Integer.valueOf(args[0]);
 
-        Object o = mainFocus.get(position);
-
         if(mainFocus.get(position) != null) {
-            Focusable object = (Focusable) mainFocus.get(position);
-
+            Object object = mainFocus.get(position);
             if(object instanceof Movie)
-                new MoreMovieInfoSubroutine(bot, mainFocus).call(rs, new String[] {"movie", position.toString()});
+                response += new MoreMovieInfoSubroutine(bot, mainFocus).call(rs, new String[] {"movie", position.toString()});
         }
 
-        return "";
+        return response;
     }
 }

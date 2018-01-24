@@ -8,7 +8,7 @@
 
 + (was|has been) the (most expensive|least expensive|cheapest) to (record|shoot|film) {weight=18}
 * <get type> == movie => <call>movieCost <star2></call>
-* <get type> == film => <call>movieCost <star1></call>
+* <get type> == film => <call>movieCost <star2></call>
 - <bot error>
 
 + cost the (most|least) money to (record|shoot|film) {weight=15}

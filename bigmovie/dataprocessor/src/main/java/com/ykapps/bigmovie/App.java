@@ -58,10 +58,13 @@ public class App extends Jooby {
            return Results.redirect("/api");
         });
 
-        get("/movies", () -> {
+        get("/movie", (request) -> {
             //noinspection unchecked
+
+            Object[] params = {request.param("id").intValue()};
+
             @SuppressWarnings("unchecked")
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_MOVIE);
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_SELECT_MOVIE, params);
             Movie movie = obs.toBlocking().first();
 
             return movie;
@@ -78,14 +81,25 @@ public class App extends Jooby {
         });
 
         get("/countries", (request) -> {
+            Object[] params;
+            int id;
+            Observable<Country> countries;
+
             if(request.param("movie_id").isSet()){
-                int movie_id = request.param("movie_id").intValue();
-                Object[] params = {movie_id};
-                Observable<Country> countries = model.query(Model.DbClasses.COUNTRY, "SELECT * " +
+                id = request.param("movie_id").intValue();
+                params = new Object[] {id};
+                countries = model.query(Model.DbClasses.COUNTRY, "SELECT * " +
                         "FROM public.country " +
                         "WHERE country_id IN (SELECT country_id " +
                         "                    FROM movie_country " +
                         "                    WHERE movie_id = ?)", params);
+                return countries.toList().toBlocking().single();
+            }else if(request.param("country_id").isSet()) {
+                id = request.param("country_id").intValue();
+                params = new Object[] {id};
+                countries = model.query(Model.DbClasses.COUNTRY, "SELECT * " +
+                        "FROM public.country " +
+                        "WHERE country_id = ?)", params);
                 return countries.toList().toBlocking().single();
             }
 
@@ -159,7 +173,7 @@ public class App extends Jooby {
             //noinspection unchecked
 
             String period = request.param("period").value();
-            String country = request.param("country").value();
+            String country = request.param("country").value().toLowerCase();
 
             Object[] params = {country};
 
@@ -183,10 +197,36 @@ public class App extends Jooby {
             }
         });
 
-        get("/q/a15", () -> {
+        get("/q/a15/most", (request) -> {
+            //TODO: check if it works correctly
+            int rating = request.param("rating").intValue();
+            Object[] params = {rating, '_'};
+
+            if(request.param("gender").isSet()) {
+                String gender = request.param("gender").value();
+                params = new Object[] {rating, gender};
+            }
+
             //noinspection unchecked
             @SuppressWarnings("unchecked")
-            Observable<String> result = model.query(Model.DbClasses.ACTOR, Model.SQL_A15);
+            Observable<Actor> result = model.query(Model.DbClasses.ACTOR, Model.SQL_A15_MOST, params);
+
+            return result.toBlocking().first();
+        });
+
+        get("/q/a15/least", (request) -> {
+            //TODO: check if it works correctly
+            int rating = request.param("rating").intValue();
+            Object[] params = {rating, '_'};
+
+            if(request.param("gender").isSet()) {
+                String gender = request.param("gender").value();
+                params = new Object[] {rating, gender};
+            }
+
+            //noinspection unchecked
+            @SuppressWarnings("unchecked")
+            Observable<Actor> result = model.query(Model.DbClasses.ACTOR, Model.SQL_A15_LEAST, params);
 
             return result.toBlocking().first();
         });
@@ -208,7 +248,7 @@ public class App extends Jooby {
         get("/q/b4", (request) -> {
             String country = request.param("country").value();
 
-            Object[] params = {country.trim().toLowerCase()};
+            Object[] params = {"%" + country.trim().toLowerCase() + "%"};
 
             Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_B4, params);
 
@@ -261,8 +301,28 @@ public class App extends Jooby {
             return "Done processing image";
         });
 
-        get("/q/d1", () -> {
-            Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1);
+        get("/q/d1/most", (request) -> {
+            if(request.param("period").isSet()){
+                int period = request.param("period").intValue();
+                Object[] params = {period};
+                Observable<Gross> result = model.query(Model.DbClasses.GROSS, Model.SQL_D1_MOST_DAYS, params);
+                return result.toList().toBlocking().single();
+            }
+
+            Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1_MOST);
+
+            return result.toList().toBlocking().single();
+        });
+
+        get("/q/d1/least", (request) -> {
+            if(request.param("period").isSet()){
+                int period = request.param("period").intValue();
+                Object[] params = {period};
+                Observable<Gross> result = model.query(Model.DbClasses.GROSS, Model.SQL_D1_LEAST_DAYS, params);
+                return result.toList().toBlocking().single();
+            }
+
+            Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1_LEAST);
 
             return result.toList().toBlocking().single();
         });
@@ -272,14 +332,7 @@ public class App extends Jooby {
 
             Object[] params = {name};
 
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, "SELECT *" +
-                    "FROM public.movie" +
-                    "WHERE movie_id IN (" +
-                    "   SELECT movie_id" +
-                    "   FROM public.movie_actor AS ma, public.actor AS a" +
-                    "   WHERE ma.actor_id = a.actor_id" +
-                    "   AND a.name = ?)" +
-                    "ORDER BY release_year", params);
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_D2, params);
 
             return obs.toList().toBlocking().single();
         });
@@ -287,7 +340,7 @@ public class App extends Jooby {
         get("/q/movie", req -> {
             String movie = req.param("movie").value();
 
-            Object[] params = {movie};
+            Object[] params = {"%" + movie.toLowerCase() + "%"};
 
             Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_Search_Movie, params);
 
@@ -297,7 +350,7 @@ public class App extends Jooby {
         get("/q/actor", req -> {
             String actor = req.param("actor").value();
 
-            Object[] params = {actor};
+            Object[] params = {"%" + actor + "%"};
 
             Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, params);
 
@@ -308,7 +361,7 @@ public class App extends Jooby {
         get("/q/movies-by-country", req -> {
             String country = req.param("country").value();
 
-            Object[] params = {country};
+            Object[] params = {"%" + country + "%"};
 
             Observable<Country> obs = model.query(Model.DbClasses.COUNTRY, Model.SQL_Movies_by_Country, params);
 
