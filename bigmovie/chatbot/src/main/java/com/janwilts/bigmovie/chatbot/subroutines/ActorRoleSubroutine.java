@@ -20,6 +20,7 @@ public class ActorRoleSubroutine extends Routine {
         StringBuilder firstname = new StringBuilder();
         StringBuilder lastname = new StringBuilder();
         StringBuilder search = new StringBuilder();
+        focusedMovies.clear();
         if (args.length <= 0) {
             return "Send args";
         }
@@ -32,25 +33,30 @@ public class ActorRoleSubroutine extends Routine {
             APIRequester requester = new APIRequester(Movie.class);
             if(args.length > 2) {
                 //Add second name
-                for (int i = 2; i < args.length; i++) {
-                    lastname.append(args[i]);
+                for (int i = 2; i < args.length - 1; i++) {
+                    firstname.append(args[i]);
                     if (args.length - 1 != i) {
-                        lastname.append(" ");
+                        firstname.append(" ");
                     }
                 }
-            }
-            // Add firstname
-            firstname.append(args[1]);
+                firstname.append(args[1]);
+                firstname.append(" ");
+                lastname.append(args[args.length - 1]);
 
-            try {
-                api = requester.getArrayFromAPI(String.format("/q/d2/?lastname=%s&firstname=%s", lastname, firstname));
-            } catch (Exception e) {
-                e.printStackTrace();
+                result.append(lastname);
+                result.append(", ");
+                result.append(firstname);
             }
-            for(int i = 0; i < api.size(); i++) {
-                focusedMovies.put(i + 1, api.get(i));
-            }
-            result.append(PrintUtils.movieListPrint(focusedMovies));
+
+//            try {
+//                api = requester.getArrayFromAPI(String.format("/q/d2/?lastname=%s&firstname=%s", lastname, firstname));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            for(int i = 0; i < api.size(); i++) {
+//                focusedMovies.put(i + 1, api.get(i));
+//            }
+//            result.append(PrintUtils.movieListPrint(focusedMovies));
         }
         else if (args[0].contains("movie") && (args.length > 1)) {
             // Give actors who play in movie x
