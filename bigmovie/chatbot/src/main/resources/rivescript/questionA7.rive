@@ -17,7 +17,10 @@
 - <bot error>
 
 + [give|can you give] [me] [more] (information|info|details) (about|over) (@movie) # {weight=20}
-- <call>moreMovieInfo movie <star4></call>
+- <call>moreMovieInfo <star4></call>
+
++ [give|can you give] [me] [more] (information|info|details) (about|over) (@actors) # {weight=20}
+- <call>moreActorInfo <star4></call>
 
 + [-]#[.] {weight=25}
 - <call>moreInfo <star></call>
