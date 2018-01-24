@@ -65,15 +65,15 @@ public class ActorRoleSubroutine extends Routine {
                 search.append(args[i]);
 
             }
-//            try {
-//                api = requester.getArrayFromAPI("/q/");
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            for(int i = 0; i < api.size(); i++) {
-//                focusedActors.put(i + 1, api.get(i));
-//            }
-//            result.append(PrintUtils.actorListPrint(focusedActors));
+            try {
+                api = requester.getArrayFromAPI(String.format("/q/d2-reverse/?movie=%s", search));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for(int i = 0; i < api.size(); i++) {
+                focusedActors.put(i + 1, api.get(i));
+            }
+            result.append(PrintUtils.actorListPrint(focusedActors));
         }
         else {
             result.append("I didn't understand");

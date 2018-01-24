@@ -337,7 +337,7 @@ public class App extends Jooby {
             return obs.toList().toBlocking().single();
         });
 
-        get("/q/d2_reverse", req -> {
+        get("/q/d2-reverse", req -> {
             String movie = req.param("movie").value();
             Object[] params = {movie};
 
