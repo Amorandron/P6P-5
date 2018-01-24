@@ -268,7 +268,7 @@ CREATE MATERIALIZED VIEW public.movie_actor_age AS
 WITH NO DATA;
 
 CREATE OR REPLACE VIEW public.movie_mpaa AS
-  SELECT mpaa_rating, mpaa_reason
+  SELECT movie_id, mpaa_rating, mpaa_reason
   FROM public.movie
   WHERE mpaa_rating IS NOT NULL
       AND mpaa_reason IS NOT NULL

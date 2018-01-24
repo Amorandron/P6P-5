@@ -12,5 +12,5 @@
 * <get type> == films => <call>actorRole actor <star1></call>
 - <bot error>
 
-+ which actors (play|act) in [the movie] *
-- <call>actorRole movie <star2></call>
++ (which|what|who) [actors] (play|act|plays|acts) in [the movie] *
+- <call>actorRole movie <star3></call>

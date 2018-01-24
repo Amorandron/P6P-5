@@ -276,12 +276,13 @@ public class App extends Jooby {
 
         get("/q/c2", () -> {
             String location = plotLocation + "c2.png";
-            c2Output = runner.runDb("c2.R", location);
+            runner.runDb("c2.R", location);
 
             return "Done processing image";
         });
 
-        get("q/c2/val", () -> {
+        get("q/c2/validation", () -> {
+            c2Output = runner.run("c2validation.R");
             if(c2Output == null)
                 return "No model found";
             else {
@@ -290,6 +291,13 @@ public class App extends Jooby {
                     c2Output.get(1).asDouble()
                 };
             }
+        });
+
+        get("q/c2/input", (request) -> {
+            Integer movieId = request.param("movie_id").intValue();
+            List<REXP> output = runner.run("c2input.R", movieId.toString());
+
+            return output.get(0).asString();
         });
 
         get("/q/c4", () -> {
@@ -331,6 +339,15 @@ public class App extends Jooby {
             Object[] params = {name};
 
             Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_D2, params);
+
+            return obs.toList().toBlocking().single();
+        });
+
+        get("/q/d2-reverse", req -> {
+            String movie = req.param("movie").value();
+            Object[] params = {movie};
+
+            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_D2_REVERSE, params);
 
             return obs.toList().toBlocking().single();
         });
