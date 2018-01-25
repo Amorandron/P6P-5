@@ -25,6 +25,7 @@ public class App extends Jooby {
 
     private Model model;
 
+    // Sets up R and database connection
     private RRunner runner;
     private Jdbc jdbc = new Jdbc("db");
 
@@ -51,6 +52,7 @@ public class App extends Jooby {
         assets("/plots/**");
 
 
+        // Root redirects to /api
         get("/", () -> {
            return Results.redirect("/api");
         });
@@ -67,15 +69,6 @@ public class App extends Jooby {
             return movie;
         });
 
-        get("/actors", () -> {
-            //noinspection unchecked
-            @SuppressWarnings("unchecked")
-            Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, "SELECT * " +
-                    "FROM public.actor");
-            Actor actor = obs.toBlocking().first();
-
-            return actor;
-        });
 
         get("/countries", (request) -> {
             Object[] params;
@@ -96,7 +89,7 @@ public class App extends Jooby {
                 params = new Object[] {id};
                 countries = model.query(Model.DbClasses.COUNTRY, "SELECT * " +
                         "FROM public.country " +
-                        "WHERE country_id = ?)", params);
+                        "WHERE country_id = ?", params);
                 return countries.toList().toBlocking().single();
             }
 
@@ -128,26 +121,6 @@ public class App extends Jooby {
             Genre genre = obs.toBlocking().first();
 
             return genre;
-        });
-
-        get("/gross", () -> {
-            //noinspection unchecked
-            @SuppressWarnings("unchecked")
-            Observable<Gross> obs = model.query(Model.DbClasses.GROSS, "SELECT * " +
-                    "FROM public.gross WHERE gross_id=140");
-            Gross gross = obs.toBlocking().first();
-
-            return gross;
-        });
-
-        get("/soundtracks", () -> {
-            //noinspection unchecked
-            @SuppressWarnings("unchecked")
-            Observable<Soundtrack> obs = model.query(Model.DbClasses.SOUNDTRACK, "SELECT * " +
-                    "FROM public.soundtrack");
-            Soundtrack soundtrack = obs.toBlocking().first();
-
-            return soundtrack;
         });
 
         get("/q/a7/most", () -> {
@@ -302,7 +275,7 @@ public class App extends Jooby {
             if(request.param("period").isSet()){
                 int period = request.param("period").intValue();
                 Object[] params = {period};
-                Observable<Gross> result = model.query(Model.DbClasses.GROSS, Model.SQL_D1_MOST_DAYS, params);
+                Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1_MOST_DAYS, params);
                 return result.toList().toBlocking().single();
             }
 
@@ -315,7 +288,7 @@ public class App extends Jooby {
             if(request.param("period").isSet()){
                 int period = request.param("period").intValue();
                 Object[] params = {period};
-                Observable<Gross> result = model.query(Model.DbClasses.GROSS, Model.SQL_D1_LEAST_DAYS, params);
+                Observable<Country> result = model.query(Model.DbClasses.COUNTRY, Model.SQL_D1_LEAST_DAYS, params);
                 return result.toList().toBlocking().single();
             }
 
