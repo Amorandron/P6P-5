@@ -35,14 +35,14 @@ public class ActorRoleSubroutine extends Routine {
             if(args.length > 2) {
                 //Add second name
                 for (int i = 2; i < args.length - 1; i++) {
-                    firstname.append(args[i]);
+                    firstname.append(args[i].toLowerCase());
                     if (args.length - 1 != i) {
                         firstname.append(" ");
                     }
                 }
-                firstname.append(args[1]);
+                firstname.append(args[1].toLowerCase());
                 firstname.append(" ");
-                lastname.append(args[args.length - 1]);
+                lastname.append(args[args.length - 1].toLowerCase());
             } else {
                 return "You need to specify a first- and lastname";
             }
@@ -64,25 +64,24 @@ public class ActorRoleSubroutine extends Routine {
 
             APIRequester requester = new APIRequester(Actor.class);
 
-            search.append(args[1]);
+            search.append(args[1].toLowerCase());
             if(args.length > 2) {
                 for (int i = 2; i < args.length; i++) {
                     search.append(" ");
-                    search.append(args[i]);
+                    search.append(args[i].toLowerCase());
 
                 }
             }
 
-            result.append(search);
-//            try {
-//                api = requester.getArrayFromAPI(String.format("/q/d2-reverse/?movie=%s", search));
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            for(int i = 0; i < api.size(); i++) {
-//                focusedActors.put(i + 1, api.get(i));
-//            }
-//            result.append(PrintUtils.actorListPrint(focusedActors));
+            try {
+                api = requester.getArrayFromAPI(String.format("/q/d2-reverse/?movie=%s", search));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for(int i = 0; i < api.size(); i++) {
+                focusedActors.put(i + 1, api.get(i));
+            }
+            result.append(PrintUtils.actorListPrint(focusedActors));
         }
         else {
             result.append("I didn't understand");
