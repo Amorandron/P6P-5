@@ -4,7 +4,22 @@
 //+ (which|what) movie * {weight=20}
 //- <set type=<star2>> {@ <star3>}
 
-+ has earned the most money (in a week|in a month|in a year|ever) (in *|worldwide) {weight=15}
++ [has] earned the most money (in a week|in a month|in a year|ever) in [the] * {weight=15}
 * <get type> == movie => <call>movieEarned <star1> <star2></call>
 * <get type> == film => <call>movieEarned <star1> <star2></call>
+- <bot error>
+
++ [has] earned the most money (in a week|in a month|in a year|ever) {weight=15}
+* <get type> == movie => <call>movieEarned <star1> worldwide</call>
+* <get type> == film => <call>movieEarned <star1> worldwide</call>
+- <bot error>
+
++ [has] earned the most money in [the] * {weight=15}
+* <get type> == movie => <call>movieEarned ever <star2></call>
+* <get type> == film => <call>movieEarned ever <star2></call>
+- <bot error>
+
++ [has] earned the most money {weight=15}
+* <get type> == movie => <call>movieEarned ever worldwide</call>
+* <get type> == film => <call>movieEarned ever worldwide</call>
 - <bot error>
