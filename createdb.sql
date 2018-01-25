@@ -58,19 +58,19 @@ GRANT SELECT ON SEQUENCES TO bigmovie_ro;
 
 CREATE SEQUENCE public.movie_id_seq;
 CREATE TABLE public.movie (
-  movie_id         BIGINT       NOT NULL DEFAULT nextval('movie_id_seq'),
+  movie_id     BIGINT       NOT NULL DEFAULT nextval('movie_id_seq'),
   -- From movies
-  title            VARCHAR(511) NOT NULL,
-  release_year     INTEGER,
-  type             VARCHAR(2),
-  occurence        INTEGER      NOT NULL,
+  title        VARCHAR(511) NOT NULL,
+  release_year INTEGER,
+  type         VARCHAR(2),
+  occurence    INTEGER      NOT NULL,
   -- From MPAA
-  mpaa_rating      VARCHAR(5),
-  mpaa_reason      TEXT,
+  mpaa_rating  VARCHAR(5),
+  mpaa_reason  TEXT,
   -- From ratings
-  rating           NUMERIC(3, 1),
-  rating_votes     INTEGER,
-  budget           NUMERIC(30, 2),
+  rating       NUMERIC(3, 1),
+  rating_votes INTEGER,
+  budget       NUMERIC(30, 2),
   CONSTRAINT movie_pkey
   PRIMARY KEY (movie_id),
   CONSTRAINT movie_uniq
@@ -182,43 +182,47 @@ CREATE TABLE public.gross (
 );
 
 CREATE OR REPLACE FUNCTION get_movie(
-  ext_title TEXT,
-  ext_year TEXT,
-  ext_type TEXT,
+  ext_title     TEXT,
+  ext_year      TEXT,
+  ext_type      TEXT,
   ext_occurence TEXT)
   RETURNS BIGINT AS $movie_id$
 BEGIN
   RETURN (SELECT m.movie_id
-  FROM movie m
-  WHERE m.title :: TEXT = ext_title
-    AND (m.release_year :: TEXT = ext_year
-       OR m.release_year IS NULL AND ext_year IS NULL)
-    AND m.type :: TEXT = ext_type
-    AND m.occurence :: TEXT = ext_occurence
-    AND m.movie_id IS NOT NULL
-  LIMIT 1);
+          FROM movie m
+          WHERE m.title :: TEXT = ext_title
+                AND (m.release_year :: TEXT = ext_year
+                     OR m.release_year IS NULL AND ext_year IS NULL)
+                AND m.type :: TEXT = ext_type
+                AND m.occurence :: TEXT = ext_occurence
+                AND m.movie_id IS NOT NULL
+          LIMIT 1);
 END;
-$movie_id$ LANGUAGE plpgsql;
+$movie_id$
+LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION count_nulls(
-  VARIADIC cols TEXT[])
+  VARIADIC cols TEXT [])
   RETURNS INTEGER AS $nulls$
 DECLARE
-  col TEXT;
+  col      TEXT;
   no_nulls INTEGER := 0;
 BEGIN
   FOREACH col IN ARRAY cols
   LOOP
-    IF col IS NULL THEN
+    IF col IS NULL
+    THEN
       no_nulls := no_nulls + 1;
     END IF;
   END LOOP;
   RETURN no_nulls;
 END;
-$nulls$ LANGUAGE plpgsql;
+$nulls$
+LANGUAGE plpgsql;
 
 CREATE MATERIALIZED VIEW public.movie_genre_year AS
-  SELECT g.genre_id,
+  SELECT
+    g.genre_id,
     m.release_year,
     count(m.movie_id) AS movie_count
   FROM movie AS m
@@ -229,7 +233,8 @@ CREATE MATERIALIZED VIEW public.movie_genre_year AS
 WITH NO DATA;
 
 CREATE MATERIALIZED VIEW public.movie_country_year AS
-  SELECT count(m.movie_id) AS total,
+  SELECT
+    count(m.movie_id) AS total,
     c.country_id,
     m.release_year
   FROM public.movie AS m
@@ -242,7 +247,9 @@ WITH NO DATA;
 
 CREATE MATERIALIZED VIEW public.movie_actor_age AS
   WITH gender_nums AS (
-      SELECT count(a.actor_id) AS total, a.gender AS gender
+      SELECT
+        count(a.actor_id) AS total,
+        a.gender          AS gender
       FROM public.actor AS a
       GROUP BY a.gender
   )
@@ -251,11 +258,11 @@ CREATE MATERIALIZED VIEW public.movie_actor_age AS
       SELECT gn.total
       FROM gender_nums gn
       WHERE gn.gender = a.gender
-    ) :: DECIMAL)) :: DOUBLE PRECISION  * 100 AS percentage,
+    ) :: DECIMAL)) :: DOUBLE PRECISION * 100 AS percentage,
     a.gender,
     (SELECT m.release_year - extract(YEAR FROM a.birth_date)
      WHERE (SELECT m.release_year - extract(YEAR FROM a.birth_date)) BETWEEN 0 AND 130
-    ) :: INTEGER AS age
+    ) :: INTEGER                             AS age
   FROM public.movie_actor AS ma
     LEFT JOIN public.movie AS m
       ON ma.movie_id = m.movie_id
@@ -267,8 +274,55 @@ CREATE MATERIALIZED VIEW public.movie_actor_age AS
   ORDER BY a.gender, age ASC
 WITH NO DATA;
 
-CREATE OR REPLACE VIEW public.movie_mpaa AS
-  SELECT movie_id, mpaa_rating, mpaa_reason
+CREATE MATERIALIZED VIEW public.movie_mpaa AS
+  SELECT
+    movie_id,
+    mpaa_rating,
+    mpaa_reason
   FROM public.movie
   WHERE mpaa_rating IS NOT NULL
-      AND mpaa_reason IS NOT NULL
+        AND mpaa_reason IS NOT NULL
+WITH NO DATA;
+
+CREATE OR REPLACE VIEW public.actor_rating AS
+  SELECT
+    movie_actor.actor_id,
+    movie.rating
+  FROM movie_actor
+    JOIN movie ON movie_actor.movie_id = movie.movie_id;
+
+CREATE OR REPLACE VIEW public.most_used_song_ids AS
+  SELECT soundtrack.movie_id
+  FROM soundtrack
+  WHERE soundtrack.song :: TEXT = (((SELECT soundtrack_1.song
+                                     FROM soundtrack soundtrack_1
+                                     GROUP BY soundtrack_1.song
+                                     ORDER BY (count(soundtrack_1.song)) DESC
+                                     LIMIT 1)) :: TEXT);
+
+CREATE OR REPLACE VIEW public.gross_by_period AS
+  SELECT
+    gross.gross_id,
+    gross.movie_id,
+    gross.country_id,
+    gross.amount,
+    gross.transaction_date,
+    low.low_transaction_date,
+    gross.transaction_date - low.low_transaction_date AS transaction_date_delta
+  FROM gross
+    JOIN (SELECT
+            cur.movie_id,
+            cur.country_id,
+            cur.transaction_date AS low_transaction_date
+          FROM gross cur
+          WHERE NOT (EXISTS(SELECT
+                              low_1.gross_id,
+                              low_1.movie_id,
+                              low_1.country_id,
+                              low_1.amount,
+                              low_1.transaction_date
+                            FROM gross low_1
+                            WHERE low_1.movie_id = cur.movie_id AND low_1.country_id = cur.country_id AND
+                                  low_1.transaction_date < cur.transaction_date)) AND cur.transaction_date IS NOT NULL
+                AND cur.amount IS NOT NULL) low ON gross.movie_id = low.movie_id AND gross.country_id = low.country_id
+  WHERE gross.transaction_date IS NOT NULL AND gross.transaction_date <> low.low_transaction_date;
