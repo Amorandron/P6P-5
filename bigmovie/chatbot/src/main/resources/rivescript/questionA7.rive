@@ -22,5 +22,8 @@
 + [give|can you give] [me] [more] (information|info|details) (about|over) (@actors) # {weight=20}
 - <call>moreActorInfo <star4></call>
 
++ [give|can you give] [me] [more] (information|info|details) (about|over) # {weight=20}
+- <call>moreInfo <star3></call>
+
 + [-]#[.] {weight=25}
 - <call>moreInfo <star></call>
