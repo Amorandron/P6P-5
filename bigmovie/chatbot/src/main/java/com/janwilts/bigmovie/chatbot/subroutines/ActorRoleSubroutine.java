@@ -76,7 +76,6 @@ public class ActorRoleSubroutine extends Routine {
                         result.append("||");
 
                         printMap.clear();
-
                     }
 
                     i++;
