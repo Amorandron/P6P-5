@@ -6,7 +6,7 @@
 //+ [in] (which|what) (@movie|@actors|@country) * {weight=20}
 //- <set type=<star2>> {@ <star3>}
 
-+ does the (@movie) industry (make|earn) the (most|least) (money|cash) (every|each) (year|month|week) {weight=15}
++ [does|do] [the] (@movie) [industry|business|market] (make|earn) [the] (most|least) (money|cash) (every|each) (year|month|week) {weight=15}
 * <get type> == country => <call>moviecountryEarned <star3> <star6></call>
 * <get type> == land => <call>moviecountryEarned <star3> <star6></call>
 * <get type> == nation => <call>moviecountryEarned <star3> <star6></call>
@@ -15,7 +15,7 @@
 * <get type> == nations => <call>moviecountryEarned <star3> <star6></call>
 - <bot error>
 
-+ does the (@movie) industry (make|earn) the (most|least) (money|cash) {weight=10}
++ [does|do] [the] (@movie) [industry|business|market] (make|earn) [the] (most|least) (money|cash) {weight=10}
 * <get type> == country => <call>moviecountryEarned <star3></call>
 * <get type> == land => <call>moviecountryEarned <star3></call>
 * <get type> == nation => <call>moviecountryEarned <star3></call>
