@@ -17,6 +17,7 @@ public class RivescriptBot {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
         bot.sortReplies();
         bot.setSubroutine("movieEarned", new MovieEarnedSubroutine(discordBot));
         bot.setSubroutine("movieCost", new MovieCostSubroutine(discordBot));

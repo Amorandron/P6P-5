@@ -34,6 +34,6 @@
 
 ! array movie = movie film
 ! array movies =  films movies
-! array actors = actor or actress|actress or actor|actor|actress|actor/actress|actress/actor
+! array actors = actor or actress|actress or actor|actor|actress|actor/actress|actress/actor|actors|actresses
 ! array country = country land nation countries lands nations
 ! array gender = men|man|woman|women|boy|girl|boys|girls|male|males|female|females
