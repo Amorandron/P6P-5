@@ -20,6 +20,7 @@ public class GetRoleDifficultSubroutine extends Routine {
     public String call(RiveScript rs, String[] args) {
         File image = null;
 
+        //do request on api and get image
         APIRequester requester = new APIRequester(String.class);
         try {
             requester.getFromAPI("/q/c4");
@@ -28,6 +29,7 @@ public class GetRoleDifficultSubroutine extends Routine {
             e.printStackTrace();
         }
 
+        //return image
         return fileOutput(image);
     }
 }
