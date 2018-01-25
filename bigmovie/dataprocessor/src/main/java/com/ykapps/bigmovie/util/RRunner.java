@@ -71,6 +71,8 @@ public class RRunner {
         String R = "";
 
         while ((bufferLine = reader.readLine()) != null) {
+            if(bufferLine.startsWith("#"))
+                continue;
             R += bufferLine;
         }
 
@@ -82,9 +84,6 @@ public class RRunner {
         List<REXP> output = new ArrayList<>();
 
         for(String line : lines) {
-            if(line.startsWith("#"))
-                continue;
-
             line = line.replaceAll("\n", "");
             line = line.replaceAll(" {2,}", " ");
 
@@ -106,14 +105,8 @@ public class RRunner {
 
             if(line.contains("{{param}}")) {
                 while(line.contains("{{param}}")) {
-                    if(params.length < index) {
-                        line = line.replaceFirst("\\{\\{param}}", params[index]);
-                        index++;
-                    }
-                    else {
-                        line = line.replaceFirst("\\{\\{param}}", "");
-                    }
-
+                    line = line.replaceFirst("\\{\\{param}}", params[index]);
+                    index++;
                 }
             }
 

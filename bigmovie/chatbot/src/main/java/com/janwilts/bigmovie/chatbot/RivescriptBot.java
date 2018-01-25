@@ -12,11 +12,14 @@ public class RivescriptBot {
     public static RiveScript init(DiscordBot discordBot) {
         RiveScript bot = new RiveScript(Config.Builder.utf8().unicodePunctuation("[,!?;:]").build());
 
+        String rivescriptDir = "src/main/resources/rivescript";
+
         try {
-            bot.loadDirectory(RivescriptBot.class.getResource("/rivescript/").toURI().getPath());
+            rivescriptDir = Main.class.getResource("/rivescript/").toURI().getRawPath().replaceAll("%20", " ");
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+        bot.loadDirectory(rivescriptDir);
 
         bot.sortReplies();
         bot.setSubroutine("movieEarned", new MovieEarnedSubroutine(discordBot));

@@ -1,4 +1,4 @@
-# Author: Jan
+# Author: Everdien
 
 file <- "{{param}}";
 
