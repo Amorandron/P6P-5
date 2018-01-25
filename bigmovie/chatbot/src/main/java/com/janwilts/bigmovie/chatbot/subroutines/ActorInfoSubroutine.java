@@ -41,10 +41,13 @@ public class ActorInfoSubroutine extends Routine {
             return "You need to specify a first- and lastname";
         }
         try {
-//            api = requester.getArrayFromAPI(String.format("/q/actor/?lastname=%s&firstname=%s", lastname, firstname));
             api = requester.getArrayFromAPI(String.format("/q/actor?lastname=%s&firstname=%s", lastname, firstname));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if(api.size() == 0) {
+            return "No results, try another name";
         }
         for(int i = 0; i < api.size(); i++) {
             focusedActors.put(i + 1, api.get(i));
