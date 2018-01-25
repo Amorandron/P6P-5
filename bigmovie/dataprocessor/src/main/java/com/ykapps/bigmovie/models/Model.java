@@ -69,7 +69,7 @@ public class Model {
                     .select(sql)
                     .get(rs -> new Movie(rs.getInt(1), rs.getString(2), rs.getInt(3),
                                 rs.getString(4), rs.getInt(5), rs.getString(6),
-                                rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getBigDecimal(10)));
+                                rs.getString(7), rs.getDouble(8), rs.getInt(9), rs.getBigDecimal(10)));
         }
         else {
             return db
@@ -96,7 +96,7 @@ public class Model {
                     .parameters(params)
                     .get(rs -> new Movie(rs.getInt(1), rs.getString(2), rs.getInt(3),
                             rs.getString(4), rs.getInt(5), rs.getString(6),
-                            rs.getString(7), rs.getInt(8), rs.getInt(9), rs.getBigDecimal(10)));
+                            rs.getString(7), rs.getDouble(8), rs.getInt(9), rs.getBigDecimal(10)));
         }
         else {
             return db

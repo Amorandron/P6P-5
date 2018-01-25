@@ -8,6 +8,7 @@ import java.io.File;
  * @author Jan
  */
 public class CommandParser {
+    // Check what parameters where provided with the arguments and sets the program up accordingly
     public static void parse(String[] args) {
         Command command = null;
         Command insertCommand = null;
@@ -33,13 +34,14 @@ public class CommandParser {
             else
                 CommandUtils.error("Option does not exist");
 
-
+        // If args length is short, then parse every file in the directory
         if (args.length > 1) {
             File file = new File(args[0]);
             if (!directoryCommandParser(file))
                 command = null;
         }
 
+        // else only parse a single file
         if (args.length > 2) {
             File file = new File(args[0] + args[2]);
             if (!fileCommandParser(file))
@@ -48,6 +50,8 @@ public class CommandParser {
 
         if(command != null) {
             command.execute();
+            // Checks to see if the insert command is set, meaning the data should also be exported to the database
+            // defined in the .env file
             if(insertCommand != null)
                 insertCommand.execute();
         }
@@ -55,6 +59,7 @@ public class CommandParser {
             System.exit(0);
     }
 
+    // Checks to see if target is a directory
     private static Boolean directoryCommandParser(File file) {
         Boolean result = true;
         if (!file.isDirectory()) {
@@ -68,6 +73,7 @@ public class CommandParser {
         return result;
     }
 
+    // checks to see if target is a file
     private static Boolean fileCommandParser(File file) {
         Boolean result = true;
         if (!file.isFile()) {

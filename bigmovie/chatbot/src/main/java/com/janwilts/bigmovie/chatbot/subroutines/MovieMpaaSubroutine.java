@@ -80,7 +80,7 @@ public class MovieMpaaSubroutine extends Routine {
                 else {
                     PrintUtils.blockchar(StringUtils.center(ratings[i - 1], 8));
                     for(int j = 0; j < ratings.length; j++)
-                        PrintUtils.blockchar(StringUtils.center(matrix.get(i).get(j).toString(), 8));
+                        PrintUtils.blockchar(StringUtils.center(String.valueOf(matrix.get(i).get(j).intValue()), 8));
                     PrintUtils.blockchar("\n");
                 }
             }

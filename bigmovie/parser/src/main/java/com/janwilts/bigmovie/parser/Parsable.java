@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 /**
  * @author Jan
  */
+
+// Main enum which stores the names of the input files and their required classes
 public enum Parsable {
     MOVIES("movies", "Movie"),
     ACTORS("actors", "Actor"),
@@ -52,6 +54,7 @@ public enum Parsable {
                 .newInstance(new File(Main.outputDirectory + name + ".csv"), connection);
     }
 
+    // Retruns all enum values in a list
     public static List<Parsable> getList() {
         return Arrays.stream(Parsable.values())
                 .collect(Collectors.toList());
