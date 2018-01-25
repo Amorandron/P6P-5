@@ -1,6 +1,6 @@
 // Author: Everdien
 
-//Question:  dis
+//Question:  Give the number of films made in a country displayed in time
 
 + [can you] (give|show) [me] [the] (number|amount) [of] (@movies) * {weight=20}
 - <set type=<star3>> {@ <star4>}
@@ -17,6 +17,6 @@
 * <get type> == films => <call>moviecountryCount "<star2>"</call>
 - <bot error>
 
-+ *
++ [the] *
 % please tell me the name of the country
 - <call>moviecountryCount "<star>"</call>
