@@ -27,6 +27,7 @@ public class MovieCostSubroutine extends Routine {
         APIRequester requester = new APIRequester(Movie.class);
 
         String type = args[0];
+        //check if searched on most or least and request api
         if(type.contains("most")){
             try {
                 api = requester.getArrayFromAPI("/q/a7/most");
@@ -49,6 +50,7 @@ public class MovieCostSubroutine extends Routine {
             result.append(PrintUtils.movieListPrint(focusedMovies));
         }
 
+        //set mainfocus on focused movies
         setMainFocus(focusedMovies);
 
         return result.toString();

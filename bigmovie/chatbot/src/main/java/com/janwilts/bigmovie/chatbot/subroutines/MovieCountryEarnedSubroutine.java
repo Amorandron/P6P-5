@@ -34,12 +34,14 @@ public class MovieCountryEarnedSubroutine extends Routine {
 
         String quantum = args[0];
 
+        //check if searched on most or least earned
         if(quantum.contains("most")){
             url += "/most";
         }else if(quantum.contains("least")){
             url += "/least";
         }
 
+        //check if period given and set period
         if(args.length > 1){
             String period = args[1];
 
@@ -51,6 +53,7 @@ public class MovieCountryEarnedSubroutine extends Routine {
                 url += "?period=7";
             }
 
+            //request api
             try {
                 requester = new APIRequester(Gross.class);
                 apiGross = requester.getArrayFromAPI(url);
@@ -72,6 +75,7 @@ public class MovieCountryEarnedSubroutine extends Routine {
             }
         }
 
+        //process response api
         for(int i = 0; i < apiCountry.size(); i++) {
             focusedCountries.put(i + 1, apiCountry.get(i));
         }

@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class APIRequester {
-    private static final String API_LOCATION = "http://localhost:8080";
+    private static final String API_LOCATION = "http://141.252.214.164:8080";
 
     private ObjectMapper mapper;
     private Class cl;
@@ -29,6 +29,7 @@ public class APIRequester {
     }
 
     public Object getFromAPI(String input) throws IOException {
+        input = input.replaceAll(" ", "+");
         URL url = new URL(API_LOCATION + input);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -37,6 +38,7 @@ public class APIRequester {
     }
 
     public <T> List<T> getArrayFromAPI(String input) throws IOException, ClassNotFoundException {
+        input = input.replaceAll(" ", "+");
         URL url = new URL(API_LOCATION + input);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -47,6 +49,7 @@ public class APIRequester {
     }
 
     public File getImageFromAPI(String input, String fileName) throws IOException {
+        input = input.replaceAll(" ", "+");
         URL url = new URL(API_LOCATION + input);
 
         URL fileLocation = this.getClass().getResource("/images/");

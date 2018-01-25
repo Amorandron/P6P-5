@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Yannick
+ * @author Yannick & Jan
  */
 public class BiographyParser extends Parser {
     public static String[] STATIC_TERMS = new String[]{"NM", "OC", "NK", "HT", "BG", "BY", "SP", "TR", "RN", "OW", "QU", "DB", "DD", "AT", "TM", "IT", "PT", "CV", "BO", "PI", "BT", "SA", "WN"};
@@ -28,11 +28,14 @@ public class BiographyParser extends Parser {
             boolean first = true;
             
             for (String line; (line = this.readLine()) != null; ) {
+                // Continue if the list is found
                 if (!foundList && line.contains("BIOGRAPHY LIST")) foundList = true;
                 else if (foundList && linesBeforeList != 0) linesBeforeList--;
                 else if (foundList && line.length() > 0 && line.contains(":")) {
+                    // Gets the term from the list
                     String term = line.substring(0, line.indexOf(':'));
-                    
+
+                    // Gets the name
                     if (term.equals("NM")) {
                         if (!first) {
                             for (String staticTerm : STATIC_TERMS) {
@@ -50,7 +53,8 @@ public class BiographyParser extends Parser {
                         
                         currentName = result[0];
                         String occurance = result[1];
-                        
+
+                        // Defines all the terms as empty
                         terms = new HashMap<>();
                         terms.put("NM", currentName.trim());
                         terms.put("OC", occurance);
@@ -76,6 +80,7 @@ public class BiographyParser extends Parser {
                         terms.put("SA", "");
                         terms.put("WN", "");
                     }
+                    // If term is databirth or date death ,format it accordingly
                     else if(term.equals("DB") || term.equals("DD")) {
                         Pattern p = Pattern.compile("(\\d.*\\d{1,4}|\\d{1,4}|[?]{1,4})([B][C])?");
                         if(line.contains(","))
@@ -87,6 +92,7 @@ public class BiographyParser extends Parser {
                         if(m.matches()) {
                             String date = m.group(1);
 
+                            // Remove pointless number endings
                             if (date.contains("st") && !date.toLowerCase().contains("august")) {
                                 date = date.replaceAll("st", "");
                             }
@@ -106,6 +112,7 @@ public class BiographyParser extends Parser {
                                 }
                             }
 
+                            // Adds 1 January if only a year is present
                             if(date.length() <= 5)
                                 date = "1 January " + date;
 
@@ -115,6 +122,7 @@ public class BiographyParser extends Parser {
                             terms.put(term, "");
                         }
                     }
+                    // Sets another term
                     else {
                         if (terms.get(term).equals("")) terms.put(term, line.substring(term.length() + 1));
                         else terms.put(term, terms.get(term) + line.substring(term.length() + 1));

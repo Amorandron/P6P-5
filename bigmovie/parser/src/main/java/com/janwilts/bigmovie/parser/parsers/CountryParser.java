@@ -18,7 +18,6 @@ public class CountryParser extends Parser {
     @Override
     public void parse() {
         try (PrintWriter writer = new PrintWriter(this.csv, "UTF-8")) {
-            //String pattern = "(.*?)\s\((.{4})|(|(.*?))\)(.*?)\s([a-zA-Z].*)";
             String pattern = "(.*?)\\s\\((\\d{4}|[?]{4})(|/(.*?))\\)(|\\s\\((.*?)\\))\\t(.*)";
             Pattern p = Pattern.compile(pattern);
             
@@ -70,9 +69,6 @@ public class CountryParser extends Parser {
                         // Write all variables to a line in countries.csv
                         writer.println(String.join(DELIMITER, addQuotes(movieName), year, addQuotes(category), iteration, addQuotes(country)));
                     }
-//                    else {
-//                        System.out.println("Failed: line: " + line);
-//                    }
                 }
             }
         }

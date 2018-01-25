@@ -48,6 +48,7 @@ public class MoreMovieInfoSubroutine extends Routine {
 
         APIRequester requester = new APIRequester(Genre.class);
 
+        //get all genres of the selected movie
         try {
             apiGenre = requester.getArrayFromAPI("/genres?movie_id=" + movie.getMovie_id());
         } catch (Exception e) {
@@ -59,6 +60,7 @@ public class MoreMovieInfoSubroutine extends Routine {
 
         requester = new APIRequester(Country.class);
 
+        //get all countries of the selected movie
         try {
             apiCountry = requester.getArrayFromAPI("/countries?movie_id=" + movie.getMovie_id());
         } catch (Exception e) {
@@ -68,6 +70,7 @@ public class MoreMovieInfoSubroutine extends Routine {
         for (Country c : apiCountry)
             country.add(c.getCountry());
 
+        //make large budgets more readable by adding commas
         String budget = movie.getBudget().toString();
         String decimal = budget.substring(budget.indexOf("."));
         String whole = budget.substring(0, budget.indexOf(".") - 1);
@@ -89,8 +92,12 @@ public class MoreMovieInfoSubroutine extends Routine {
         if(decimal.equals(".00"))
             decimal = ".-";
 
+        String countryName = country.size() > 1 ? "Countries" : "Country";
+        String genreName = country.size() > 1 ? "Genres" : "Genre";
+
         budget = newWhole.toString() + decimal;
 
+        //formatting output
         PrintUtils.blockprint(String.format("Title: %s", movie.getTitle()));
         PrintUtils.blockprint("----------------");
         if (movie.getRelease_year() != null || movie.getRelease_year() != 0)
@@ -100,9 +107,9 @@ public class MoreMovieInfoSubroutine extends Routine {
         if (movie.getBudget() != null || !movie.getBudget().equals(new BigDecimal(0)))
             PrintUtils.blockprint(String.format("Budget: $%s", budget));
         if (country.size() > 0)
-            PrintUtils.blockprint(String.format("\nCountries: %s", String.join(", ", country)));
+            PrintUtils.blockprint(String.format("\n%s: %s", countryName, String.join(", ", country)));
         if (genre.size() > 0)
-            PrintUtils.blockprint(String.format("\nGenres: %s", String.join(", ", genre)));
+            PrintUtils.blockprint(String.format("\n%s: %s", genreName, String.join(", ", genre)));
 
 
         return PrintUtils.getBlock();

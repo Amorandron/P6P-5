@@ -27,14 +27,17 @@ public class MovieParser extends Parser {
                 else if (linesBeforeList == 0 && line.length() > 0) {
                     if (line.startsWith("-----------------")) break;
                     if (line.charAt(0) == QUOTE_CHAR) continue;
+                    // Removes suspended movies
                     if (line.contains("{{SUSPENDED}}"))
                         continue;
-                    
+
+                    // Gets year and occurence
                     String year = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                     String title = line.substring(0, line.lastIndexOf('(') - 1);
                     String type = "";
                     int occurrence = 0;
-                    
+
+                    // Gets type
                     if (year.charAt(0) == 'T' || year.charAt(0) == 'V') {
                         type = year;
                         line = line.substring(0, line.lastIndexOf('('));
@@ -43,7 +46,8 @@ public class MovieParser extends Parser {
                         if(type.contains("VG"))
                             continue;
                     }
-                    
+
+                    // Overwrites occurence
                     if (year.contains("/")) {
                         occurrence = RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length()));
                         year = year.substring(0, year.indexOf("/"));

@@ -19,13 +19,14 @@ import java.util.stream.Collectors;
 /**
  * @author Jan
  */
+// Base class for inserting files into the database, also used for static purposes
 public abstract class Inserter {
     private static final String[] order = new String[] {"movies", "countries", "genres", "soundtracks", "actors"};
-    //private static final String[] order = new String[] {"movies", "actors"};
 
     protected DatabaseConnection connection;
     protected File csv;
 
+    // Main static insertion command loops through all the inserts in array in right order and executes them
     public static void insertFiles(DatabaseConnection connection) {
         try {
             for(String task : order)
@@ -35,10 +36,10 @@ public abstract class Inserter {
         }
     }
 
+    // Gets the right inserter class from string
     public static Inserter getInserter(String csv, DatabaseConnection connection) throws Exception {
         return getInserter(new File(Main.outputDirectory + csv + ".csv"), connection);
     }
-
     private static Inserter getInserter(File csv, DatabaseConnection connection) throws Exception {
         return Parsable.getList()
                 .stream()
@@ -53,6 +54,7 @@ public abstract class Inserter {
         this.connection = connection;
     }
 
+    // Executes an SQL file located in resources/scripts/
     protected void executeSQL(String file) throws IOException {
         URL url = this.getClass().getResource("/scripts/" + file);
         File sqlFile = null;
@@ -78,6 +80,8 @@ public abstract class Inserter {
         }
     }
 
+    // Copy's CSV file onto the database, we use this and not SQL because SQL is onnly callable if the CSV is already
+    // on the server
     protected void executeInsert(String table, String csv, String delimiter) throws Exception {
         connection.getManager().copyIn(String.format("COPY %s FROM STDIN (FORMAT csv, DELIMITER '%s')", table, delimiter),
                 new FileReader(new File(csv)));
@@ -87,6 +91,7 @@ public abstract class Inserter {
         System.out.println(String.format("Inserting %s...", csv.getName()));
     }
 
+    // Abstract method which is being called by the static method
     abstract void insert();
     public abstract String[] getRequiredTables();
 }
