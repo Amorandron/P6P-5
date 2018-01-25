@@ -23,7 +23,8 @@ public class APIRequester {
         this(String.class);
     }
     
-    public APIRequester(Class cl) {
+    public APIRequester(Class cl) {.
+
         this.mapper = new ObjectMapper();
         this.cl = cl;
     }

@@ -69,7 +69,7 @@ public class App extends Jooby {
             return movie;
         });
 
-
+        // Selects a country based on the inputted movie_id
         get("/countries", (request) -> {
             Object[] params;
             int id;
@@ -102,6 +102,7 @@ public class App extends Jooby {
             return country;
         });
 
+        // Selects a genre based upon the inputted movie_id
         get("/genres", (request) -> {
             if(request.param("movie_id").isSet()){
                 int movie_id = request.param("movie_id").intValue();
@@ -139,6 +140,7 @@ public class App extends Jooby {
             return result.toList().toBlocking().single();
         });
 
+        // Code for question A8, returns a different value based upon if a period is provided or not
         get("/q/a8", (request) -> {
             //noinspection unchecked
 
@@ -167,8 +169,8 @@ public class App extends Jooby {
             }
         });
 
+        // Code for question A15 returns different values based upon the gender
         get("/q/a15/most", (request) -> {
-            //TODO: check if it works correctly
             int rating = request.param("rating").intValue();
             Object[] params = {rating, '_'};
 
@@ -185,7 +187,6 @@ public class App extends Jooby {
         });
 
         get("/q/a15/least", (request) -> {
-            //TODO: check if it works correctly
             int rating = request.param("rating").intValue();
             Object[] params = {rating, '_'};
 
@@ -201,6 +202,7 @@ public class App extends Jooby {
             return result.toBlocking().first();
         });
 
+        // Gives the most popular soundtrack
         get("/q/a21", () -> {
             //noinspection unchecked
             @SuppressWarnings("unchecked")
@@ -213,6 +215,7 @@ public class App extends Jooby {
             return result;
         });
 
+        // Gets country from inputted country_id and executes the R script b4.R to create a graph
         get("/q/b4", (request) -> {
             String country = request.param("country").value();
 
@@ -236,14 +239,15 @@ public class App extends Jooby {
             return "Done processing image";
         });
 
+        // Makes de R plot on b5.png for genrepopularity from the current year
         get("/q/b5", () -> {
-            //TODO: Check if it works
             String location = plotLocation + "b5.png";
             runner.runDb("b5.R", location, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
             return "Done processing image";
         });
 
+        // Creates the model for c2
         get("/q/c2", (request) -> {
             Optional<String> id = request.param("movie_id").toOptional();
             String location = plotLocation + "c2.png";
@@ -271,6 +275,7 @@ public class App extends Jooby {
             return "Done processing image";
         });
 
+        //
         get("/q/d1/most", (request) -> {
             if(request.param("period").isSet()){
                 int period = request.param("period").intValue();
@@ -336,7 +341,6 @@ public class App extends Jooby {
             return obs.toList().toBlocking().single();
         });
 
-        //TODO make param optional
         get("/q/movies-by-country", req -> {
             String country = req.param("country").value();
 

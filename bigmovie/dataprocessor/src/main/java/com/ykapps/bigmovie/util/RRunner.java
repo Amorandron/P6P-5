@@ -55,6 +55,7 @@ public class RRunner {
         }
     }
 
+    // Run a R script, but first settting up the database connection
     public List<REXP> runDb(String script, String... params) throws IOException {
         run("start.R");
         run("connection.R");

@@ -102,6 +102,8 @@ public class MoreMovieInfoSubroutine extends Routine {
         PrintUtils.blockprint("----------------");
         if (movie.getRelease_year() != null || movie.getRelease_year() != 0)
             PrintUtils.blockprint(String.format("Year: %d", movie.getRelease_year()));
+        if (movie.getRating() != null)
+            PrintUtils.blockprint(String.format("Rating: %3.1f (%d votes)", movie.getRating(), movie.getRating_votes()));
         if (!Strings.isNullOrEmpty(movie.getMpaa_rating()))
             PrintUtils.blockprint(String.format("Mpaa-rating: %s", movie.getMpaa_rating()));
         if (movie.getBudget() != null || !movie.getBudget().equals(new BigDecimal(0)))
