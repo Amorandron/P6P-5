@@ -11,7 +11,7 @@
 - <set search=<star2>>Are you looking for a movie or an actor?
 
 + [*] (movie|actor) [*]
-% are you looking for a movie or an actor or a country
+% are you looking for a movie or an actor
 * <star> == movie => <call>movieInfo <get search></call>
 * <star> == actor => <call>actorInfo <get search></call>
 - Please choose from a movie or an actor
@@ -21,7 +21,7 @@
 - Choose from a movie or an actor
 
 + [*] (movie|actor) [*]
-% choose from a movie or an actor or a country
+% choose from a movie or an actor
 * <star> == movie => <call>movieInfo <get search></call>
 * <star> == actor => <call>actorInfo <get search></call>
 - Please choose from a movie or an actor
