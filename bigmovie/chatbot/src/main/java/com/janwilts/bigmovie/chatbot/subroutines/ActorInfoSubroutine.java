@@ -16,19 +16,32 @@ public class ActorInfoSubroutine extends Routine {
     public String call(RiveScript rs, String[] args) {
         super.call(rs, args);
         StringBuilder result = new StringBuilder();
+        StringBuilder firstname = new StringBuilder();
+        StringBuilder lastname = new StringBuilder();
         focusedActors.clear();
 
         if (args.length <= 0) {
-            return "";
+            return "Send args";
         }
 
         List<Actor> api = null;
 
         APIRequester requester = new APIRequester(Actor.class);
 
-        String search = args[0];
+        if(args.length > 2) {
+            //Add second name
+            for (int i = 1; i < args.length - 1; i++) {
+                firstname.append(args[i].toLowerCase());
+                if (args.length - 2 != i) {
+                    firstname.append(" ");
+                }
+            }
+            lastname.append(args[args.length - 1].toLowerCase());
+        } else {
+            return "You need to specify a first- and lastname";
+        }
         try {
-            api = requester.getArrayFromAPI("/q/actor/?actor=" + search);
+            api = requester.getArrayFromAPI(String.format("/q/actor/?firstname=%s&lastname=%s", firstname, lastname));
         } catch (Exception e) {
             e.printStackTrace();
         }
