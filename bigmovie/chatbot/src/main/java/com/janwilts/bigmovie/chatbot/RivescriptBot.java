@@ -38,6 +38,7 @@ public class RivescriptBot {
         bot.setSubroutine("moreInfo", new MoreInfoSubroutine(discordBot));
         bot.setSubroutine("actorInfo", new ActorInfoSubroutine(discordBot));
         bot.setSubroutine("movieInfo", new MovieInfoSubroutine(discordBot));
+        bot.setSubroutine("LUISCall", new LUISCallSubroutine(discordBot));
 
         return bot;
     }

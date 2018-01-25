@@ -104,7 +104,7 @@ public class ActorParser extends Parser {
                                 // Get year and occurence
                                 Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                 (rightCommaInd - leftCommaInd == 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
-                                (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && (searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' || searchLine.charAt(rightCommaInd - 1) == 'X')) ||
+                                (rightCommaInd - leftCommaInd > 5 && (Character.isDigit(searchLine.charAt(leftCommaInd + 1)) || searchLine.charAt(leftCommaInd + 1) == '?') && (searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' || searchLine.charAt(rightCommaInd - 1) == 'X')) ||
                                 (rightCommaInd - leftCommaInd <= 5 && searchLine.charAt(rightCommaInd - 1) == '?' && searchLine.charAt(leftCommaInd + 1) == '?')) {
 
                             currentFilm = line.substring(line.indexOf(TAB), line.indexOf("(", line.indexOf(searchLine))).trim();
