@@ -36,7 +36,7 @@ public class PrintUtils {
                 blockprint(String.format("%d.\t %s (%d)", set.getKey(), currentMovie.getTitle(), currentMovie.getRelease_year()));
             }
         }
-        return PrintUtils.getBlock() + "If you want more details, press the corresponding number key.";
+        return PrintUtils.getBlock();
     }
 
     public static String actorListPrint(HashMap<Integer, Actor> actors) {
@@ -52,7 +52,7 @@ public class PrintUtils {
             }
             blockprint(String.format("%d.\t %s %s %s %s", entry.getKey(), currentActor.getName(), currentActor.getGender(), birth_date, death_date));
         }
-        return getBlock() + "If you want more details, press the corresponding number key.";
+        return getBlock();
     }
 
     public static String countryListPrint(HashMap<Integer, Country> countries) {
