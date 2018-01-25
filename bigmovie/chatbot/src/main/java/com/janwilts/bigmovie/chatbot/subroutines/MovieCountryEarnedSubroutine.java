@@ -21,7 +21,6 @@ public class MovieCountryEarnedSubroutine extends Routine {
 
     @Override
     public String call(RiveScript rs, String[] args) {
-        //TODO: test if it works correctly
         focusedCountries.clear();
         StringBuilder result = new StringBuilder();
 
@@ -55,14 +54,9 @@ public class MovieCountryEarnedSubroutine extends Routine {
 
             //request api
             try {
-                requester = new APIRequester(Gross.class);
-                apiGross = requester.getArrayFromAPI(url);
-
                 requester = new APIRequester(Country.class);
 
-                for (Gross g : apiGross) {
-                    apiCountry.add((Country) requester.getFromAPI("/countries?country_id=" + g.getCountry_id()));
-                }
+                apiCountry = requester.getArrayFromAPI(url);
 
             }catch (Exception e) {
                 e.printStackTrace();

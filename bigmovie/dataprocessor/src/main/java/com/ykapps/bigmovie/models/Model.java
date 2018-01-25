@@ -16,7 +16,7 @@ public class Model {
     public static final String SQL_SELECT_MOVIE = "SELECT * " +
             "FROM movie " +
             "WHERE movie_id=?";
-    
+
     public static final String SQL_A7_MOST = "SELECT * " +
             "FROM movie " +
             "WHERE budget IS NOT NULL " +
@@ -135,20 +135,28 @@ public class Model {
             "WHERE h.country_id = c.country_id";
 
     public static final String SQL_D1_MOST_DAYS = "SELECT * " +
-            "FROM gross " +
-            "WHERE gross_id IN (SELECT gross_id " +
+            "FROM public.country " +
+            "WHERE country_id IN (" +
+                "SELECT country_id " +
                 "FROM gross_by_period " +
-                "WHERE transaction_date_delta = ?) " +
-            "ORDER BY amount DESC " +
-            "LIMIT 10";
-    public static final String SQL_D1_LEAST_DAYS = "SELECT * " +
-            "FROM gross " +
-            "WHERE gross_id " +
-            "IN (SELECT gross_id " +
+                "WHERE transaction_date_delta = ? " +
+                "GROUP BY country_id " +
+                "HAVING country_id <> 245 " +
+                "AND country_id <> 247 " +
+                "ORDER BY max(amount) DESC " +
+                "LIMIT 10)";
+
+    public static final String SQL_D1_LEAST_DAYS ="SELECT * " +
+            "FROM public.country " +
+            "WHERE country_id IN (" +
+                "SELECT country_id " +
                 "FROM gross_by_period " +
-                "WHERE transaction_date_delta = ?) " +
-            "ORDER BY amount ASC " +
-            "LIMIT 10";
+                "WHERE transaction_date_delta = ? " +
+                "GROUP BY country_id " +
+                "HAVING country_id <> 245 " +
+                "AND country_id <> 247 " +
+                "ORDER BY max(amount) ASC " +
+                "LIMIT 10)";
 
     public static final String SQL_D2 = "SELECT * " +
             "FROM public.movie " +
