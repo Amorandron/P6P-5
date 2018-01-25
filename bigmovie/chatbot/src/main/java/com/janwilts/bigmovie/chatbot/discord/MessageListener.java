@@ -19,6 +19,7 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
     @Override
     public void handle(MessageReceivedEvent event) {
         bot.setUservar(event.getAuthor().getName(),"name", event.getAuthor().getName());
+        bot.setUservar(event.getAuthor().getName(), "origMessage", event.getMessage().getContent());
         String input = event.getMessage().getContent();
         if (event.getMessage().getContent().startsWith(DiscordBot.CLIENT_ID)) {
             
@@ -41,7 +42,7 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
                     else {
                         RequestBuffer.request(() -> {
                             try {
-                                event.getChannel().sendMessage(mess);
+                                event.getChannel().sendMessage("Yannick_Bot: " + mess);
                             }
                             catch (RateLimitException e) {
                                 System.out.println("Rate limit reached, retrying..");

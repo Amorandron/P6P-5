@@ -69,4 +69,4 @@
 - The hash of "<star>" is: <call>hash <star></call>
 
 + *
-- <bot error>
+- <call>LUISCall "<star>"</call>
