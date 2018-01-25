@@ -88,7 +88,7 @@ public class ActorRoleSubroutine extends Routine {
 
                 result.append(PrintUtils.movieListPrint(focusedMovies));
                 String fullname = firstname + " " + lastname;
-                PrintUtils.blockprint(String.format("There are %s movies, to se them all type: 'show me all the movies with %s", api.size(), fullname));
+                PrintUtils.blockprint(String.format("There are %s movies, to se them all type: 'show me all the movies with %s'", api.size(), fullname));
                 result.append(PrintUtils.getBlock());
 
 
