@@ -40,7 +40,7 @@ public class Model {
 
     public static final String SQL_Search_Actor = "SELECT * " +
             "FROM public.actor AS a " +
-            "WHERE name LIKE ? " +
+            "WHERE LOWER(name) LIKE ? " +
             "ORDER BY name ASC";
 
     public static final String SQL_Movies_by_Country = "SELECT * FROM movie WHERE movie_id IN (" +
