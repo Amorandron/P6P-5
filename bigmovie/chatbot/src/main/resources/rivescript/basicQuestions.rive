@@ -12,8 +12,8 @@
 
 + [*] (movie|actor) [*]
 % are you looking for a movie or an actor or a country
-* <star> == movie => <call>movieInfo "<get search>"</call>
-* <star> == actor => <call>actorInfo "<get search>""</call>
+* <star> == movie => <call>movieInfo <get search></call>
+* <star> == actor => <call>actorInfo <get search></call>
 - Please choose from a movie or an actor
 
 + *
@@ -22,8 +22,8 @@
 
 + [*] (movie|actor) [*]
 % choose from a movie or an actor or a country
-* <star> == movie => <call>movieInfo "<get search>"</call>
-* <star> == actor => <call>actorInfo "<get search>"</call>
+* <star> == movie => <call>movieInfo <get search></call>
+* <star> == actor => <call>actorInfo <get search></call>
 - Please choose from a movie or an actor
 
 + *
