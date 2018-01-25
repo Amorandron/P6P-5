@@ -4,19 +4,32 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.materialicons.MaterialIconView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <AnchorPane prefHeight="60.0" prefWidth="600.0" style="-fx-background-color: #303030;">
-            <children>
-                <JFXButton buttonType="RAISED" layoutX="548.0" layoutY="18.0" style="-fx-background-color: #404040;" text=" ">
-                    <graphic>
-                        <MaterialIconView fill="GREY" glyphName="SEARCH" size="14"/>
-                    </graphic>
-                </JFXButton>
-                <JFXTextField layoutX="387.0" layoutY="18.0" prefHeight="25.0" prefWidth="149.0" promptText=" Search" unFocusColor="GREY"/>
-            </children>
-        </AnchorPane>
-        <AnchorPane layoutY="60.0" prefHeight="340.0" prefWidth="65.0" style="-fx-background-color: #383838;"/>
-    </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.janwilts.bigmovie.gui.Controller">
+    <AnchorPane prefHeight="40.0" prefWidth="600.0" style="-fx-background-color: #303030;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <JFXTextField fx:id="searchBar" focusColor="GREY" layoutX="392.0" layoutY="17.0" prefHeight="25.0" prefWidth="150.0" promptText=" Search" style="-fx-text-fill: #808080;" unFocusColor="GREY" AnchorPane.bottomAnchor="17.0" AnchorPane.rightAnchor="59.0" AnchorPane.topAnchor="17.0" />
+        <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="548.0" layoutY="18.0" onAction="#onSearch" style="-fx-background-color: #404040;" text="Button" textFill="GREY" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="18.0">
+            <graphic>
+                <MaterialIconView fill="GREY" glyphName="SEARCH" size="14" />
+            </graphic>
+        </JFXButton>
+    </AnchorPane>
+    <VBox layoutY="60.0" prefHeight="340.0" prefWidth="60.0" style="-fx-background-color: #383838;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="60.0">
+        <JFXButton fx:id="infoButton" contentDisplay="GRAPHIC_ONLY" disable="true" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: #404040;" textFill="GREY">
+            <graphic>
+                <MaterialIconView fill="GREY" glyphName="INFO_OUTLINE" selectionFill="GREY" size="35" text="" />
+            </graphic>
+        </JFXButton>
+    </VBox>
+   <AnchorPane fx:id="infoPane" layoutX="60.0" layoutY="60.0" prefHeight="340.0" prefWidth="540.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+      <children>
+         <Text fx:id="details" fill="#A0A0A0" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+            <font>
+               <Font size="16.0" />
+            </font></Text>
+      </children>
+   </AnchorPane>
 </AnchorPane>
