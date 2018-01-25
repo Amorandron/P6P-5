@@ -4,9 +4,14 @@ import com.janwilts.bigmovie.chatbot.models.Actor;
 import com.janwilts.bigmovie.chatbot.models.Country;
 import com.janwilts.bigmovie.chatbot.models.Movie;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Jan
+ */
 public class PrintUtils {
     private static StringBuilder block = new StringBuilder();
 
@@ -33,7 +38,26 @@ public class PrintUtils {
                 blockprint(String.format("%d.\t %s (%d)", set.getKey(), currentMovie.getTitle(), currentMovie.getRelease_year()));
             }
         }
-        return getBlock();
+
+        String[] individuals = getBlock().split("\n");
+        List<String> combinedIndividuals = new ArrayList<>();
+
+        int index = 0;
+        StringBuilder current = new StringBuilder();
+
+        for(String individual : individuals) {
+            if(index >= 60) {
+                index = 0;
+                combinedIndividuals.add(current.toString());
+                current = new StringBuilder();
+            }
+
+            current.append(String.format("%s\n", individual));
+
+            index++;
+        }
+
+        return String.join("||", combinedIndividuals);
     }
 
     public static String actorListPrint(HashMap<Integer, Actor> actors) {

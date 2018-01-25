@@ -6,7 +6,7 @@
 - <call>movieMpaa rated "<star>"</call>
 
 + how is the (@movie) * rated
-- <call>movieMpaa rated "<star>"</call>
+- <call>movieMpaa rated "<star2>"</call>
 
 + how is * rated
 - <call>movieMpaa rated "<star>"</call>

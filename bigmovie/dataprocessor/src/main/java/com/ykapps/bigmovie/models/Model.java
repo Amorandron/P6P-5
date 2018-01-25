@@ -33,21 +33,10 @@ public class Model {
     public static final String SQL_B4 = "SELECT * " +
             "FROM public.country " +
             "WHERE lower(country) LIKE ?";
-    public static final String SQL_Search_Movie = "SELECT b.*" +
-            "FROM (SELECT * " +
-                "FROM (SELECT x.*, y.country_id, z.genre_id " +
-                    "FROM public.movie AS x " +
-                    "LEFT JOIN public.movie_country AS y " +
-                    "ON x.movie_id = y.movie_id " +
-                    "LEFT JOIN public.movie_genre AS z " +
-                    "ON x.movie_id = z.movie_id " +
-                    "AND z.movie_id = y.movie_id ) AS a " +
-                "WHERE LOWER( title ) LIKE ?" +
-                "ORDER BY title ASC LIMIT 30 ) AS b " +
-                "LEFT JOIN public.country AS c " +
-                "ON b.country_id = c.country_id " +
-                "LEFT JOIN public.genre AS g " +
-                "ON b.genre_id = g.genre_id";
+    public static final String SQL_Search_Movie = "SELECT * " +
+            "FROM public.movie " +
+            "WHERE LOWER(title) LIKE ?" +
+            "ORDER BY rating_votes DESC NULLS LAST, rating DESC NULLS LAST";
 
     public static final String SQL_Search_Actor = "SELECT * " +
             "FROM public.actor AS a " +

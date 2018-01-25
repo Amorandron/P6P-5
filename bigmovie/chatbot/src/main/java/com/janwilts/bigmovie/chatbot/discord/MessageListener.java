@@ -31,9 +31,9 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
                 String response = bot.reply(event.getAuthor().getDisplayName(event.getGuild()), message);
                 String[] messages = response.split("\\|\\|");
                 for(String mess : messages) {
-                    if(mess.startsWith("{{file}}")) {
+                    if(mess.trim().startsWith("{{file}}")) {
                         try {
-                            event.getChannel().sendFile(new File(mess.substring(8)));
+                            event.getChannel().sendFile(new File(mess.trim().substring(8)));
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
