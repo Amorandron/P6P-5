@@ -7,7 +7,7 @@
 + what amount of movies did [the] * make
 - <call>movieByCountry <star></call>
 
-+ show me (some|more) [info] about *
++ show me [(some|more)] [info] about *
 - <set search=<star2>>Are you looking for a movie or an actor?
 
 + [*] (movie|actor) [*]
