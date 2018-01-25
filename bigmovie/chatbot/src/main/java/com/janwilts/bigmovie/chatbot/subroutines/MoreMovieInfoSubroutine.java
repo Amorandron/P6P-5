@@ -48,6 +48,7 @@ public class MoreMovieInfoSubroutine extends Routine {
 
         APIRequester requester = new APIRequester(Genre.class);
 
+        //get all genres of the selected movie
         try {
             apiGenre = requester.getArrayFromAPI("/genres?movie_id=" + movie.getMovie_id());
         } catch (Exception e) {
@@ -59,6 +60,7 @@ public class MoreMovieInfoSubroutine extends Routine {
 
         requester = new APIRequester(Country.class);
 
+        //get all countries of the selected movie
         try {
             apiCountry = requester.getArrayFromAPI("/countries?movie_id=" + movie.getMovie_id());
         } catch (Exception e) {
@@ -68,6 +70,7 @@ public class MoreMovieInfoSubroutine extends Routine {
         for (Country c : apiCountry)
             country.add(c.getCountry());
 
+        //make large budgets more readable by adding commas
         String budget = movie.getBudget().toString();
         String decimal = budget.substring(budget.indexOf("."));
         String whole = budget.substring(0, budget.indexOf(".") - 1);
@@ -91,6 +94,7 @@ public class MoreMovieInfoSubroutine extends Routine {
 
         budget = newWhole.toString() + decimal;
 
+        //formatting output
         PrintUtils.blockprint(String.format("Title: %s", movie.getTitle()));
         PrintUtils.blockprint("----------------");
         if (movie.getRelease_year() != null || movie.getRelease_year() != 0)
