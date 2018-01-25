@@ -33,10 +33,10 @@ public class Model {
     public static final String SQL_B4 = "SELECT * " +
             "FROM public.country " +
             "WHERE lower(country) LIKE ?";
-    public static final String SQL_Search_Movie = "SELECT *" +
-            "FROM public.movie" +
-            "WHERE LOWER(title) LIKE '%?%' AND rating_votes IS NOT NULL" +
-            "ORDER BY rating_votes DESC, rating DESC";
+    public static final String SQL_Search_Movie = "SELECT * " +
+            "FROM public.movie " +
+            "WHERE LOWER(title) LIKE ?" +
+            "ORDER BY rating_votes DESC NULLS LAST, rating DESC NULLS LAST";
 
     public static final String SQL_Search_Actor = "SELECT * " +
             "FROM public.actor AS a " +

@@ -29,6 +29,7 @@ public class APIRequester {
     }
 
     public Object getFromAPI(String input) throws IOException {
+        input = input.replaceAll(" ", "+");
         URL url = new URL(API_LOCATION + input);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -37,6 +38,7 @@ public class APIRequester {
     }
 
     public <T> List<T> getArrayFromAPI(String input) throws IOException, ClassNotFoundException {
+        input = input.replaceAll(" ", "+");
         URL url = new URL(API_LOCATION + input);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -47,6 +49,7 @@ public class APIRequester {
     }
 
     public File getImageFromAPI(String input, String fileName) throws IOException {
+        input = input.replaceAll(" ", "+");
         URL url = new URL(API_LOCATION + input);
 
         URL fileLocation = this.getClass().getResource("/images/");

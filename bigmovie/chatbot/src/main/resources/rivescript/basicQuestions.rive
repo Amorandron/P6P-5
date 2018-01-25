@@ -7,32 +7,25 @@
 + what amount of movies did [the] * make
 - <call>movieByCountry <star></call>
 
-+ what does * do in his daily life
-- <call>actorInfo <star></call>
-
 + show me (some|more) [info] about *
-- <set search=<star2>>Are you looking for a movie or an actor or a country?
+- <set search=<star2>>Are you looking for a movie or an actor?
 
-+ [*] (movie|actor|country) [*]
++ [*] (movie|actor) [*]
 % are you looking for a movie or an actor or a country
-* <star> == movie => <call>movieInfo <get search></call>
-* <star> == actor => <call>actorInfo <get search></call>
-* <star> == country => <call>countryInfo <get search></call>
-- Please choose from a movie or an actor or a country
+* <star> == movie => <call>movieInfo "<get search>"</call>
+* <star> == actor => <call>actorInfo "<get search>""</call>
+- Please choose from a movie or an actor
 
 + *
-% are you looking for a movie or an actor or a country
-- Choose from a movie or an actor or a country
+% are you looking for a movie or an actor
+- Choose from a movie or an actor
 
-+ [*] (movie|actor|country) [*]
++ [*] (movie|actor [*]
 % choose from a movie or an actor or a country
-* <star> == movie => <call>movieInfo <get search></call>
-* <star> == actor => <call>actorInfo <get search></call>
-* <star> == country => <call>countryInfo <get search></call>
-- Please choose from a movie or an actor or a country
+* <star> == movie => <call>movieInfo "<get search>"</call>
+* <star> == actor => <call>actorInfo "<get search>"</call>
+- Please choose from a movie or an actor
 
 + *
-% choose from a movie or an actor or a country
-- Choose from a movie or an actor or a country
-
-
+% choose from a movie or an actor
+- Choose from a movie or an actor
