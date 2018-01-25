@@ -15,5 +15,5 @@
 + (which|what|who) [actors] (has|have|play|act|plays|acts) [a role] in [the movie] *
 - <call>actorRole movie <star3></call>
 
-+ show me all the movies with *
++ show me all the movies with the actor *
 - <call>actorRole actorall <star></call>
