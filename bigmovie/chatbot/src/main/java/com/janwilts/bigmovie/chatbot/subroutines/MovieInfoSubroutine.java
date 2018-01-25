@@ -46,11 +46,6 @@ public class MovieInfoSubroutine extends Routine {
         result.append("\n");
         result.append("Movies:\n");
 
-        if(api.size() == 0) {
-            result.append("No movies");
-            return result.toString();
-        }
-
         int i = 0;
 
         if(args[0].contains("all")) {
@@ -58,7 +53,7 @@ public class MovieInfoSubroutine extends Routine {
                 focusedMovies.put(i + 1, api.get(i));
                 printMap.put(i + 1, api.get(i));
 
-                if (i % 6 == 0 && i != 0) {
+                if (i % 20 == 0 && i != 0) {
                     result.append(PrintUtils.movieListPrint(printMap));
                     result.append("||");
 
@@ -69,14 +64,21 @@ public class MovieInfoSubroutine extends Routine {
                 i++;
             }
         }
-        else {
+        else if (api.size() >= 10){
             for(int i2 = 0; i2< 10; i2++) {
                 focusedMovies.put(i2+1, api.get(i2));
             }
 
             result.append(PrintUtils.movieListPrint(focusedMovies));
-            PrintUtils.blockprint(String.format("There are %s movies, to se them all type: 'show me all the movies with %s", api.size(), search));
+            PrintUtils.blockprint(String.format("There are %s movies, to see them all type: 'show me all the movies with %s", api.size(), search));
             result.append(PrintUtils.getBlock());
+        }
+        else {
+            for(int i2 = 0; i2 < api.size(); i2++) {
+                focusedMovies.put(i2+1, api.get(i2));
+            }
+
+            result.append(PrintUtils.movieListPrint(focusedMovies));
         }
 
         setMainFocus(focusedMovies);
