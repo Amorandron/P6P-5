@@ -35,6 +35,7 @@ public class MovieInfoSubroutine extends Routine {
             focusedMovies.put(i + 1, api.get(i));
         }
         result.append(PrintUtils.movieListPrint(focusedMovies));
+        setMainFocus(focusedMovies);
 
         return result.toString();
     }

@@ -32,12 +32,13 @@ public class MovieMpaaSubroutine extends Routine {
             APIRequester requester = new APIRequester(Movie.class);
             List<Movie> movies = null;
             try {
-                movies = requester.getArrayFromAPI("/q/movie?movie=" + args[1]);
+                movies = requester.getArrayFromAPI("/q/movie?movie=" + args[1].toLowerCase());
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             for(Movie m : movies) {
-                PrintUtils.blockprint(String.format("%s (%d): %s", m.getTitle(), m.getRelease_year(), m.getMpaa_rating()));
+                if(m.getMpaa_rating() != null)
+                    PrintUtils.blockprint(String.format("%s (%d): %s", m.getTitle(), m.getRelease_year(), m.getMpaa_rating()));
             }
             result += PrintUtils.getBlock();
         } else if (args[0].equals("model")) {

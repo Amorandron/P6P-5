@@ -32,7 +32,7 @@ public class PrintUtils {
     public static String movieListPrint(HashMap<Integer, Movie> movies) {
         for (Map.Entry<Integer, Movie> set : movies.entrySet()) {
             Movie currentMovie = set.getValue();
-            if (currentMovie.getTitle() == null) {
+            if (currentMovie.getRelease_year() == null || currentMovie.getRelease_year() == 0) {
                 blockprint(String.format("%d.\t %s", set.getKey(), currentMovie.getTitle()));
             } else {
                 blockprint(String.format("%d.\t %s (%d)", set.getKey(), currentMovie.getTitle(), currentMovie.getRelease_year()));
