@@ -2,16 +2,16 @@
 
 //Question: What's the rating of (movie)?
 
-+ what is the rating of *
++ what is [the] rating [of] *
 - <call>movieMpaa rated "<star>"</call>
 
-+ how is the (@movie) * rated
++ how is [the] (@movie) * rated
 - <call>movieMpaa rated "<star2>"</call>
 
 + how is * rated
 - <call>movieMpaa rated "<star>"</call>
 
-+ rating *
++ rating [of] *
 - <call>movieMpaa rated "<star>"</call>
 
 + [show|view|get] [me|us] [the|a] (mpaa|mpaa-rating|age-rating|age) (model|cart|tree|cart-tree|cart tree|regression|regression model|tree model)
