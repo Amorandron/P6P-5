@@ -1,7 +1,7 @@
 package com.janwilts.bigmovie.gui;
 
-import com.janwilts.bigmovie.gui.models.Movie;
 import com.janwilts.bigmovie.gui.controls.JFXMovieButton;
+import com.janwilts.bigmovie.gui.models.Movie;
 import com.janwilts.bigmovie.gui.util.APIRequester;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -55,7 +55,7 @@ public class Controller {
                 }
                 
                 movies = movies.stream().filter(m -> m.getRelease_year() <= CURRENT_DATE.getYear() + 1900).collect(Collectors.toList());
-                movies.sort(Comparator.comparing(Movie::getRelease_year).thenComparing(Movie::getRating).reversed());
+                movies.sort(Comparator.comparing(Movie::getRating_votes).thenComparing(Movie::getRating).thenComparing(Movie::getRelease_year).reversed());
                 movies = movies.subList(0, Math.min((int) (infoPane.getHeight() / BUTTON_HEIGHT) - 1, movies.size()));
             }
             catch (Exception e) {
@@ -93,6 +93,13 @@ public class Controller {
             
             lines.add("Title: " + movie.getTitle());
             lines.add("Release Year: " + movie.getRelease_year());
+            lines.add("");
+            if (movie.getBudget() != null) {
+                lines.add("Budget: " + movie.getBudget());
+                lines.add("");
+            }
+            if (movie.getRating() > 0) lines.add("IMDB Rating: " + movie.getRating() + " (" + movie.getRating_votes() + " votes)");
+            if (movie.getMpaa_rating() != null) lines.add("MPAA Rating: " + movie.getMpaa_rating() + " (" + movie.getMpaa_reason() + ")");
             
             details.setText(String.join("\n", lines.toArray(new String[0])));
             infoPane.getChildren().add(details);

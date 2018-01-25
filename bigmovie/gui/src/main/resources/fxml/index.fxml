@@ -24,12 +24,11 @@
             </graphic>
         </JFXButton>
     </VBox>
-   <AnchorPane fx:id="infoPane" layoutX="60.0" layoutY="60.0" prefHeight="340.0" prefWidth="540.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
-      <children>
-         <Text fx:id="details" fill="#A0A0A0" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
-            <font>
-               <Font size="16.0" />
-            </font></Text>
-      </children>
-   </AnchorPane>
+    <AnchorPane fx:id="infoPane" layoutX="60.0" layoutY="60.0" prefHeight="340.0" prefWidth="540.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+        <Text fx:id="details" fill="#A0A0A0" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+           <font>
+               <Font size="14.0"/>
+           </font>
+        </Text>
+    </AnchorPane>
 </AnchorPane>
