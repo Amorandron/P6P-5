@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * @author Yannick & Jan
  */
+// Main command to loop through every file and parse it, and if required inserts it.
 public class FullCommand implements Command
 {
     private String directory;
@@ -32,6 +33,7 @@ public class FullCommand implements Command
 
         List<File> files = Arrays.asList(Objects.requireNonNull(dataDirectory.listFiles()));
 
+        // Filters out all the files who don't have a parser
         final List<File> filesFiltered = files.stream()
                 .filter(f -> Parsable.getList()
                         .stream()
@@ -40,11 +42,13 @@ public class FullCommand implements Command
                         .contains(f.getName().substring(0, f.getName().indexOf('.'))))
                         .collect(Collectors.toList());
 
+        // Creates a new thread for each file to be parsed upon
         for(File f : filesFiltered) {
             tasks.add(new Thread(new FileParseTask(f)));
         }
         tasks.forEach(Thread::start);
 
+        // Wait for each thread to finish before continuing to inserting
         for(Thread t : tasks) {
             try {
                 t.join();

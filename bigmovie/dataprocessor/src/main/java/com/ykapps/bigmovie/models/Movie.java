@@ -18,14 +18,14 @@ public class Movie {
 
     private String mpaa_reason;
 
-    private Integer rating;
+    private Double rating;
 
     private Integer rating_votes;
 
     private BigDecimal budget;
 
     public Movie(Integer movie_id, String title, Integer release_year, String type, Integer occurence, String mpaa_rating,
-                 String mpaa_reason, Integer rating, Integer rating_votes, BigDecimal budget) {
+                 String mpaa_reason, Double rating, Integer rating_votes, BigDecimal budget) {
 
         this.movie_id = movie_id;
         this.title = title;
@@ -67,7 +67,7 @@ public class Movie {
         return mpaa_reason;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
