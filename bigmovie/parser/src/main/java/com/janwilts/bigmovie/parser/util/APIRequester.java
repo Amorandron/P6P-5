@@ -9,6 +9,7 @@ import java.net.URL;
  * @author Jan
  */
 public class APIRequester {
+    // Static method to help with requesting the api for currency needs
     public static String request(String link) {
         StringBuilder result = new StringBuilder();
 

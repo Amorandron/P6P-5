@@ -12,6 +12,7 @@ import java.util.zip.ZipInputStream;
  * @author Yannick & Jan
  */
 public abstract class Parser {
+    // Some static characters for use within the parsers
     public static final String DELIMITER = ",";
     public static final String NEW_LINE = "\n";
     public static final String QUOTE = "\"";
@@ -26,7 +27,8 @@ public abstract class Parser {
     BufferedReader reader;
     File csv;
     private static int lines = 0;
-    
+
+    // Gets the correct parser class from the enum and executes it.
     public static String[] parseFile(File file) {
         //@formatter:off
         int index = Parsable.getList()
@@ -48,7 +50,8 @@ public abstract class Parser {
         currentParser.parse();
         return new String[]{file.getName().substring(0, file.getName().indexOf('.')), String.valueOf(Parsable.getList().indexOf(parser) + 1), String.valueOf(Parsable.getList().size()), String.valueOf(lines)};
     }
-    
+
+    // Constructor of a parser which also sets the csv file
     public Parser(File file) {
         this.file = file;
         this.csv = new File("output/" + file.getName().substring(0, file.getName().indexOf('.')) + ".csv");
@@ -61,7 +64,8 @@ public abstract class Parser {
             e.printStackTrace();
         }
     }
-    
+
+    // Gets the correct reader depending on the file type, either .list or .list.gz
     private BufferedReader getReader() throws IOException {
         String extension = file.getName().substring(file.getName().lastIndexOf('.') + 1);
         

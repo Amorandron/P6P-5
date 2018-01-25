@@ -4,6 +4,8 @@ package com.janwilts.bigmovie.parser.util;
  * @author Jan
  */
 public class CommandUtils {
+    // Collection of string utilities for use within console messages
+
     public static void error(String error) {
         String mainUsage = "parser <path> <-a | -f> [file]";
         CommandUtils.error(error, mainUsage);

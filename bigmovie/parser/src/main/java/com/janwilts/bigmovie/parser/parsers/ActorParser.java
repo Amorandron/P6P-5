@@ -90,15 +90,18 @@ public class ActorParser extends Parser {
 
                         if (!searchLine.substring(rightCommaInd).contains(currentRole)) break;
 
+                        // Sets the type
                         if (searchLine.contains("(") &&
                                 searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("TV") ||
                                 searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("V")) {
 
                             videoTvGame = searchLine.substring(leftCommaInd + 1, rightCommaInd);
                         } else if (searchLine.contains("(") && searchLine.substring(leftCommaInd + 1, rightCommaInd).equals("VG")) {
+                            // Skip video games
                             gameFound = true;
                             break;
                         } else if (searchLine.contains("(") &&
+                                // Get year and occurence
                                 Character.isDigit(searchLine.charAt(leftCommaInd + 1)) &&
                                 (rightCommaInd - leftCommaInd == 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && Character.isDigit(searchLine.charAt(rightCommaInd - 1))) ||
                                 (rightCommaInd - leftCommaInd > 5 && Character.isDigit(searchLine.charAt(leftCommaInd + 1)) && (searchLine.charAt(rightCommaInd - 1) == 'I' || searchLine.charAt(rightCommaInd - 1) == 'V' || searchLine.charAt(rightCommaInd - 1) == 'X')) ||

@@ -92,6 +92,9 @@ public class MoreMovieInfoSubroutine extends Routine {
         if(decimal.equals(".00"))
             decimal = ".-";
 
+        String countryName = country.size() > 1 ? "Countries" : "Country";
+        String genreName = country.size() > 1 ? "Genres" : "Genre";
+
         budget = newWhole.toString() + decimal;
 
         //formatting output
@@ -104,9 +107,9 @@ public class MoreMovieInfoSubroutine extends Routine {
         if (movie.getBudget() != null || !movie.getBudget().equals(new BigDecimal(0)))
             PrintUtils.blockprint(String.format("Budget: $%s", budget));
         if (country.size() > 0)
-            PrintUtils.blockprint(String.format("\nCountries: %s", String.join(", ", country)));
+            PrintUtils.blockprint(String.format("\n%s: %s", countryName, String.join(", ", country)));
         if (genre.size() > 0)
-            PrintUtils.blockprint(String.format("\nGenres: %s", String.join(", ", genre)));
+            PrintUtils.blockprint(String.format("\n%s: %s", genreName, String.join(", ", genre)));
 
 
         return PrintUtils.getBlock();
