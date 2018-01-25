@@ -37,12 +37,12 @@ public class ActorRoleSubroutine extends Routine {
             if(args.length > 2) {
                 //Add second name
                 for (int i = 1; i < args.length - 1; i++) {
-                    firstname.append(args[i].toLowerCase());
+                    firstname.append(args[i]);
                     if (args.length - 2 != i) {
                         firstname.append(" ");
                     }
                 }
-                lastname.append(args[args.length - 1].toLowerCase());
+                lastname.append(args[args.length - 1]);
             } else {
                 return "You need to specify a first- and lastname";
             }
