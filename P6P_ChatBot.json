@@ -1,0 +1,1368 @@
+{
+  "luis_schema_version": "2.1.0",
+  "versionId": "0.1",
+  "name": "P6P_ChatBot",
+  "desc": "NLU for P6P Chat Bot",
+  "culture": "en-us",
+  "intents": [
+    {
+      "name": "ActorAct"
+    },
+    {
+      "name": "ActorInfo"
+    },
+    {
+      "name": "ActorRole"
+    },
+    {
+      "name": "GenrePopularityChange"
+    },
+    {
+      "name": "GetRoleDifficult"
+    },
+    {
+      "name": "Goodbye"
+    },
+    {
+      "name": "Greet"
+    },
+    {
+      "name": "MoreActorInfo"
+    },
+    {
+      "name": "MoreMovieInfo"
+    },
+    {
+      "name": "MovieByCountry"
+    },
+    {
+      "name": "MovieCost"
+    },
+    {
+      "name": "MovieCountryCount"
+    },
+    {
+      "name": "MovieCountryEarned"
+    },
+    {
+      "name": "MovieEarned"
+    },
+    {
+      "name": "MovieInfo"
+    },
+    {
+      "name": "MovieMPAA"
+    },
+    {
+      "name": "None"
+    },
+    {
+      "name": "SoundTrackUsed"
+    }
+  ],
+  "entities": [
+    {
+      "name": "ActorAndOrActress",
+      "children": [
+        "Actress",
+        "ActorActress",
+        "Actor"
+      ]
+    },
+    {
+      "name": "ActorId"
+    },
+    {
+      "name": "ActorName"
+    },
+    {
+      "name": "Country"
+    },
+    {
+      "name": "DisplayedInTime"
+    },
+    {
+      "name": "MostLeast",
+      "children": [
+        "Most",
+        "Least"
+      ]
+    },
+    {
+      "name": "Movie"
+    },
+    {
+      "name": "MovieId"
+    },
+    {
+      "name": "Period",
+      "children": [
+        "Week",
+        "Year",
+        "Month",
+        "Ever"
+      ]
+    },
+    {
+      "name": "Time",
+      "children": [
+        "time"
+      ]
+    },
+    {
+      "name": "WorstBest",
+      "children": [
+        "Worst",
+        "Best"
+      ]
+    }
+  ],
+  "composites": [],
+  "closedLists": [],
+  "bing_entities": [],
+  "model_features": [],
+  "regex_features": [],
+  "utterances": [
+    {
+      "text": "hi",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "hello",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "hey",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "bye",
+      "intent": "Goodbye",
+      "entities": []
+    },
+    {
+      "text": "yo",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "how are you",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "hi there",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "goodbye",
+      "intent": "Goodbye",
+      "entities": []
+    },
+    {
+      "text": "greetings",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "later",
+      "intent": "Goodbye",
+      "entities": []
+    },
+    {
+      "text": "hello there",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "cya",
+      "intent": "Goodbye",
+      "entities": []
+    },
+    {
+      "text": "see ya",
+      "intent": "Goodbye",
+      "entities": []
+    },
+    {
+      "text": "nice to see you",
+      "intent": "Greet",
+      "entities": []
+    },
+    {
+      "text": "see you around",
+      "intent": "Goodbye",
+      "entities": []
+    },
+    {
+      "text": "who is leonardo dicaprio",
+      "intent": "ActorInfo",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 7,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "what movie was the most expensive to record",
+      "intent": "MovieCost",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 19,
+          "endPos": 22
+        }
+      ]
+    },
+    {
+      "text": "what movie has the highest budget",
+      "intent": "MovieCost",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 19,
+          "endPos": 25
+        }
+      ]
+    },
+    {
+      "text": "which movie cost the most money to record",
+      "intent": "MovieCost",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 21,
+          "endPos": 24
+        }
+      ]
+    },
+    {
+      "text": "what movie has earned the most in a week in the usa",
+      "intent": "MovieEarned",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 48,
+          "endPos": 50
+        },
+        {
+          "entity": "Period",
+          "startPos": 34,
+          "endPos": 39
+        }
+      ]
+    },
+    {
+      "text": "which movie made the most money ever worldwide",
+      "intent": "MovieEarned",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 37,
+          "endPos": 45
+        },
+        {
+          "entity": "Period",
+          "startPos": 32,
+          "endPos": 35
+        }
+      ]
+    },
+    {
+      "text": "what movie grossed the highest in a year in india",
+      "intent": "MovieEarned",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 44,
+          "endPos": 48
+        },
+        {
+          "entity": "Period",
+          "startPos": 34,
+          "endPos": 39
+        }
+      ]
+    },
+    {
+      "text": "which movie brought in the most money ever in china",
+      "intent": "MovieEarned",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 46,
+          "endPos": 50
+        },
+        {
+          "entity": "Period",
+          "startPos": 38,
+          "endPos": 41
+        }
+      ]
+    },
+    {
+      "text": "what film has earned the most money in a month in germany",
+      "intent": "MovieEarned",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 50,
+          "endPos": 56
+        },
+        {
+          "entity": "Period",
+          "startPos": 39,
+          "endPos": 45
+        }
+      ]
+    },
+    {
+      "text": "which actor or actress plays the most in the worst rated films",
+      "intent": "ActorAct",
+      "entities": [
+        {
+          "entity": "ActorAndOrActress",
+          "startPos": 6,
+          "endPos": 21
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 33,
+          "endPos": 36
+        },
+        {
+          "entity": "WorstBest",
+          "startPos": 45,
+          "endPos": 49
+        }
+      ]
+    },
+    {
+      "text": "what actress acts the most in the best rated movies",
+      "intent": "ActorAct",
+      "entities": [
+        {
+          "entity": "ActorAndOrActress",
+          "startPos": 5,
+          "endPos": 11
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 22,
+          "endPos": 25
+        },
+        {
+          "entity": "WorstBest",
+          "startPos": 34,
+          "endPos": 37
+        }
+      ]
+    },
+    {
+      "text": "which actor plays the most in the worst movies",
+      "intent": "ActorAct",
+      "entities": [
+        {
+          "entity": "ActorAndOrActress",
+          "startPos": 6,
+          "endPos": 10
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 22,
+          "endPos": 25
+        },
+        {
+          "entity": "WorstBest",
+          "startPos": 34,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "what actor/actress plays the most in the best rated movies",
+      "intent": "ActorAct",
+      "entities": [
+        {
+          "entity": "ActorAndOrActress",
+          "startPos": 5,
+          "endPos": 17
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 29,
+          "endPos": 32
+        },
+        {
+          "entity": "WorstBest",
+          "startPos": 41,
+          "endPos": 44
+        }
+      ]
+    },
+    {
+      "text": "give the number of films made in india displayed in time",
+      "intent": "MovieCountryCount",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 33,
+          "endPos": 37
+        },
+        {
+          "entity": "DisplayedInTime",
+          "startPos": 52,
+          "endPos": 55
+        }
+      ]
+    },
+    {
+      "text": "show me the number of movies made in scotland relative to time",
+      "intent": "MovieCountryCount",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 37,
+          "endPos": 44
+        },
+        {
+          "entity": "DisplayedInTime",
+          "startPos": 58,
+          "endPos": 61
+        }
+      ]
+    },
+    {
+      "text": "please show me how many movies have been made in china through time",
+      "intent": "MovieCountryCount",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 49,
+          "endPos": 53
+        },
+        {
+          "entity": "DisplayedInTime",
+          "startPos": 63,
+          "endPos": 66
+        }
+      ]
+    },
+    {
+      "text": "how many movies have been recorded in iceland",
+      "intent": "MovieCountryCount",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 38,
+          "endPos": 44
+        }
+      ]
+    },
+    {
+      "text": "how does the popularity of genres change displayed in time",
+      "intent": "GenrePopularityChange",
+      "entities": []
+    },
+    {
+      "text": "show me how the popularity of genres has changed over time",
+      "intent": "GenrePopularityChange",
+      "entities": []
+    },
+    {
+      "text": "show me the shift in popularity of genres displayed in time",
+      "intent": "GenrePopularityChange",
+      "entities": []
+    },
+    {
+      "text": "how does the popularity of genres vary over time",
+      "intent": "GenrePopularityChange",
+      "entities": []
+    },
+    {
+      "text": "how does the popularity of genres shift over time",
+      "intent": "GenrePopularityChange",
+      "entities": []
+    },
+    {
+      "text": "what is the parental advisory rating for die hard",
+      "intent": "MovieMPAA",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 41,
+          "endPos": 48
+        }
+      ]
+    },
+    {
+      "text": "what is the rating of lord of the rings",
+      "intent": "MovieMPAA",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 22,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "how is zootropolis rated",
+      "intent": "MovieMPAA",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 7,
+          "endPos": 17
+        }
+      ]
+    },
+    {
+      "text": "how would you rate home alone",
+      "intent": "MovieMPAA",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 19,
+          "endPos": 28
+        }
+      ]
+    },
+    {
+      "text": "rating stuart little",
+      "intent": "MovieMPAA",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 7,
+          "endPos": 19
+        }
+      ]
+    },
+    {
+      "text": "how is the movie the lion king rated",
+      "intent": "MovieMPAA",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 17,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "is it more difficult for an older actress to get a role",
+      "intent": "GetRoleDifficult",
+      "entities": []
+    },
+    {
+      "text": "are younger actors more likely to get a role in a movie",
+      "intent": "GetRoleDifficult",
+      "entities": []
+    },
+    {
+      "text": "at what age is acting the most lucrative",
+      "intent": "GetRoleDifficult",
+      "entities": []
+    },
+    {
+      "text": "at what age are actors or actresses most likely to get a role",
+      "intent": "GetRoleDifficult",
+      "entities": []
+    },
+    {
+      "text": "at what age does it become harder to get a role in a film",
+      "intent": "GetRoleDifficult",
+      "entities": []
+    },
+    {
+      "text": "are older actors less likely to appear in a movie",
+      "intent": "GetRoleDifficult",
+      "entities": []
+    },
+    {
+      "text": "in which country does the film industry make the most money each year",
+      "intent": "MovieCountryEarned",
+      "entities": [
+        {
+          "entity": "Period",
+          "startPos": 65,
+          "endPos": 68
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 49,
+          "endPos": 52
+        }
+      ]
+    },
+    {
+      "text": "in what country does the movie industry earn the least cash each week",
+      "intent": "MovieCountryEarned",
+      "entities": [
+        {
+          "entity": "Period",
+          "startPos": 65,
+          "endPos": 68
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 49,
+          "endPos": 53
+        }
+      ]
+    },
+    {
+      "text": "in which country does the movie industry make the most money every month",
+      "intent": "MovieCountryEarned",
+      "entities": [
+        {
+          "entity": "Period",
+          "startPos": 67,
+          "endPos": 71
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 50,
+          "endPos": 53
+        }
+      ]
+    },
+    {
+      "text": "which movies does roger moore have a role in",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 18,
+          "endPos": 28
+        }
+      ]
+    },
+    {
+      "text": "which movies does bruce willis have a part in",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 18,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "what movies feature mark hamill",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 20,
+          "endPos": 30
+        }
+      ]
+    },
+    {
+      "text": "in which films does daniel craig have a role",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 20,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "what can you tell me about movie 2",
+      "intent": "MoreMovieInfo",
+      "entities": [
+        {
+          "entity": "MovieId",
+          "startPos": 33,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "what movie was the least expensive to make",
+      "intent": "MovieCost",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 19,
+          "endPos": 23
+        }
+      ]
+    },
+    {
+      "text": "which movie has been the least expensive to record",
+      "intent": "MovieCost",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 25,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "which actor or actress acts the least in the best films",
+      "intent": "ActorAct",
+      "entities": [
+        {
+          "entity": "ActorAndOrActress",
+          "startPos": 6,
+          "endPos": 21
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 32,
+          "endPos": 36
+        },
+        {
+          "entity": "WorstBest",
+          "startPos": 45,
+          "endPos": 48
+        }
+      ]
+    },
+    {
+      "text": "what actor acts the least in the best films",
+      "intent": "ActorAct",
+      "entities": [
+        {
+          "entity": "ActorAndOrActress",
+          "startPos": 5,
+          "endPos": 9
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 20,
+          "endPos": 24
+        },
+        {
+          "entity": "WorstBest",
+          "startPos": 33,
+          "endPos": 36
+        }
+      ]
+    },
+    {
+      "text": "what song is most used in the soundtrack of a movie",
+      "intent": "SoundTrackUsed",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 13,
+          "endPos": 16
+        }
+      ]
+    },
+    {
+      "text": "what song can be heard least often in movies",
+      "intent": "SoundTrackUsed",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 23,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "which song is featured the most in soundtracks of films",
+      "intent": "SoundTrackUsed",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 27,
+          "endPos": 30
+        }
+      ]
+    },
+    {
+      "text": "what song is used most often in the soundtrack of a movie",
+      "intent": "SoundTrackUsed",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 18,
+          "endPos": 21
+        }
+      ]
+    },
+    {
+      "text": "can you show me the amount of movies filmed in the usa",
+      "intent": "MovieCountryCount",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 51,
+          "endPos": 53
+        }
+      ]
+    },
+    {
+      "text": "in what country does the film industry make the most money every week",
+      "intent": "MovieCountryEarned",
+      "entities": [
+        {
+          "entity": "Period",
+          "startPos": 65,
+          "endPos": 68
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 48,
+          "endPos": 51
+        }
+      ]
+    },
+    {
+      "text": "in what films does carrie fisher play",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 19,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "which actors play in die hard",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 21,
+          "endPos": 28
+        }
+      ]
+    },
+    {
+      "text": "who play in the movie home alone",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 22,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "which actors act in the lion king",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 24,
+          "endPos": 32
+        }
+      ]
+    },
+    {
+      "text": "can you tell me more about bruce willis",
+      "intent": "ActorInfo",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 27,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "what do you know about liam neeson",
+      "intent": "ActorInfo",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 23,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "give me some more info about carrie fisher",
+      "intent": "ActorInfo",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 29,
+          "endPos": 41
+        }
+      ]
+    },
+    {
+      "text": "what does mark hamill do in his daily life",
+      "intent": "ActorInfo",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 10,
+          "endPos": 20
+        }
+      ]
+    },
+    {
+      "text": "what can you tell me about actor 3",
+      "intent": "MoreActorInfo",
+      "entities": [
+        {
+          "entity": "ActorId",
+          "startPos": 33,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "can you give me more details about actor 5",
+      "intent": "MoreActorInfo",
+      "entities": [
+        {
+          "entity": "ActorId",
+          "startPos": 41,
+          "endPos": 41
+        }
+      ]
+    },
+    {
+      "text": "actor 3",
+      "intent": "MoreActorInfo",
+      "entities": [
+        {
+          "entity": "ActorId",
+          "startPos": 6,
+          "endPos": 6
+        }
+      ]
+    },
+    {
+      "text": "what do you know about actor 15",
+      "intent": "MoreActorInfo",
+      "entities": [
+        {
+          "entity": "ActorId",
+          "startPos": 29,
+          "endPos": 30
+        }
+      ]
+    },
+    {
+      "text": "i want more details on actor 2",
+      "intent": "MoreActorInfo",
+      "entities": [
+        {
+          "entity": "ActorId",
+          "startPos": 29,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "what can you tell me about movie 14",
+      "intent": "MoreMovieInfo",
+      "entities": [
+        {
+          "entity": "MovieId",
+          "startPos": 33,
+          "endPos": 34
+        }
+      ]
+    },
+    {
+      "text": "i want to know more about movie 32",
+      "intent": "MoreMovieInfo",
+      "entities": [
+        {
+          "entity": "MovieId",
+          "startPos": 32,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "what do you know about movie 1",
+      "intent": "MoreMovieInfo",
+      "entities": [
+        {
+          "entity": "MovieId",
+          "startPos": 29,
+          "endPos": 29
+        }
+      ]
+    },
+    {
+      "text": "can you give me more information about movie 2",
+      "intent": "MoreMovieInfo",
+      "entities": [
+        {
+          "entity": "MovieId",
+          "startPos": 45,
+          "endPos": 45
+        }
+      ]
+    },
+    {
+      "text": "how many movies have been made in india",
+      "intent": "MovieByCountry",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 34,
+          "endPos": 38
+        }
+      ]
+    },
+    {
+      "text": "movies made in china",
+      "intent": "MovieByCountry",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 15,
+          "endPos": 19
+        }
+      ]
+    },
+    {
+      "text": "what number of movies are from the usa",
+      "intent": "MovieByCountry",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 35,
+          "endPos": 37
+        }
+      ]
+    },
+    {
+      "text": "how many movies did iceland make",
+      "intent": "MovieByCountry",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 20,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "what can you tell me about the movie die hard",
+      "intent": "MovieInfo",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 37,
+          "endPos": 44
+        }
+      ]
+    },
+    {
+      "text": "i'd like to know more about alladin",
+      "intent": "MovieInfo",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 28,
+          "endPos": 34
+        }
+      ]
+    },
+    {
+      "text": "can you give me more details about jurassic park",
+      "intent": "MovieInfo",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 35,
+          "endPos": 47
+        }
+      ]
+    },
+    {
+      "text": "do you have any details on avatar",
+      "intent": "MovieInfo",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 27,
+          "endPos": 32
+        }
+      ]
+    },
+    {
+      "text": "show me info about alladdin",
+      "intent": "MovieInfo",
+      "entities": []
+    },
+    {
+      "text": "show me info about star wars",
+      "intent": "MovieInfo",
+      "entities": []
+    },
+    {
+      "text": "which country has the biggest film industry",
+      "intent": "MovieCountryEarned",
+      "entities": []
+    },
+    {
+      "text": "what song can be heard most often in movies",
+      "intent": "SoundTrackUsed",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 23,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "which song is most used in a soundtrack of a movie",
+      "intent": "SoundTrackUsed",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 14,
+          "endPos": 17
+        }
+      ]
+    },
+    {
+      "text": "which actor plays most in the best rated films",
+      "intent": "ActorAct",
+      "entities": [
+        {
+          "entity": "ActorAndOrActress",
+          "startPos": 6,
+          "endPos": 10
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 18,
+          "endPos": 21
+        },
+        {
+          "entity": "WorstBest",
+          "startPos": 30,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "how many movies have been recorded in belgium",
+      "intent": "MovieCountryCount",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 38,
+          "endPos": 44
+        }
+      ]
+    },
+    {
+      "text": "which actress plays most in the best rated films",
+      "intent": "ActorAct",
+      "entities": [
+        {
+          "entity": "ActorAndOrActress",
+          "startPos": 6,
+          "endPos": 12
+        },
+        {
+          "entity": "MostLeast",
+          "startPos": 20,
+          "endPos": 23
+        },
+        {
+          "entity": "WorstBest",
+          "startPos": 32,
+          "endPos": 35
+        }
+      ]
+    },
+    {
+      "text": "which movie brought in the most money ever in india",
+      "intent": "MovieEarned",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 46,
+          "endPos": 50
+        },
+        {
+          "entity": "Period",
+          "startPos": 38,
+          "endPos": 41
+        }
+      ]
+    },
+    {
+      "text": "how many movies have been recorded in china",
+      "intent": "MovieCountryCount",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 38,
+          "endPos": 42
+        }
+      ]
+    },
+    {
+      "text": "what can you tell me about movie 5",
+      "intent": "MoreMovieInfo",
+      "entities": [
+        {
+          "entity": "MovieId",
+          "startPos": 33,
+          "endPos": 33
+        }
+      ]
+    },
+    {
+      "text": "which movie cost the least to record?",
+      "intent": "MovieCost",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 21,
+          "endPos": 25
+        }
+      ]
+    },
+    {
+      "text": "which movie cost the most to record?",
+      "intent": "MovieCost",
+      "entities": [
+        {
+          "entity": "MostLeast",
+          "startPos": 21,
+          "endPos": 24
+        }
+      ]
+    },
+    {
+      "text": "what is the parental advisory rating for home alone",
+      "intent": "MovieMPAA",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 41,
+          "endPos": 50
+        }
+      ]
+    },
+    {
+      "text": "in which movies does johnny depp play?",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 21,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "how many movies have been recorded in netherlands",
+      "intent": "MovieCountryCount",
+      "entities": [
+        {
+          "entity": "Country",
+          "startPos": 38,
+          "endPos": 48
+        }
+      ]
+    },
+    {
+      "text": "in which movies does tom cruise play",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 21,
+          "endPos": 30
+        }
+      ]
+    },
+    {
+      "text": "how does popularity of genres vary over time",
+      "intent": "GenrePopularityChange",
+      "entities": []
+    },
+    {
+      "text": "in what movies did nicolas cage play",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 19,
+          "endPos": 30
+        }
+      ]
+    },
+    {
+      "text": "actors that play in die hard",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 20,
+          "endPos": 27
+        }
+      ]
+    },
+    {
+      "text": "in which movies does nicolas cage play",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 21,
+          "endPos": 32
+        }
+      ]
+    },
+    {
+      "text": "in which movies did nicolas cage play",
+      "intent": "ActorRole",
+      "entities": [
+        {
+          "entity": "ActorName",
+          "startPos": 20,
+          "endPos": 31
+        }
+      ]
+    },
+    {
+      "text": "i'd like to know more about lord of the rings",
+      "intent": "MovieInfo",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 28,
+          "endPos": 44
+        }
+      ]
+    },
+    {
+      "text": "i 'd like to know more about avatar",
+      "intent": "MovieInfo",
+      "entities": [
+        {
+          "entity": "Movie",
+          "startPos": 29,
+          "endPos": 34
+        }
+      ]
+    }
+  ]
+}
