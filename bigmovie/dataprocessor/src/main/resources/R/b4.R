@@ -1,3 +1,5 @@
+# Author: Jan
+
 file <- "{{param}}";
 
 result <- dbSendQuery(connection, "SELECT total, release_year

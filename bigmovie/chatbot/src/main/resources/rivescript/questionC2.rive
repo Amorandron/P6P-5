@@ -11,14 +11,11 @@
 + how is * rated
 - <call>movieMpaa rated <star></call>
 
-+ how would you rate the @movie *
-- <call>movieMpaa prediction <star></call>
-
-+ how would you rate *
-- <call>movieMpaa prediction <star><call>
-
 + rating *
 - <call>movieMpaa rated <star></call>
 
-+ [show|view|get] [me|us] [the|a] (model|cart|tree|cart-tree|cart tree|regression|regression model|tree model)
++ [show|view|get] [me|us] [the|a] (mpaa|mpaa-rating|age-rating|age) (model|cart|tree|cart-tree|cart tree|regression|regression model|tree model)
 - <call>movieMpaa model</call>
+
++ [show|view|get] [me|us] [the|a] (mpaa|mpaa-rating|age-rating|age) (validation|model validation|cart validation)
+- <call>movieMpaa validation</call>

@@ -1,3 +1,5 @@
+# Author: Jan
+
 driver <- dbDriver("PostgreSQL");
 
 connection <- dbConnect(driver, dbname = {{data}}, host = {{host}}, port = {{port}}, user = {{user}}, password = {{pass}});
