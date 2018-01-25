@@ -81,6 +81,7 @@ public class MovieEarnedSubroutine extends Routine {
                 focusedMovies.put(i+1, movieResult.get(i));
             }
 
+            setMainFocus(focusedMovies);
 
             return PrintUtils.movieListPrint(focusedMovies);
         }

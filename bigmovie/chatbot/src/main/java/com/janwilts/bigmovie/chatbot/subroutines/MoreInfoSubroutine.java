@@ -23,6 +23,8 @@ public class MoreInfoSubroutine extends Routine {
             if(object instanceof Actor) {
                 response += new MoreActorInfoSubroutine(bot, mainFocus).call(rs, new String[] {position.toString()});
             }
+        }else {
+            response = "Sorry, you can't select that number.";
         }
 
         return response;
