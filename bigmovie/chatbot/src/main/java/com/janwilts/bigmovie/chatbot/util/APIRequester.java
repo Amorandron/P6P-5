@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class APIRequester {
-    private static final String API_LOCATION = "http://141.252.214.164:8080/";
+    private static final String API_LOCATION = "http://localhost:8080";
 
     private ObjectMapper mapper;
     private Class cl;

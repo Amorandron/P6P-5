@@ -31,10 +31,12 @@ public class MoreActorInfoSubroutine extends Routine {
         else
             actor = focusedActors.get(position);
 
+        String gender = actor.getGender().equals("M") ? "Male" : "Female";
+
         PrintUtils.blockprint(String.format("Name: %s", actor.getName()));
         PrintUtils.blockprint("----------------");
         if (!Strings.isNullOrEmpty(actor.getGender()))
-            PrintUtils.blockprint(String.format("Gender: %s", actor.getGender()));
+            PrintUtils.blockprint(String.format("Gender: %s", gender));
         if (actor.getBirth_date() != null)
             PrintUtils.blockprint(String.format("Birth Date: %s", actor.getBirth_date().toString()));
         if (actor.getDeath_date() != null)

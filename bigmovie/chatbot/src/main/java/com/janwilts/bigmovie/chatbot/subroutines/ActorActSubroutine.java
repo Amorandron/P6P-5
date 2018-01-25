@@ -3,10 +3,7 @@ package com.janwilts.bigmovie.chatbot.subroutines;
 import com.janwilts.bigmovie.chatbot.discord.DiscordBot;
 import com.janwilts.bigmovie.chatbot.models.Actor;
 import com.janwilts.bigmovie.chatbot.util.APIRequester;
-import com.janwilts.bigmovie.chatbot.util.PrintUtils;
 import com.rivescript.RiveScript;
-
-import java.util.List;
 
 /**
  * @author Everdien
@@ -63,6 +60,8 @@ public class ActorActSubroutine extends Routine {
             }
         }
 
-        return apiActor.getName();
+        focusedActors.put(1, apiActor);
+
+        return new MoreActorInfoSubroutine(bot, focusedActors).call(rs, new String[]{"1"});
     }
 }

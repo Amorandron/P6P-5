@@ -338,7 +338,7 @@ public class App extends Jooby {
             String movie = req.param("movie").value();
             Object[] params = {movie};
 
-            Observable<Movie> obs = model.query(Model.DbClasses.MOVIE, Model.SQL_D2_REVERSE, params);
+            Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, Model.SQL_D2_REVERSE, params);
 
             return obs.toList().toBlocking().single();
         });
