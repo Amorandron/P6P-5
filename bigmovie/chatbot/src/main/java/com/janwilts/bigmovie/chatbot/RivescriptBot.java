@@ -5,12 +5,19 @@ import com.janwilts.bigmovie.chatbot.subroutines.*;
 import com.rivescript.Config;
 import com.rivescript.RiveScript;
 
+import java.net.URISyntaxException;
+
 public class RivescriptBot {
     
     public static RiveScript init(DiscordBot discordBot) {
         RiveScript bot = new RiveScript(Config.Builder.utf8().unicodePunctuation("[,!?;:]").build());
-        
-        bot.loadDirectory("src/main/resources/rivescript");
+
+        try {
+            bot.loadDirectory(RivescriptBot.class.getResource("/rivescript/").toURI().getPath());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
         bot.sortReplies();
         bot.setSubroutine("movieEarned", new MovieEarnedSubroutine(discordBot));
         bot.setSubroutine("movieCost", new MovieCostSubroutine(discordBot));

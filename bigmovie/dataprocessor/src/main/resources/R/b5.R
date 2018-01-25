@@ -1,3 +1,5 @@
+# Author: Jan
+
 file <- "{{param}}";
 
 result <- dbSendQuery(connection, "WITH genre_nums AS (

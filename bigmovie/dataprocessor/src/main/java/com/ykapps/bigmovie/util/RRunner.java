@@ -4,7 +4,6 @@ import com.ykapps.bigmovie.exceptions.RException;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
 
-import javax.script.ScriptException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,15 +55,11 @@ public class RRunner {
         }
     }
 
-    public List<REXP> runDb(String script, String... params) throws IOException, ScriptException, InterruptedException {
-        List<REXP> connection = run("connection.R");
-        List<REXP> output;
-        int[] status = connection.get(0).asIntArray();
-
-        output = run(script, params);
-
-        //run("disconnect.R");
-
+    public List<REXP> runDb(String script, String... params) throws IOException {
+        run("start.R");
+        run("connection.R");
+        List<REXP> output = run(script, params);
+        run("disconnect.R");
         return output;
     }
 
@@ -87,6 +82,9 @@ public class RRunner {
         List<REXP> output = new ArrayList<>();
 
         for(String line : lines) {
+            if(line.startsWith("#"))
+                continue;
+
             line = line.replaceAll("\n", "");
             line = line.replaceAll(" {2,}", " ");
 
