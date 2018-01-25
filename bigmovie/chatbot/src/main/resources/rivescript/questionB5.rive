@@ -5,5 +5,11 @@
 + how does the popularity of (genres|subject|subjects) (change|mutate|alter|vary|shift) [displayed in time|over time]
 - <call>genrepopularityChange</call>
 
-+ show [me] the (change|shift|alter|vary) in popularity of (genres|subject|subjects) [displayed in time|over time]
++ show [me] [the] (change|shift|alter|vary) [in] popularity [of] (genres|subject|subjects) [displayed in time|over time]
+- <call>genrepopularityChange</call>
+
++ popularity [of] (genres|subject|subjects) [displayed in time|over time]
+- <call>genrepopularityChange</call>
+
++ (genres|subject|subjects) popularity (change|shift|alter|vary) [displayed in time|over time]
 - <call>genrepopularityChange</call>

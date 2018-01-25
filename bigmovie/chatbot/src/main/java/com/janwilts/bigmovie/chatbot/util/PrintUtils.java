@@ -19,7 +19,7 @@ public class PrintUtils {
     }
 
     public static String getBlock() {
-        String output = String.format("```%s```", block.toString());
+        String output = String.format("```css\n%s\n```", block.toString());
         block = new StringBuilder();
         return output;
     }
