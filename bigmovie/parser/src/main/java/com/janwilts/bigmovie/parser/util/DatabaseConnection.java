@@ -9,6 +9,9 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jan
+ */
 public class DatabaseConnection {
     private String host;
     private Integer port;
@@ -35,6 +38,7 @@ public class DatabaseConnection {
         this.password = password;
     }
 
+    // Opens connection and tests if all the required tables are present
     public Boolean open() {
         Boolean result;
         try {
@@ -51,10 +55,12 @@ public class DatabaseConnection {
         return result;
     }
 
+    // Closes connection
     public void close() throws SQLException {
         connection.close();
     }
 
+    // Method to test if all required tables are present which it gets from the different inserter classes.
     private Boolean testTables(Statement testStatement) throws SQLException {
         List<String> output = new ArrayList<>();
         ResultSet testSet = testStatement.executeQuery("SELECT * FROM pg_catalog.pg_tables");
@@ -78,12 +84,14 @@ public class DatabaseConnection {
                 .collect(Collectors.toList()));
     }
 
+    // Executes a string of SQl
     public void execute(String query) throws SQLException {
         Statement statement = connection.createStatement();
         statement.execute(query);
         statement.close();
     }
 
+    // Gets the copy manager for copying csv onto the server
     public CopyManager getManager() {
         return manager;
     }

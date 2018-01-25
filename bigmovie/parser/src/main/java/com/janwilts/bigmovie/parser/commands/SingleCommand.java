@@ -10,6 +10,8 @@ import java.io.File;
 public class SingleCommand implements Command {
     private String file;
 
+    // Only parses a single file to csv
+
     SingleCommand(String file) {
         this.file = file;
     }

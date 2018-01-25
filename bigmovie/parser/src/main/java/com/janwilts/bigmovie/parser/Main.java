@@ -11,6 +11,7 @@ import java.util.Map;
  */
 public class Main {
     public static final String outputDirectory = "output/";
+    // Gets database information from an .env file located in resources
     public static final Map<String, String> dotEnv = DotEnv.load();
     public static final DatabaseConnection connection = new DatabaseConnection(dotEnv.get("DATABASE_HOST"),
             Integer.valueOf(dotEnv.get("DATABASE_PORT")),
@@ -19,6 +20,7 @@ public class Main {
             dotEnv.get("DATABASE_PASSWORD"));
 
     public static void main(String[] args) {
+        // Uses arguments on a command parser implementing the command pattern
         CommandParser.parse(args);
     }
 }

@@ -13,7 +13,8 @@ import java.util.*;
  */
 public class BusinessParser extends Parser {
     private static final Map<String, String> MONTH_TO_NUMBER = new HashMap<>();
-    
+
+    // Defines all the month conversions
     static {
         MONTH_TO_NUMBER.put("January", "01");
         MONTH_TO_NUMBER.put("February", "02");
@@ -148,12 +149,14 @@ public class BusinessParser extends Parser {
         String currency = money[1];
         double amount = Double.parseDouble(money[2].replaceAll(",", ""));
         double parsedGross;
-        
+
+        // Gets the currency and amount and parses changes to other currencies to USD
         if (currency.equals("USD")) parsedGross = amount;
         else parsedGross = CurrencyConverter.convert(amount, currency, "USD");
         
         String country = values[1].substring(0, values[1].indexOf(')'));
 
+        // Removes strange punctuation from some countries
         if(country.equals("worldwide"))
             country = "Worldwide";
 
@@ -170,7 +173,8 @@ public class BusinessParser extends Parser {
             map.put(country, grossPerDate);
         }
     }
-    
+
+    // Turns date into UNIX format
     private String fixDate(String date) {
         String[] values = date.split(" ");
         if (values.length == 1) return (values[0].isEmpty() ? "" : "0101") + date;

@@ -35,19 +35,23 @@ public class SoundTrackUsedSubroutine extends Routine {
         LinkedHashMap<Integer, Movie> printMap = new LinkedHashMap<>();
 
         try {
+            //request api
             SoundtrackMovies soundtrackMovies = (SoundtrackMovies)apiRequester.getFromAPI("/q/a21");
 
             PrintUtils.blockprint(soundtrackMovies.getSoundtrack().getSong());
 
             int i = 0;
 
+            //formatting output
             result.append("Song:\n");
             result.append(PrintUtils.getBlock());
             result.append("\n");
 
             result.append("Movies:\n");
 
+            //check if user wants to see all movies returned by the api
             if(type.equals("all")) {
+                //show all movies returned by the api
                 while (i < soundtrackMovies.getMovies().size()){
                     focusedMovies.put(i+1, soundtrackMovies.getMovies().get(i));
                     printMap.put(i+1, soundtrackMovies.getMovies().get(i));
@@ -63,6 +67,7 @@ public class SoundTrackUsedSubroutine extends Routine {
                 }
             }
             else {
+                //select top 10 movies
                 for(int i2 = 0; i2 < 10; i2++) {
                     focusedMovies.put(i2+1, soundtrackMovies.getMovies().get(i2));
                 }
@@ -73,6 +78,7 @@ public class SoundTrackUsedSubroutine extends Routine {
                 result.append(PrintUtils.getBlock());
             }
 
+            //set mainfocus on focused movies
             setMainFocus(focusedMovies);
 
             return result.toString();

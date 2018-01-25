@@ -50,6 +50,7 @@ public class MpaaParser extends Parser {
                         occurrence = "0";
                         type = "";
 
+                        // Gets type and skips video games
                         if (year.charAt(0) == 'T' || year.charAt(0) == 'V') {
                             type = line.substring(line.lastIndexOf('(') + 1, line.lastIndexOf(')'));
                             line = line.substring(0, line.lastIndexOf('('));
@@ -61,11 +62,13 @@ public class MpaaParser extends Parser {
                             }
                         }
 
+                        // Gets occurence
                         if (year.contains("/")) {
                             occurrence = String.valueOf(RomanNumeral.convert(year.substring(year.indexOf("/") + 1, year.length())));
                             year = year.substring(0, year.indexOf("/"));
                         }
 
+                        // Makes sure there are no double movies
                         if(prevTitle.equals(title) && prevYear.equals(year) && prevType.equals(type) && prevOccurence.equals(occurrence)) {
                             prevSame = true;
                             continue;
@@ -90,6 +93,7 @@ public class MpaaParser extends Parser {
                         String rating;
                         StringBuilder reason;
 
+                        // Gets the correct rating
                         if (line.contains(" G ") ||
                                 line.contains(" PG ") ||
                                 line.contains(" PG-13 ") ||
@@ -134,6 +138,7 @@ public class MpaaParser extends Parser {
                                 reason = new StringBuilder(line);
                             }
 
+                            // Fills reason until lines are depleted
                             while(!(line = reader.readLine()).equals("")) {
                                 if(line.charAt(0) == 'R') {
                                     line = line.substring(4);

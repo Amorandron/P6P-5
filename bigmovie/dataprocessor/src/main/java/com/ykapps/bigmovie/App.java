@@ -354,9 +354,9 @@ public class App extends Jooby {
         });
 
         get("/q/actor", req -> {
-            String actor = req.param("actor").value();
+            String name = req.param("lastname").value() + ", " + req.param("firstname").value();
 
-            Object[] params = {"%" + actor + "%"};
+            Object[] params = {"%" + name + "%"};
 
             Observable<Actor> obs = model.query(Model.DbClasses.ACTOR, Model.SQL_Search_Actor, params);
 

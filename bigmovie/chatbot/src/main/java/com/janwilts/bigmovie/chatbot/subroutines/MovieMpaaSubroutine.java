@@ -32,12 +32,13 @@ public class MovieMpaaSubroutine extends Routine {
             APIRequester requester = new APIRequester(Movie.class);
             List<Movie> movies = null;
             try {
-                movies = requester.getArrayFromAPI("/q/movie?movie=" + args[1]);
+                movies = requester.getArrayFromAPI("/q/movie?movie=" + args[1].toLowerCase());
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             for(Movie m : movies) {
-                PrintUtils.blockprint(String.format("%s (%d): %s", m.getTitle(), m.getRelease_year(), m.getMpaa_rating()));
+                if(m.getMpaa_rating() != null)
+                    PrintUtils.blockprint(String.format("%s (%d): %s", m.getTitle(), m.getRelease_year(), m.getMpaa_rating()));
             }
             result += PrintUtils.getBlock();
         } else if (args[0].equals("model")) {
@@ -79,7 +80,7 @@ public class MovieMpaaSubroutine extends Routine {
                 else {
                     PrintUtils.blockchar(StringUtils.center(ratings[i - 1], 8));
                     for(int j = 0; j < ratings.length; j++)
-                        PrintUtils.blockchar(StringUtils.center(matrix.get(i).get(j).toString(), 8));
+                        PrintUtils.blockchar(StringUtils.center(String.valueOf(matrix.get(i).get(j).intValue()), 8));
                     PrintUtils.blockchar("\n");
                 }
             }

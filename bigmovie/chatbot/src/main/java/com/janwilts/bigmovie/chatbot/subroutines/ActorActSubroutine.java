@@ -28,18 +28,21 @@ public class ActorActSubroutine extends Routine {
         String quantum = args[1];
         String rating = args[2];
 
+        //check if searched on most or least
         if(quantum.contains("most")){
             url += "/most";
         }else if(quantum.contains("least")){
             url += "/least";
         }
 
+        //check if search on worst or best rating
         if(rating.contains("worst")){
             url += "?rating=1";
         }else if(rating.contains("best")){
             url += "?rating=10";
         }
 
+        //check on which gender is searched and do request on api
         if(type.contains("actor") && type.contains("actress")){
             try {
                 apiActor = (Actor)requester.getFromAPI(url);
@@ -60,8 +63,10 @@ public class ActorActSubroutine extends Routine {
             }
         }
 
+        //set returned actor as focused actors
         focusedActors.put(1, apiActor);
 
+        //return actor information
         return new MoreActorInfoSubroutine(bot, focusedActors).call(rs, new String[]{"1"});
     }
 }

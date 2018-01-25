@@ -28,6 +28,7 @@ public class RatingParser extends Parser {
                     line = line.trim();
                     
                     if (line.contains(QUOTE)) continue;
+                    // Skips suspended movies
                     if (line.contains("{{SUSPENDED}}")) continue;
                     
                     if (line.endsWith("}")) line = line.substring(0, line.lastIndexOf("{"));
@@ -40,17 +41,20 @@ public class RatingParser extends Parser {
                     String title = "";
                     String yearString = "";
                     String year = "";
-                    
+
+                    // Gets the type of the movie
                     if (values[2].charAt(values[2].lastIndexOf('(') + 1) == 'V' || values[2].charAt(values[2].lastIndexOf('(') + 1) == 'T') {
                         type = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].lastIndexOf(')'));
                         values[2] = values[2].substring(0, values[2].lastIndexOf('(') - 1);
                         if(type.contains("VG"))
                             continue;
                     }
-                    
+
+                    // Gets year
                     if (values[2].lastIndexOf('(') != -1) yearString = values[2].substring(values[2].lastIndexOf('(') + 1, values[2].length() - 1);
                     
                     try {
+                        // Gets occurence
                         if (yearString.contains("/")) {
                             occurance = RomanNumeral.convert(values[2].substring(values[2].lastIndexOf('/') + 1, values[2].lastIndexOf(')')));
                             year = yearString.substring(0, yearString.indexOf("/"));
