@@ -1,3 +1,5 @@
+# Author: Jan
+
 file <- "{{param}}";
 
 result <- dbSendQuery(connection, "SELECT * FROM public.movie_actor_age");

@@ -275,12 +275,7 @@ public class App extends Jooby {
             Optional<String> id = request.param("movie_id").toOptional();
             String location = plotLocation + "c2.png";
 
-            if(id.isPresent()) {
-                c2Output = runner.runDb("c2.R", location, id.get());
-                return c2Output.get(3).asDouble();
-            }
-            else
-                c2Output = runner.runDb("c2.R", location);
+            c2Output = runner.runDb("c2.R", location);
 
             return "Done processing image";
         });

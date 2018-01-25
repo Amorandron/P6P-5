@@ -10,6 +10,10 @@ import java.util.Map;
 public class PrintUtils {
     private static StringBuilder block = new StringBuilder();
 
+    public static void blockchar(String input) {
+        block.append(input);
+    }
+
     public static void blockprint(String input) {
         block.append(String.format("%s\n", input));
     }

@@ -56,3 +56,5 @@ CREATE INDEX movie_movie_id_indx
   ON public.movie (movie_id);
 CREATE INDEX movie_full_movie_indx
   ON public.movie (title, release_year, type, occurence);
+
+REFRESH MATERIALIZED VIEW public.movie_mpaa;

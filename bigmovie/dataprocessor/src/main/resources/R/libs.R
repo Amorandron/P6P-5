@@ -1,3 +1,5 @@
+# Author: Jan
+
 library(RPostgreSQL);
 library(ggplot2);
 library(tm);
