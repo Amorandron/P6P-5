@@ -47,6 +47,27 @@ public class LUISCallSubroutine extends Routine{
                     requiredEntities.add("ActorName");
                     break;
 
+                case("ActorRole"):
+                    if(response.getEntities().stream().anyMatch(en -> en.getType().equals("ActorName"))) {
+                        response.getEntities().add(0, new LUISEntity("actor"));
+
+                        String name = response.getEntities().get(1).getEntity();
+                        String[] nameArray = name.split(" ");
+
+                        response.getEntities().remove(1);
+
+                        for(String nameString : nameArray) {
+                            response.getEntities().add(new LUISEntity(nameString));
+                        }
+                    }
+                    else if(response.getEntities().stream().anyMatch(en -> en.getType().equals("Movie"))) {
+                        response.getEntities().add(0, new LUISEntity("movie"));
+                    }
+                    else {
+                        return "Sorry, I don't understand.";
+                    }
+                    break;
+
                 case("MoreActorInfo"):
                     requiredEntities.add("ActorId");
                     break;
@@ -87,6 +108,7 @@ public class LUISCallSubroutine extends Routine{
 
                 case("MovieMPAA"):
                     intent.setIntent("MovieMpaa");
+                    response.getEntities().add(0, new LUISEntity("rated"));
 
                     requiredEntities.add("Movie");
                     break;

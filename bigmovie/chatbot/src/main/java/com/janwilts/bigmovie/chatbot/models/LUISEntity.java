@@ -16,6 +16,14 @@ public class LUISEntity {
 
     }
 
+    public LUISEntity(String entity) {
+        this.entity = entity;
+        this.type = "";
+        this.startIndex = 0;
+        this.endIndex = 0;
+        this.score = 0;
+    }
+
     public LUISEntity(String entity, String type, int startIndex, int endIndex, double score) {
         this.entity = entity;
         this.type = type;
