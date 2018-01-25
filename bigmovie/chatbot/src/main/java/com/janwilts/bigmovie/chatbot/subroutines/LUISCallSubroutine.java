@@ -104,6 +104,8 @@ public class LUISCallSubroutine extends Routine{
 
                 case("MovieInfo"):
                     requiredEntities.add("Movie");
+
+                    response.getEntities().add(0, new LUISEntity("limit"));
                     break;
 
                 case("MovieMPAA"):

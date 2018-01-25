@@ -42,7 +42,7 @@ public class MessageListener implements IListener<MessageReceivedEvent> {
                     else {
                         RequestBuffer.request(() -> {
                             try {
-                                event.getChannel().sendMessage("Yannick_Bot: " + mess);
+                                event.getChannel().sendMessage(mess);
                             }
                             catch (RateLimitException e) {
                                 System.out.println("Rate limit reached, retrying..");
